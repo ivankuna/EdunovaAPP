@@ -71,14 +71,14 @@ public class ObradaDrzava {
         Drzava drzava = new Drzava();
         drzava.setId(Pomocno.unosRasponBroja("Unesi šifru države: ","Broj mora biti pozitivan",
                 1,Integer.MAX_VALUE));
-        drzava.setNazivDrzave(Pomocno.unosString("Unesi naziv države: ","Unos obavezan"));
+        drzava.setNazivDrzave(Pomocno.unosString("Unesi naziv države: ","Pogrešan unos"));
         drzave.add(drzava);
     }
     private void promjenaDrzava() {
         pregledDrzava();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj države: ","Pogrešan unos",1,drzave.size());
         Drzava drzava = drzave.get(index-1);
-        drzava.setNazivDrzave(Pomocno.unosString("Unesi naziv države (" + drzava.getNazivDrzave() + "): ","Unos je obavezan"));
+        drzava.setNazivDrzave(Pomocno.unosString("Unesi naziv države (" + drzava.getNazivDrzave() + "): ","Pogrešan unos"));
     }
     private void brisanjeDrzava() {
         pregledDrzava();

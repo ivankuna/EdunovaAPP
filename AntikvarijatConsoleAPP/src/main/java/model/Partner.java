@@ -58,6 +58,6 @@ public class Partner extends Entitet {
     }
     @Override
     public String toString() {
-        return null;
+        return nazivPartnera;
     }
 }

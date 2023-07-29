@@ -1,14 +1,14 @@
 package obrada;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Pomocno {
     public static Scanner ulaz;
     public static boolean dev;
-    private static final String FORMAT_DATUMA = "dd.MM.yyyy.";
-    private static SimpleDateFormat df = new SimpleDateFormat(FORMAT_DATUMA);
+    private static final String FORMAT_DATUMA = "dd.MM.yyyy. HH:mm:ss";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT_DATUMA);
 
     public static int unosRasponBroja(String poruka, String greska, int min, int max) {
         int i;
@@ -72,13 +72,13 @@ public class Pomocno {
         return ulaz.nextLine().trim().toLowerCase().equals("da") ? true : false;
 
     }
-    public static Date unosDatum(String poruka) {
+    public static LocalDateTime unosDatum(String poruka) {
         while (true) {
             try {
                 System.out.print(poruka);
-                return df.parse(ulaz.nextLine());
+                return LocalDateTime.parse(ulaz.nextLine(), formatter);
             } catch (Exception e) {
-                System.out.println("Obavezan unos datuma u formatu " + FORMAT_DATUMA + ", npr. " + df.format(new Date()) + " za danas.");
+                System.out.println("Pogrešan unos");
             }
         }
     }

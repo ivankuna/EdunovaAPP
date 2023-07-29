@@ -78,7 +78,7 @@ public class ObradaIzdavac {
         Izdavac izdavac = new Izdavac();
         izdavac.setId(Pomocno.unosRasponBroja("Unesi šifru izdavača: ","Broj mora biti pozitivan",
                 1,Integer.MAX_VALUE));
-        izdavac.setNazivIzdavaca(Pomocno.unosString("Unesi naziv izdavača: ","Unos obavezan"));
+        izdavac.setNazivIzdavaca(Pomocno.unosString("Unesi naziv izdavača: ","Pogrešan unos"));
         izdavac.setGrad(postaviGrad(izdavac));
         izdavaci.add(izdavac);
     }
@@ -86,7 +86,7 @@ public class ObradaIzdavac {
         pregledIzdavaca();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj izdavača: ","Pogrešan unos",1,izdavaci.size());
         Izdavac izdavac = izdavaci.get(index-1);
-        izdavac.setNazivIzdavaca(Pomocno.unosString("Unesi naziv izdavača (" + izdavac.getNazivIzdavaca() + "): ","Unos je obavezan"));
+        izdavac.setNazivIzdavaca(Pomocno.unosString("Unesi naziv izdavača (" + izdavac.getNazivIzdavaca() + "): ","Pogrešan unos"));
         izdavac.setGrad(postaviGrad(izdavac));
     }
     private void brisanjeIzdavaca() {

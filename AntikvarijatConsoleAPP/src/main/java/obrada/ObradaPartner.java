@@ -79,11 +79,11 @@ public class ObradaPartner {
         Partner partner = new Partner();
         partner.setId(Pomocno.unosRasponBroja("Unesi šifru partnera: ","Broj mora biti pozitivan",
                 1,Integer.MAX_VALUE));
-        partner.setNazivPartnera(Pomocno.unosString("Unesi naziv naziv partnera: ", "Unos obavezan"));
-        partner.setUlicaBroj(Pomocno.unosString("Unesi adresu partnera: ", "Unos obavezan"));
-        partner.setOib(Pomocno.unosString("Unesi OIB partnera: ", "Unos obavezan"));
-        partner.setEmail(Pomocno.unosString("Unesi Email partnera", "Unos obavezan"));
-        partner.setTelefon(Pomocno.unosString("Unesi telefon partnera", "Unos obavezan"));
+        partner.setNazivPartnera(Pomocno.unosString("Unesi naziv naziv partnera: ", "Pogrešan unos"));
+        partner.setUlicaBroj(Pomocno.unosString("Unesi adresu partnera: ", "Pogrešan unos"));
+        partner.setOib(Pomocno.unosString("Unesi OIB partnera: ", "Pogrešan unos"));
+        partner.setEmail(Pomocno.unosString("Unesi Email partnera: ", "Pogrešan unos"));
+        partner.setTelefon(Pomocno.unosString("Unesi telefon partnera: ", "Pogrešan unos"));
         partner.setGrad(postaviGrad(partner));
         partneri.add(partner);
     }
@@ -91,11 +91,11 @@ public class ObradaPartner {
         pregledPartnera();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj partnera: ","Pogrešan unos",1,partneri.size());
         Partner partner = partneri.get(index-1);
-        partner.setNazivPartnera(Pomocno.unosString("Unesi naziv partnera (" + partner.getNazivPartnera() + "): ","Unos je obavezan"));
-        partner.setUlicaBroj(Pomocno.unosString("Unesi adresu partnera (" + partner.getUlicaBroj() + "): ","Unos je obavezan"));
-        partner.setOib(Pomocno.unosString("Unesi OIB partnera (" + partner.getOib() + "): ","Unos je obavezan"));
-        partner.setEmail(Pomocno.unosString("Unesi Email partnera (" + partner.getEmail() + "): ","Unos je obavezan"));
-        partner.setTelefon(Pomocno.unosString("Unesi telefon partnera (" + partner.getTelefon() + "): ","Unos je obavezan"));
+        partner.setNazivPartnera(Pomocno.unosString("Unesi naziv partnera (" + partner.getNazivPartnera() + "): ","Pogrešan unos"));
+        partner.setUlicaBroj(Pomocno.unosString("Unesi adresu partnera (" + partner.getUlicaBroj() + "): ","Pogrešan unos"));
+        partner.setOib(Pomocno.unosString("Unesi OIB partnera (" + partner.getOib() + "): ","Pogrešan unos"));
+        partner.setEmail(Pomocno.unosString("Unesi Email partnera (" + partner.getEmail() + "): ","Pogrešan unos"));
+        partner.setTelefon(Pomocno.unosString("Unesi telefon partnera (" + partner.getTelefon() + "): ","Pogrešan unos"));
         partner.setGrad(postaviGrad(partner));
     }
     private void brisanjePartnera() {

@@ -15,8 +15,8 @@ public class ObradaOperater {
     }
     //    ****** Testni podaci ******
     private void testniPodaci() {
-        operateri.add(new Operater(1, "Ivan", "Kuna", "12312312312", "ivankuna@gmail.com", "ivanK", "123"));
-        operateri.add(new Operater(2, "Pero", "Nadoveza", "32132132121", "pero.nadoveza@gmail.com", "peroN", "321"));
+        operateri.add(new Operater(1, "Ivan", "Kuna", "89877641989", "ivankuna@gmail.com", "ivanK", "123"));
+        operateri.add(new Operater(2, "Pero", "Nadoveza", "73917400273", "pero.nadoveza@gmail.com", "peroN", "321"));
     }
     //    ***************************
     public List<Operater> getOperateri() {
@@ -69,24 +69,24 @@ public class ObradaOperater {
         Operater operater = new Operater();
         operater.setId(Pomocno.unosRasponBroja("Unesi šifru operatera: ","Broj mora biti pozitivan",
                 1,Integer.MAX_VALUE));
-        operater.setIme(Pomocno.unosString("Unesi ime operatera: ","Unos obavezan"));
-        operater.setPrezime(Pomocno.unosString("Unesi prezime operatera: ","Unos obavezan"));
-        operater.setOib(Pomocno.unosString("Unesi oib operatera: ","Unos obavezan"));
-        operater.setEmail(Pomocno.unosString("Unesi email operatera: ","Unos obavezan"));
-        operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera: ","Unos obavezan"));
-        operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera: ","Unos obavezan"));
+        operater.setIme(Pomocno.unosString("Unesi ime operatera: ","Pogrešan unos"));
+        operater.setPrezime(Pomocno.unosString("Unesi prezime operatera: ","Pogrešan unos"));
+        operater.setOib(Pomocno.unosString("Unesi oib operatera: ","Pogrešan unos"));
+        operater.setEmail(Pomocno.unosString("Unesi email operatera: ","Pogrešan unos"));
+        operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera: ","Pogrešan unos"));
+        operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera: ","Pogrešan unos"));
         operateri.add(operater);
     }
     private void promjenaOperatera() {
         pregledOperatera();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj operatera: ","Pogrešan unos",1,operateri.size());
         Operater operater = operateri.get(index-1);
-        operater.setIme(Pomocno.unosString("Unesi ime operatera (" + operater.getIme() + "): ","Unos obavezan"));
-        operater.setPrezime(Pomocno.unosString("Unesi prezime operatera (" + operater.getPrezime() + "): ","Unos obavezan"));
-        operater.setOib(Pomocno.unosString("Unesi oib operatera (" + operater.getOib() + "): ","Unos obavezan"));
-        operater.setEmail(Pomocno.unosString("Unesi email operatera (" + operater.getEmail() + "): ","Unos obavezan"));
-        operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera (" + operater.getKorisnickoIme() + "): ","Unos obavezan"));
-        operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera (" + operater.getLozinka() + "): ","Unos obavezan"));
+        operater.setIme(Pomocno.unosString("Unesi ime operatera (" + operater.getIme() + "): ","Pogrešan unos"));
+        operater.setPrezime(Pomocno.unosString("Unesi prezime operatera (" + operater.getPrezime() + "): ","Pogrešan unos"));
+        operater.setOib(Pomocno.unosString("Unesi oib operatera (" + operater.getOib() + "): ","Pogrešan unos"));
+        operater.setEmail(Pomocno.unosString("Unesi email operatera (" + operater.getEmail() + "): ","Pogrešan unos"));
+        operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera (" + operater.getKorisnickoIme() + "): ","Pogrešan unos"));
+        operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera (" + operater.getLozinka() + "): ","Pogrešan unos"));
     }
     private void brisanjeOperatera() {
         pregledOperatera();

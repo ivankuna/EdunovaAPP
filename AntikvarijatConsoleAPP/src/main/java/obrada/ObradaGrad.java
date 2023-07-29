@@ -76,8 +76,8 @@ public class ObradaGrad {
         Grad grad = new Grad();
         grad.setId(Pomocno.unosRasponBroja("Unesi šifru grada: ","Broj mora biti pozitivan",
                 1,Integer.MAX_VALUE));
-        grad.setNazivGrada(Pomocno.unosString("Unesi naziv grada: ","Unos obavezan"));
-        grad.setPostanskiBroj(Pomocno.unosString("Unesi poštanski broj grada: ","Unos obavezan"));
+        grad.setNazivGrada(Pomocno.unosString("Unesi naziv grada: ","Pogrešan unos"));
+        grad.setPostanskiBroj(Pomocno.unosString("Unesi poštanski broj grada: ","Pogrešan unos"));
         grad.setDrzava(postaviDrzavu(grad));
         gradovi.add(grad);
     }
@@ -85,8 +85,8 @@ public class ObradaGrad {
         pregledGradova();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj grada: ","Pogrešan unos",1,gradovi.size());
         Grad grad = gradovi.get(index-1);
-        grad.setNazivGrada(Pomocno.unosString("Unesi naziv grada (" + grad.getNazivGrada() + "): ","Unos je obavezan"));
-        grad.setPostanskiBroj(Pomocno.unosString("Unesi poštanski broj grada (" + grad.getPostanskiBroj() + "): ","Unos je obavezan"));
+        grad.setNazivGrada(Pomocno.unosString("Unesi naziv grada (" + grad.getNazivGrada() + "): ","Pogrešan unos"));
+        grad.setPostanskiBroj(Pomocno.unosString("Unesi poštanski broj grada (" + grad.getPostanskiBroj() + "): ","Pogrešan unos"));
         grad.setDrzava(postaviDrzavu(grad));
     }
     private void brisanjeGradova() {

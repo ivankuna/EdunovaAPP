@@ -82,6 +82,6 @@ public class Knjiga extends Entitet {
     }
     @Override
     public String toString() {
-        return null;
+        return nazivKnjige;
     }
 }

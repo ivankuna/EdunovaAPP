@@ -76,7 +76,7 @@ public class ObradaAutor {
         Autor autor = new Autor();
         autor.setId(Pomocno.unosRasponBroja("Unesi šifru autora: ","Broj mora biti pozitivan",
                 1,Integer.MAX_VALUE));
-        autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora: ","Unos obavezan"));
+        autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora: ","Pogrešan unos"));
         autor.setDrzava(postaviDrzavu(autor));
         autori.add(autor);
     }
@@ -84,7 +84,7 @@ public class ObradaAutor {
         pregledAutora();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj autora: ","Pogrešan unos",1,autori.size());
         Autor autor = autori.get(index-1);
-        autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora (" + autor.getNazivAutora() + "): ","Unos je obavezan"));
+        autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora (" + autor.getNazivAutora() + "): ","Pogrešan unos"));
         autor.setDrzava(postaviDrzavu(autor));
     }
     private void brisanjeAutora() {

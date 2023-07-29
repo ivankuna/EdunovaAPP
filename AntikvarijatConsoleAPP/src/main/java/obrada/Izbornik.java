@@ -38,6 +38,7 @@ public class Izbornik {
         System.out.println("4. Izdavači");
         System.out.println("5. Partneri");
         System.out.println("6. Operateri");
+        System.out.println("7. Knjige");
         System.out.println("(0) Izlaz iz programa");
         ucitajStavkuIzbornika();
     }
@@ -66,6 +67,10 @@ public class Izbornik {
                 break;
             case 6:
                 obradaOperater.prikaziIzbornik();
+                prikaziIzbornik();
+                break;
+            case 7:
+                obradaKnjiga.prikaziIzbornik();
                 prikaziIzbornik();
                 break;
             case 0:

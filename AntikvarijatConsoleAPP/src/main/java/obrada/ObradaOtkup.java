@@ -52,7 +52,7 @@ public class ObradaOtkup {
         switch(Pomocno.unosRasponBroja("Odaberi stavku obrade otkupa: ",
                 "Odabir mora biti 1-4", 1, 4)) {
             case 1:
-                pregledOtkupZaglavlje();
+                pregledOtkupZaglavlje(true);
                 prikaziIzbornik();
                 break;
             case 2:
@@ -67,7 +67,7 @@ public class ObradaOtkup {
                 break;
         }
     }
-    private void pregledOtkupZaglavlje() {
+    private void pregledOtkupZaglavlje(boolean pregledUnos) {
         System.out.println("--------------------");
         System.out.println("------ Otkupi ------");
         System.out.println("--------------------");
@@ -76,13 +76,16 @@ public class ObradaOtkup {
             System.out.println(i++ + ". " + o + ", " + o.getDatumOtkupa().format(Pomocno.formatter) + ", " + (o.getPartner() != null ? o.getPartner().toString() : "Partner nije unešen"));
         }
         System.out.println("--------------------");
-        System.out.println("1. Pregled stavaka otkupa \n2. Izlaz");
-        int odabir = Pomocno.unosRasponBroja("Odabir: ", "Pogrešan unos", 1, 2);
-        int zaglavljeIndex;
-        if (odabir == 1) {
-            zaglavljeIndex = Pomocno.unosRasponBroja("Odaberite redni broj otkupa za pregled stavaka: ", "Pogrešan unos", 1, otkupZaglavljeList.size());
-            pregledOtkupStavka(otkupZaglavljeList.get(zaglavljeIndex - 1).getBrojOtkupa());
+        if (pregledUnos) {
+            System.out.println("1. Pregled stavaka otkupa \n2. Izlaz");
+            int odabir = Pomocno.unosRasponBroja("Odabir: ", "Pogrešan unos", 1, 2);
+            int zaglavljeIndex;
+            if (odabir == 1) {
+                zaglavljeIndex = Pomocno.unosRasponBroja("Odaberite redni broj otkupa za pregled stavaka: ", "Pogrešan unos", 1, otkupZaglavljeList.size());
+                pregledOtkupStavka(otkupZaglavljeList.get(zaglavljeIndex - 1).getBrojOtkupa());
+            }
         }
+
     }
     private int  pregledOtkupStavka(int brojOtkupa) {
         System.out.println("-----------------------");
@@ -127,7 +130,7 @@ public class ObradaOtkup {
         }
         boolean mozeDalje = true;
         int odabirVrstePromjene;
-        pregledOtkupZaglavlje();
+        pregledOtkupZaglavlje(false);
         int brojOtkupZaglavlje = Pomocno.unosRasponBroja("Odaberi broj otkupa: ","Pogrešan unos",1,otkupZaglavljeList.size());
         int zaglavljeIndex = 0;
         for (OtkupZaglavlje o : otkupZaglavljeList) {

@@ -67,7 +67,7 @@ public class ObradaKnjiga {
                 break;
         }
     }
-    private void pregledKnjiga() {
+    public void pregledKnjiga() {
         System.out.println("------------------");
         System.out.println("----- Knjige -----");
         System.out.println("------------------");

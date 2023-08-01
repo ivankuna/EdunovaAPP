@@ -8,7 +8,7 @@ public class Pomocno {
     public static Scanner ulaz;
     public static boolean dev;
     private static final String FORMAT_DATUMA = "dd.MM.yyyy. HH:mm:ss";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT_DATUMA);
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT_DATUMA);
 
     public static int unosRasponBroja(String poruka, String greska, int min, int max) {
         int i;

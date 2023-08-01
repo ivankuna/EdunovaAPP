@@ -55,7 +55,7 @@ public class ObradaOperater {
                 break;
         }
     }
-    private void pregledOperatera() {
+    public void pregledOperatera() {
         System.out.println("-----------------------");
         System.out.println("------ Operateri ------");
         System.out.println("-----------------------");

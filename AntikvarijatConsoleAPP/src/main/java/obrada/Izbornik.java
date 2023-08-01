@@ -10,6 +10,7 @@ public class Izbornik {
     private ObradaPartner obradaPartner;
     private ObradaOperater obradaOperater;
     private ObradaKnjiga obradaKnjiga;
+    private ObradaOtkup obradaOtkup;
 
     public Izbornik() {
         obradaDrzava = new ObradaDrzava();
@@ -19,6 +20,7 @@ public class Izbornik {
         obradaPartner = new ObradaPartner(this);
         obradaOperater = new ObradaOperater();
         obradaKnjiga = new ObradaKnjiga(this);
+        obradaOtkup = new ObradaOtkup(this);
         Pomocno.ulaz = new Scanner(System.in);
         pozdravnaPoruka();
         prikaziIzbornik();
@@ -39,6 +41,7 @@ public class Izbornik {
         System.out.println("5. Partneri");
         System.out.println("6. Operateri");
         System.out.println("7. Knjige");
+        System.out.println("8. Otkup Obrada");
         System.out.println("(0) Izlaz iz programa");
         ucitajStavkuIzbornika();
     }
@@ -73,6 +76,10 @@ public class Izbornik {
                 obradaKnjiga.prikaziIzbornik();
                 prikaziIzbornik();
                 break;
+            case 8:
+                obradaOtkup.prikaziIzbornik();
+                prikaziIzbornik();
+                break;
             case 0:
                 System.out.println("Doviđenja");
                 break;
@@ -89,5 +96,14 @@ public class Izbornik {
     }
     public ObradaIzdavac getObradaIzdavac() {
         return obradaIzdavac;
+    }
+    public ObradaPartner getObradaPartner() {
+        return obradaPartner;
+    }
+    public ObradaOperater getObradaOperater() {
+        return obradaOperater;
+    }
+    public ObradaKnjiga getObradaKnjiga() {
+        return obradaKnjiga;
     }
 }

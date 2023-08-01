@@ -46,7 +46,7 @@ public class ObradaPartner {
         switch(Pomocno.unosRasponBroja("Odaberi stavku partner izbornika: ",
                 "Odabir mora biti 1-5", 1, 5)) {
             case 1:
-                pregledPartnera();
+                pregledPartnera(false);
                 prikaziIzbornik();
                 break;
             case 2:
@@ -65,15 +65,18 @@ public class ObradaPartner {
                 break;
         }
     }
-    private void pregledPartnera() {
-        System.out.println("-------------------");
+    public void pregledPartnera(boolean otkup) {
+        System.out.println("--------------------");
         System.out.println("----- Partneri -----");
-        System.out.println("-------------------");
+        System.out.println("--------------------");
         int i = 1;
         for(Partner o : partneri) {
             System.out.println(i++ + ". " + o + " (" + o.getUlicaBroj() + ", " + o.getGrad() + ")");
         }
-        System.out.println("-------------------");
+        if (otkup) {
+            System.out.println(i + ". Nastavi bez unosa partnera");
+        }
+        System.out.println("--------------------");
     }
     private void dodavanjePartnera() {
         Partner partner = new Partner();
@@ -88,7 +91,7 @@ public class ObradaPartner {
         partneri.add(partner);
     }
     private void promjenaPartnera() {
-        pregledPartnera();
+        pregledPartnera(false);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj partnera: ","Pogrešan unos",1,partneri.size());
         Partner partner = partneri.get(index-1);
         partner.setNazivPartnera(Pomocno.unosString("Unesi naziv partnera (" + partner.getNazivPartnera() + "): ","Pogrešan unos"));
@@ -99,7 +102,7 @@ public class ObradaPartner {
         partner.setGrad(postaviGrad(partner));
     }
     private void brisanjePartnera() {
-        pregledPartnera();
+        pregledPartnera(false);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj partnera: ", "Pogrešan unos", 1, partneri.size());
         partneri.remove(index-1);
     }

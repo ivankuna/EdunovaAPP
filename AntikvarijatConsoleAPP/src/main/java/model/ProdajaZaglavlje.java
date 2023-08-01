@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class ProdajaZaglavlje extends Entitet {
     private int brojProdaje;
-    private static LocalDateTime datum;
+    private static LocalDateTime datumProdaje;
     private Partner partner;
     private String zki;
     private String jir;
@@ -29,11 +29,11 @@ public class ProdajaZaglavlje extends Entitet {
     public void setBrojProdaje(int brojProdaje) {
         this.brojProdaje = brojProdaje;
     }
-    public static LocalDateTime getDatum() {
-        return datum;
+    public static LocalDateTime getDatumProdaje() {
+        return datumProdaje;
     }
-    public static void setDatum(LocalDateTime datum) {
-        ProdajaZaglavlje.datum = datum;
+    public static void setDatumProdaje(LocalDateTime datumProdaje) {
+        ProdajaZaglavlje.datumProdaje = datumProdaje;
     }
     public Partner getPartner() {
         return partner;

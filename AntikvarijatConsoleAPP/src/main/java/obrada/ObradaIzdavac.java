@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObradaIzdavac {
+    private int idIzdavac = Pomocno.dev ? 3 : 1;
     private List<Izdavac> izdavaci;
     private Izbornik izbornik;
 
@@ -21,12 +22,10 @@ public class ObradaIzdavac {
             testniPodaci();
         }
     }
-    //    ****** Testni podaci ******
     private void testniPodaci() {
         izdavaci.add(new Izdavac(1, "Matica Hrvatska", new Grad(1, "Zagreb", "10000", new Drzava(1, "Republika Hrvatska"))));
         izdavaci.add(new Izdavac(1, "ABC Naklada", new Grad(2, "Sarajevo", "51000", new Drzava(2, "Bosna i Hercegovina"))));
     }
-    //    ***************************
     public List<Izdavac> getIzdavaci() {
         return izdavaci;
     }
@@ -76,13 +75,16 @@ public class ObradaIzdavac {
     }
     private void dodavanjeIzdavaca() {
         Izdavac izdavac = new Izdavac();
-        izdavac.setId(Pomocno.unosRasponBroja("Unesi šifru izdavača: ","Broj mora biti pozitivan",
-                1,Integer.MAX_VALUE));
+        izdavac.setId(idIzdavac++);
         izdavac.setNazivIzdavaca(Pomocno.unosString("Unesi naziv izdavača: ","Pogrešan unos"));
         izdavac.setGrad(postaviGrad(izdavac));
         izdavaci.add(izdavac);
     }
     private void promjenaIzdavaca() {
+        if (izdavaci.isEmpty()) {
+            System.out.println("\n--- Nema unešenih izdavača za promjenu ---");
+            return;
+        }
         pregledIzdavaca();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj izdavača: ","Pogrešan unos",1,izdavaci.size());
         Izdavac izdavac = izdavaci.get(index-1);
@@ -90,14 +92,18 @@ public class ObradaIzdavac {
         izdavac.setGrad(postaviGrad(izdavac));
     }
     private void brisanjeIzdavaca() {
+        if (izdavaci.isEmpty()) {
+            System.out.println("\n--- Nema unešenih izdavača za brisanje ---");
+            return;
+        }
         pregledIzdavaca();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj izdavača: ", "Pogrešan unos", 1, izdavaci.size());
         izdavaci.remove(index-1);
     }
     public Grad postaviGrad(Izdavac izdavac) {
-        String grad = izdavac.getGrad() != null ? izdavac.getGrad().toString() : "";
+        String grad = izdavac.getGrad() != null ? " (" + izdavac.getGrad().toString() + ")" : "";
         izbornik.getObradaGrad().pregledGradova();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj grada (" + grad + "): ","Pogrešan unos",1,izbornik.getObradaGrad().getGradovi().size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj grada" + grad + ": ","Pogrešan unos",1,izbornik.getObradaGrad().getGradovi().size());
         return izbornik.getObradaGrad().getGradovi().get(index-1);
     }
 }

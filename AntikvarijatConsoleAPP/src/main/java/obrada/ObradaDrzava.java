@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObradaDrzava {
+    private int idDrzava = Pomocno.dev ? 3 : 1;
     private List<Drzava> drzave;
 
     public ObradaDrzava() {
@@ -14,12 +15,10 @@ public class ObradaDrzava {
             testniPodaci();
         }
     }
-//    ****** Testni podaci ******
     private void testniPodaci() {
         drzave.add(new Drzava(1, "Republika Hrvatska"));
         drzave.add(new Drzava(2, "Bosna i Hercegovina"));
     }
-//    ***************************
 
     public List<Drzava> getDrzave() {
         return drzave;
@@ -69,18 +68,25 @@ public class ObradaDrzava {
     }
     private void dodavanjeDrzava() {
         Drzava drzava = new Drzava();
-        drzava.setId(Pomocno.unosRasponBroja("Unesi šifru države: ","Broj mora biti pozitivan",
-                1,Integer.MAX_VALUE));
+        drzava.setId(idDrzava++);
         drzava.setNazivDrzave(Pomocno.unosString("Unesi naziv države: ","Pogrešan unos"));
         drzave.add(drzava);
     }
     private void promjenaDrzava() {
+        if (drzave.isEmpty()) {
+            System.out.println("\n--- Nema unešenih država za promjenu ---");
+            return;
+        }
         pregledDrzava();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj države: ","Pogrešan unos",1,drzave.size());
         Drzava drzava = drzave.get(index-1);
         drzava.setNazivDrzave(Pomocno.unosString("Unesi naziv države (" + drzava.getNazivDrzave() + "): ","Pogrešan unos"));
     }
     private void brisanjeDrzava() {
+        if (drzave.isEmpty()) {
+            System.out.println("\n--- Nema unešenih država za brisanje ---");
+            return;
+        }
         pregledDrzava();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj države: ", "Pogrešan unos", 1, drzave.size());
         drzave.remove(index-1);

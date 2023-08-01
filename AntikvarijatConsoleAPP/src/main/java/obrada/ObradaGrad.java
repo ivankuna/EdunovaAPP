@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObradaGrad {
+    private int idGrad = Pomocno.dev ? 3 : 1;
     private List<Grad> gradovi;
     private Izbornik izbornik;
 
@@ -20,12 +21,10 @@ public class ObradaGrad {
             testniPodaci();
         }
     }
-    //    ****** Testni podaci ******
     private void testniPodaci() {
         gradovi.add(new Grad(1, "Zagreb", "10000", new Drzava(1, "Republika Hrvatska")));
         gradovi.add(new Grad(2, "Sarajevo", "51000", new Drzava(2, "Bosna i Hercegovina")));
     }
-    //    ***************************
     public List<Grad> getGradovi() {
         return gradovi;
     }
@@ -74,14 +73,17 @@ public class ObradaGrad {
     }
     private void dodavanjeGradova() {
         Grad grad = new Grad();
-        grad.setId(Pomocno.unosRasponBroja("Unesi šifru grada: ","Broj mora biti pozitivan",
-                1,Integer.MAX_VALUE));
+        grad.setId(idGrad++);
         grad.setNazivGrada(Pomocno.unosString("Unesi naziv grada: ","Pogrešan unos"));
         grad.setPostanskiBroj(Pomocno.unosString("Unesi poštanski broj grada: ","Pogrešan unos"));
         grad.setDrzava(postaviDrzavu(grad));
         gradovi.add(grad);
     }
     private void promjenaGradova() {
+        if (gradovi.isEmpty()) {
+            System.out.println("\n--- Nema unešenih gradova za promjenu ---");
+            return;
+        }
         pregledGradova();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj grada: ","Pogrešan unos",1,gradovi.size());
         Grad grad = gradovi.get(index-1);
@@ -90,14 +92,18 @@ public class ObradaGrad {
         grad.setDrzava(postaviDrzavu(grad));
     }
     private void brisanjeGradova() {
+        if (gradovi.isEmpty()) {
+            System.out.println("\n--- Nema unešenih gradova za brisanje ---");
+            return;
+        }
         pregledGradova();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj grada: ", "Pogrešan unos", 1, gradovi.size());
         gradovi.remove(index-1);
     }
     private Drzava postaviDrzavu(Grad grad) {
-        String drzava = grad.getDrzava() != null ? grad.getDrzava().toString() : "";
+        String drzava = grad.getDrzava() != null ? " (" + grad.getDrzava().toString() + ")" : "";
         izbornik.getObradaDrzava().pregledDrzava();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj države (" + drzava + "): ","Pogrešan unos",1,izbornik.getObradaDrzava().getDrzave().size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj države" + drzava + ": ","Pogrešan unos",1,izbornik.getObradaDrzava().getDrzave().size());
         return izbornik.getObradaDrzava().getDrzave().get(index-1);
     }
 }

@@ -5,6 +5,7 @@ import model.*;
 import java.util.ArrayList;
 import java.util.List;
 public class ObradaKnjiga {
+    private int idKnjiga = Pomocno.dev ? 3 : 1;
     private List<Knjiga> knjige;
     private Izbornik izbornik;
     private final String[] vrsteUveza = {"Tvrdi uvez", "Meki uvez", "Polutvrdi uvez", "Spiralni uvez", "Plastični uvez"};
@@ -20,7 +21,6 @@ public class ObradaKnjiga {
             testniPodaci();
         }
     }
-    //    ****** Testni podaci ******
     private void testniPodaci() {
         knjige.add(new Knjiga(1, "Zlatarovo zlato", new Autor(1, "August Šenoa", new Drzava(1, "Republika Hrvatska")), "1985",
                 new Izdavac(1, "Matica Hrvatska", new Grad(1, "Zagreb", "10000", new Drzava(1, "Republika Hrvatska"))),
@@ -29,7 +29,6 @@ public class ObradaKnjiga {
                 new Izdavac(1, "ABC Naklada", new Grad(2, "Sarajevo", "51000", new Drzava(2, "Bosna i Hercegovina"))),
                 "Bošnjački", 400, "Tvrdi uvez", "13,97 x 21,59 cm", 14.99));
     }
-    //    ***************************
     public List<Knjiga> getKnjige() {
         return knjige;
     }
@@ -79,8 +78,7 @@ public class ObradaKnjiga {
     }
     private void dodavanjeKnjiga() {
         Knjiga knjiga = new Knjiga();
-        knjiga.setId(Pomocno.unosRasponBroja("Unesi šifru knjige: ","Broj mora biti pozitivan",
-                1,Integer.MAX_VALUE));
+        knjiga.setId(idKnjiga++);
         knjiga.setNazivKnjige(Pomocno.unosString("Unesi naziv knjige: ","Pogrešan unos"));
         knjiga.setAutor(postaviAutora(knjiga));
         knjiga.setGodinaIzdanja(Pomocno.unosString("Unesi godinu izdanja knjige (yyyy.): ","Pogrešan unos"));
@@ -93,6 +91,10 @@ public class ObradaKnjiga {
         knjige.add(knjiga);
     }
     private void promjenaKnjiga() {
+        if (knjige.isEmpty()) {
+            System.out.println("\n--- Nema unešenih knjiga za promjenu ---");
+            return;
+        }
         pregledKnjiga();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ","Pogrešan unos",1,knjige.size());
         Knjiga knjiga = knjige.get(index-1);
@@ -107,40 +109,42 @@ public class ObradaKnjiga {
         knjiga.setCijena(Pomocno.unosDouble("Unesi cijenu knjige (" + knjiga.getCijena() + "): ", "Pogrešan unos"));
     }
     private void brisanjeKnjiga() {
+        if (knjige.isEmpty()) {
+            System.out.println("\n--- Nema unešenih knjiga za brisanje ---");
+            return;
+        }
         pregledKnjiga();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ", "Pogrešan unos", 1, knjige.size());
         knjige.remove(index-1);
     }
     private Autor postaviAutora(Knjiga knjiga) {
-        String autor = knjiga.getAutor() != null ? knjiga.getAutor().toString() : "";
+        String autor = knjiga.getAutor() != null ? " (" + knjiga.getAutor().toString() + ")" : "";
         izbornik.getObradaAutor().pregledAutora();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj autora (" + autor + "): ","Pogrešan unos",1,izbornik.getObradaAutor().getAutori().size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj autora" + autor + ": ","Pogrešan unos",1,izbornik.getObradaAutor().getAutori().size());
         return izbornik.getObradaAutor().getAutori().get(index-1);
     }
     private Izdavac postaviIzdavaca(Knjiga knjiga) {
-        String izdavac = knjiga.getIzdavac() != null ? knjiga.getIzdavac().toString() : "";
+        String izdavac = knjiga.getIzdavac() != null ? " (" + knjiga.getIzdavac().toString() + ")" : "";
         izbornik.getObradaIzdavac().pregledIzdavaca();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj izdavaca (" + izdavac + "): ","Pogrešan unos",1,izbornik.getObradaIzdavac().getIzdavaci().size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj izdavaca" + izdavac + ": ","Pogrešan unos",1,izbornik.getObradaIzdavac().getIzdavaci().size());
         return izbornik.getObradaIzdavac().getIzdavaci().get(index-1);
     }
     private String postaviUvez(Knjiga knjiga) {
-        String uvez = knjiga.getVrstaUveza() != null ? knjiga.getVrstaUveza() : "";
+        String uvez = knjiga.getVrstaUveza() != null ? " (" + knjiga.getVrstaUveza() + ")" : "";
         int i = 1;
         for (String u : vrsteUveza) {
             System.out.println(i++ + ". " + u);
         }
-        System.out.print("Odaberi redni broj vrste uveza (" + uvez + "): ");
-        int index = Integer.parseInt(Pomocno.ulaz.nextLine());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj vrste uveza" + uvez + ": ", "Pogrešan unos", 1 , vrsteUveza.length);
         return vrsteUveza[index-1];
     }
     private String postaviDimenzije(Knjiga knjiga) {
-        String dimezijetTemp = knjiga.getDimenzije() != null ? knjiga.getDimenzije() : "";
+        String dimezijetTemp = knjiga.getDimenzije() != null ? " (" + knjiga.getDimenzije() + ")" : "";
         int i = 1;
         for (String d : dimenzije) {
             System.out.println(i++ + ". " + d);
         }
-        System.out.print("Odaberi redni broj željenih dimenzija (" + dimezijetTemp + "): ");
-        int index = Integer.parseInt(Pomocno.ulaz.nextLine());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj dimenzija" + dimezijetTemp + ": ", "Pogrešan unos", 1 , dimenzije.length);
         return dimenzije[index-1];
     }
 }

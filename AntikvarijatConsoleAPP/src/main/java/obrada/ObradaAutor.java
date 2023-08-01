@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObradaAutor {
+    private int idAutor = Pomocno.dev ? 3 : 1;
     private List<Autor> autori;
     private Izbornik izbornik;
     public ObradaAutor(Izbornik izbornik) {
@@ -19,12 +20,10 @@ public class ObradaAutor {
             testniPodaci();
         }
     }
-    //    ****** Testni podaci ******
     private void testniPodaci() {
         autori.add(new Autor(1, "August Šenoa", new Drzava(1, "Republika Hrvatska")));
         autori.add(new Autor(2, "Ivo Andrić", new Drzava(2, "Bosna i Hercegovina")));
     }
-    //    ***************************
 
     public List<Autor> getAutori() {
         return autori;
@@ -74,13 +73,16 @@ public class ObradaAutor {
     }
     private void dodavanjeAutora() {
         Autor autor = new Autor();
-        autor.setId(Pomocno.unosRasponBroja("Unesi šifru autora: ","Broj mora biti pozitivan",
-                1,Integer.MAX_VALUE));
+        autor.setId(idAutor++);
         autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora: ","Pogrešan unos"));
         autor.setDrzava(postaviDrzavu(autor));
         autori.add(autor);
     }
     private void promjenaAutora() {
+        if (autori.isEmpty()) {
+            System.out.println("\n--- Nema unešenih autora za promjenu ---");
+            return;
+        }
         pregledAutora();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj autora: ","Pogrešan unos",1,autori.size());
         Autor autor = autori.get(index-1);
@@ -88,14 +90,18 @@ public class ObradaAutor {
         autor.setDrzava(postaviDrzavu(autor));
     }
     private void brisanjeAutora() {
+        if (autori.isEmpty()) {
+            System.out.println("\n--- Nema unešenih autora za brisanje ---");
+            return;
+        }
         pregledAutora();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj autora: ", "Pogrešan unos", 1, autori.size());
         autori.remove(index-1);
     }
     private Drzava postaviDrzavu(Autor autor) {
-        String drzava = autor.getDrzava() != null ? autor.getDrzava().toString() : "";
+        String drzava = autor.getDrzava() != null ? " (" + autor.getDrzava().toString() + ")" : "";
         izbornik.getObradaDrzava().pregledDrzava();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj države (" + drzava + "): ","Pogrešan unos",1,izbornik.getObradaDrzava().getDrzave().size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj države" + drzava + ": ","Pogrešan unos",1,izbornik.getObradaDrzava().getDrzave().size());
         return izbornik.getObradaDrzava().getDrzave().get(index-1);
     }
 }

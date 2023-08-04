@@ -1,8 +1,6 @@
 package obrada;
 
-import model.Drzava;
-import model.Grad;
-import model.Partner;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,7 @@ public class ObradaPartner {
                 break;
         }
     }
-    public void pregledPartnera(boolean otkup) {
+    public void pregledPartnera(boolean otkupProdaja) {
         System.out.println("--------------------");
         System.out.println("----- Partneri -----");
         System.out.println("--------------------");
@@ -72,12 +70,16 @@ public class ObradaPartner {
         for(Partner o : partneri) {
             System.out.println(i++ + ". " + o + " (" + o.getUlicaBroj() + ", " + o.getGrad() + ")");
         }
-        if (otkup) {
+        if (otkupProdaja) {
             System.out.println(i + ". Nastavi bez unosa partnera");
         }
         System.out.println("--------------------");
     }
     private void dodavanjePartnera() {
+        if (izbornik.getObradaGrad().getGradovi().isEmpty()) {
+            System.out.println("\n--- Unos partnera nemoguć bez unešenih gradova ---");
+            return;
+        }
         Partner partner = new Partner();
         partner.setId(idPartner++);
         partner.setNazivPartnera(Pomocno.unosString("Unesi naziv naziv partnera: ", "Pogrešan unos"));
@@ -110,12 +112,32 @@ public class ObradaPartner {
         }
         pregledPartnera(false);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj partnera: ", "Pogrešan unos", 1, partneri.size());
-        partneri.remove(index-1);
+        if (koristenjePartner(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati partnera u korištenju ---");
+        } else {
+            partneri.remove(index-1);
+        }
     }
     public Grad postaviGrad(Partner partner) {
         String grad = partner.getGrad() != null ? " (" + partner.getGrad().toString() + ")" : "";
         izbornik.getObradaGrad().pregledGradova();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj grada" + grad + ": ","Pogrešan unos",1,izbornik.getObradaGrad().getGradovi().size());
         return izbornik.getObradaGrad().getGradovi().get(index-1);
+    }
+    private boolean koristenjePartner(int index) {
+        boolean koristiSe = false;
+        for (OtkupZaglavlje o : izbornik.getObradaOtkup().getOtkupZaglavljeList()) {
+            if (partneri.get(index).equals(o.getPartner())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        for (ProdajaZaglavlje p : izbornik.getObradaProdaja().getProdajaZaglavljeList()) {
+            if (partneri.get(index).equals(p.getPartner())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

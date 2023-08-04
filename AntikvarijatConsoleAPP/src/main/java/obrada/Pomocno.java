@@ -82,4 +82,13 @@ public class Pomocno {
             }
         }
     }
+    public static boolean jesuLiSamoBrojevi(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isDigit(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

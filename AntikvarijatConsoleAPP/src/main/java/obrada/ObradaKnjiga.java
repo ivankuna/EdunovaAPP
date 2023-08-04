@@ -77,6 +77,13 @@ public class ObradaKnjiga {
         System.out.println("------------------");
     }
     private void dodavanjeKnjiga() {
+        if (izbornik.getObradaAutor().getAutori().isEmpty()) {
+            System.out.println("\n--- Unos knjige nemoguć bez unešenih autora ---");
+            return;
+        } else if (izbornik.getObradaIzdavac().getIzdavaci().isEmpty()) {
+            System.out.println("\n--- Unos knjige nemoguć bez unešenih izdavača ---");
+            return;
+        }
         Knjiga knjiga = new Knjiga();
         knjiga.setId(idKnjiga++);
         knjiga.setNazivKnjige(Pomocno.unosString("Unesi naziv knjige: ","Pogrešan unos"));
@@ -115,7 +122,11 @@ public class ObradaKnjiga {
         }
         pregledKnjiga();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ", "Pogrešan unos", 1, knjige.size());
-        knjige.remove(index-1);
+        if (koristenjeKnjiga(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati knjigu u korištenju ---");
+        } else {
+            knjige.remove(index-1);
+        }
     }
     private Autor postaviAutora(Knjiga knjiga) {
         String autor = knjiga.getAutor() != null ? " (" + knjiga.getAutor().toString() + ")" : "";
@@ -146,5 +157,21 @@ public class ObradaKnjiga {
         }
         int index = Pomocno.unosRasponBroja("Odaberi redni broj dimenzija" + dimezijetTemp + ": ", "Pogrešan unos", 1 , dimenzije.length);
         return dimenzije[index-1];
+    }
+    private boolean koristenjeKnjiga(int index) {
+        boolean koristiSe = false;
+        for (OtkupStavka o : izbornik.getObradaOtkup().getOtkupStavkaList()) {
+            if (knjige.get(index).equals(o.getKnjiga())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        for (ProdajaStavka p : izbornik.getObradaProdaja().getProdajaStavkaList()) {
+            if (knjige.get(index).equals(p.getKnjiga())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

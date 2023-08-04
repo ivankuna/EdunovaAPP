@@ -1,7 +1,6 @@
 package obrada;
 
-import model.Autor;
-import model.Drzava;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +71,10 @@ public class ObradaAutor {
         System.out.println("--------------------");
     }
     private void dodavanjeAutora() {
+        if (izbornik.getObradaDrzava().getDrzave().isEmpty()) {
+            System.out.println("\n--- Unos autora nemoguć bez unešenih država ---");
+            return;
+        }
         Autor autor = new Autor();
         autor.setId(idAutor++);
         autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora: ","Pogrešan unos"));
@@ -96,12 +99,26 @@ public class ObradaAutor {
         }
         pregledAutora();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj autora: ", "Pogrešan unos", 1, autori.size());
-        autori.remove(index-1);
+        if (koristenjeAutor(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati autora u korištenju ---");
+        } else {
+            autori.remove(index-1);
+        }
     }
     private Drzava postaviDrzavu(Autor autor) {
         String drzava = autor.getDrzava() != null ? " (" + autor.getDrzava().toString() + ")" : "";
         izbornik.getObradaDrzava().pregledDrzava();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj države" + drzava + ": ","Pogrešan unos",1,izbornik.getObradaDrzava().getDrzave().size());
         return izbornik.getObradaDrzava().getDrzave().get(index-1);
+    }
+    private boolean koristenjeAutor(int index) {
+        boolean koristiSe = false;
+        for (Knjiga k : izbornik.getObradaKnjiga().getKnjige()) {
+            if (autori.get(index).equals(k.getAutor())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

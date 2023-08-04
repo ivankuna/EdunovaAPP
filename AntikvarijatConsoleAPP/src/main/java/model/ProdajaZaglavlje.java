@@ -4,16 +4,17 @@ import java.time.LocalDateTime;
 
 public class ProdajaZaglavlje extends Entitet {
     private int brojProdaje;
-    private static LocalDateTime datumProdaje;
+    private LocalDateTime datumProdaje;
     private Partner partner;
     private String zki;
     private String jir;
     private NacinPlacanja nacinPlacanja;
     private Operater operater;
 
-    public ProdajaZaglavlje(int id, int brojProdaje, Partner partner, String zki, String jir, NacinPlacanja nacinPlacanja, Operater operater) {
+    public ProdajaZaglavlje(int id, int brojProdaje, LocalDateTime datumProdaje, Partner partner, String zki, String jir, NacinPlacanja nacinPlacanja, Operater operater) {
         super(id);
         this.brojProdaje = brojProdaje;
+        this.datumProdaje = datumProdaje;
         this.partner = partner;
         this.zki = zki;
         this.jir = jir;
@@ -29,11 +30,11 @@ public class ProdajaZaglavlje extends Entitet {
     public void setBrojProdaje(int brojProdaje) {
         this.brojProdaje = brojProdaje;
     }
-    public static LocalDateTime getDatumProdaje() {
+    public LocalDateTime getDatumProdaje() {
         return datumProdaje;
     }
-    public static void setDatumProdaje(LocalDateTime datumProdaje) {
-        ProdajaZaglavlje.datumProdaje = datumProdaje;
+    public void setDatumProdaje(LocalDateTime datumProdaje) {
+        this.datumProdaje = datumProdaje;
     }
     public Partner getPartner() {
         return partner;

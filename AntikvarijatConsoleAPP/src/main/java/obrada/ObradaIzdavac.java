@@ -1,8 +1,6 @@
 package obrada;
 
-import model.Drzava;
-import model.Grad;
-import model.Izdavac;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +72,10 @@ public class ObradaIzdavac {
         System.out.println("--------------------");
     }
     private void dodavanjeIzdavaca() {
+        if (izbornik.getObradaGrad().getGradovi().isEmpty()) {
+            System.out.println("\n--- Unos izdavača nemoguć bez unešenih gradova ---");
+            return;
+        }
         Izdavac izdavac = new Izdavac();
         izdavac.setId(idIzdavac++);
         izdavac.setNazivIzdavaca(Pomocno.unosString("Unesi naziv izdavača: ","Pogrešan unos"));
@@ -98,12 +100,26 @@ public class ObradaIzdavac {
         }
         pregledIzdavaca();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj izdavača: ", "Pogrešan unos", 1, izdavaci.size());
-        izdavaci.remove(index-1);
+        if (koristenjeIzdavac(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati izdavača u korištenju ---");
+        } else {
+            izdavaci.remove(index-1);
+        }
     }
     public Grad postaviGrad(Izdavac izdavac) {
         String grad = izdavac.getGrad() != null ? " (" + izdavac.getGrad().toString() + ")" : "";
         izbornik.getObradaGrad().pregledGradova();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj grada" + grad + ": ","Pogrešan unos",1,izbornik.getObradaGrad().getGradovi().size());
         return izbornik.getObradaGrad().getGradovi().get(index-1);
+    }
+    private boolean koristenjeIzdavac(int index) {
+        boolean koristiSe = false;
+        for (Knjiga k : izbornik.getObradaKnjiga().getKnjige()) {
+            if (izdavaci.get(index).equals(k.getIzdavac())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

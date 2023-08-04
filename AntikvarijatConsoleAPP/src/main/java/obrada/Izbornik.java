@@ -1,5 +1,7 @@
 package obrada;
 
+import model.NacinPlacanja;
+
 import java.util.Scanner;
 
 public class Izbornik {
@@ -11,16 +13,20 @@ public class Izbornik {
     private ObradaOperater obradaOperater;
     private ObradaKnjiga obradaKnjiga;
     private ObradaOtkup obradaOtkup;
+    private ObradaProdaja obradaProdaja;
+    private ObradaNacinPlacanja obradaNacinPlacanja;
 
     public Izbornik() {
-        obradaDrzava = new ObradaDrzava();
+        obradaDrzava = new ObradaDrzava(this);
         obradaGrad = new ObradaGrad(this);
         obradaAutor = new ObradaAutor(this);
         obradaIzdavac = new ObradaIzdavac(this);
         obradaPartner = new ObradaPartner(this);
-        obradaOperater = new ObradaOperater();
+        obradaOperater = new ObradaOperater(this);
         obradaKnjiga = new ObradaKnjiga(this);
         obradaOtkup = new ObradaOtkup(this);
+        obradaProdaja = new ObradaProdaja(this);
+        obradaNacinPlacanja = new ObradaNacinPlacanja(this);
         Pomocno.ulaz = new Scanner(System.in);
         pozdravnaPoruka();
         prikaziIzbornik();
@@ -41,13 +47,15 @@ public class Izbornik {
         System.out.println("5. Partneri");
         System.out.println("6. Operateri");
         System.out.println("7. Knjige");
-        System.out.println("8. Otkup Obrada");
+        System.out.println("8. Načini Plačanja");
+        System.out.println("9. Otkup Obrada");
+        System.out.println("10. Prodaja Obrada");
         System.out.println("(0) Izlaz iz programa");
         ucitajStavkuIzbornika();
     }
     private void ucitajStavkuIzbornika() {
         switch(Pomocno.unosRasponBroja("Odaberi stavku izbornika: ",
-                "Obavezno 1-3",0,100)) {
+                "Obavezno 0-10",0,10)) {
             case 1:
                 obradaDrzava.prikaziIzbornik();
                 prikaziIzbornik();
@@ -77,7 +85,15 @@ public class Izbornik {
                 prikaziIzbornik();
                 break;
             case 8:
+                obradaNacinPlacanja.prikaziIzbornik();
+                prikaziIzbornik();
+                break;
+            case 9:
                 obradaOtkup.prikaziIzbornik();
+                prikaziIzbornik();
+                break;
+            case 10:
+                obradaProdaja.prikaziIzbornik();
                 prikaziIzbornik();
                 break;
             case 0:
@@ -105,5 +121,16 @@ public class Izbornik {
     }
     public ObradaKnjiga getObradaKnjiga() {
         return obradaKnjiga;
+    }
+    public ObradaNacinPlacanja getObradaNacinPlacanja() {
+        return obradaNacinPlacanja;
+    }
+
+    public ObradaOtkup getObradaOtkup() {
+        return obradaOtkup;
+    }
+
+    public ObradaProdaja getObradaProdaja() {
+        return obradaProdaja;
     }
 }

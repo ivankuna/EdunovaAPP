@@ -1,7 +1,6 @@
 package obrada;
 
-import model.Drzava;
-import model.Grad;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +71,10 @@ public class ObradaGrad {
         System.out.println("-------------------");
     }
     private void dodavanjeGradova() {
+        if (izbornik.getObradaDrzava().getDrzave().isEmpty()) {
+            System.out.println("\n--- Unos grada nemoguć bez unešenih država ---");
+            return;
+        }
         Grad grad = new Grad();
         grad.setId(idGrad++);
         grad.setNazivGrada(Pomocno.unosString("Unesi naziv grada: ","Pogrešan unos"));
@@ -98,12 +101,32 @@ public class ObradaGrad {
         }
         pregledGradova();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj grada: ", "Pogrešan unos", 1, gradovi.size());
-        gradovi.remove(index-1);
+        if (koristenjeGrad(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati grad u korištenju ---");
+        } else {
+            gradovi.remove(index-1);
+        }
     }
     private Drzava postaviDrzavu(Grad grad) {
         String drzava = grad.getDrzava() != null ? " (" + grad.getDrzava().toString() + ")" : "";
         izbornik.getObradaDrzava().pregledDrzava();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj države" + drzava + ": ","Pogrešan unos",1,izbornik.getObradaDrzava().getDrzave().size());
         return izbornik.getObradaDrzava().getDrzave().get(index-1);
+    }
+    private boolean koristenjeGrad(int index) {
+        boolean koristiSe = false;
+        for (Izdavac i : izbornik.getObradaIzdavac().getIzdavaci()) {
+            if (gradovi.get(index).equals(i.getGrad())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        for (Partner p : izbornik.getObradaPartner().getPartneri()) {
+            if (gradovi.get(index).equals(p.getGrad())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

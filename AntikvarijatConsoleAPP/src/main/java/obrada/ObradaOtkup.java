@@ -25,6 +25,13 @@ public class ObradaOtkup {
             testniPodaci();
         }
     }
+    public List<OtkupZaglavlje> getOtkupZaglavljeList() {
+        return otkupZaglavljeList;
+    }
+    public List<OtkupStavka> getOtkupStavkaList() {
+        return otkupStavkaList;
+    }
+
     private void testniPodaci() {
         LocalDateTime t1 = LocalDateTime.parse("01.05.2023. 17:35:00", Pomocno.formatter);
         LocalDateTime t2 = LocalDateTime.parse("15.08.2023. 09:44:00", Pomocno.formatter);
@@ -52,9 +59,9 @@ public class ObradaOtkup {
     public void prikaziIzbornik() {
         System.out.println();
         System.out.println("----- Obrada Otkupa -----");
-        System.out.println("1. Pregled obrađenih otkupa");
-        System.out.println("2. Obrada novog otkupa");
-        System.out.println("3. Promjena obrađenih otkupa");
+        System.out.println("1. Pregled otkupa");
+        System.out.println("2. Unos novog otkupa");
+        System.out.println("3. Promjena unešenih otkupa");
         System.out.println("4. Povratak na prethodni izbornik");
         ucitajStavkuIzbornika();
     }
@@ -83,7 +90,7 @@ public class ObradaOtkup {
         System.out.println("--------------------");
         int i = 1;
         for(OtkupZaglavlje o : otkupZaglavljeList) {
-            System.out.println(i++ + ". " + o + ", " + o.getDatumOtkupa().format(Pomocno.formatter) + ", " + (o.getPartner() != null ? o.getPartner().toString() : "Partner nije unešen"));
+            System.out.println(i++ + ". Br. otkupa: " + o + ", " + o.getDatumOtkupa().format(Pomocno.formatter) + ", " + (o.getPartner() != null ? o.getPartner().toString() : "Partner nije unešen"));
         }
         System.out.println("--------------------");
         if (pregledUnos) {
@@ -91,32 +98,47 @@ public class ObradaOtkup {
             int odabir = Pomocno.unosRasponBroja("Odabir: ", "Pogrešan unos", 1, 2);
             int zaglavljeIndex;
             if (odabir == 1) {
-                zaglavljeIndex = Pomocno.unosRasponBroja("Odaberite redni broj otkupa za pregled stavaka: ", "Pogrešan unos", 1, otkupZaglavljeList.size());
-                pregledOtkupStavka(otkupZaglavljeList.get(zaglavljeIndex - 1).getBrojOtkupa());
+                if (otkupZaglavljeList.isEmpty()) {
+                    System.out.println("\n--- Nema unešenih otkupa za pregled stavaka ---");
+                } else {
+                    zaglavljeIndex = Pomocno.unosRasponBroja("Odaberite redni broj otkupa za pregled stavaka: ", "Pogrešan unos", 1, otkupZaglavljeList.size());
+                    if (provjeraPostojanjaStavaka(zaglavljeIndex - 1)) {
+                        pregledOtkupStavka(otkupZaglavljeList.get(zaglavljeIndex - 1).getBrojOtkupa());
+                    } else {
+                        System.out.println("\n--- Nema unešenih stavaka za pregled ---");
+                    }
+                }
             }
         }
-
     }
-    private int  pregledOtkupStavka(int brojOtkupa) {
+    private void pregledOtkupStavka(int brojOtkupa) {
         System.out.println("-----------------------");
         System.out.println("---- Stavke Otkupa ----");
         System.out.println("-----------------------");
         int i = 1;
-        int counter = 0;
         for (OtkupStavka o : otkupStavkaList) {
             if (o.getOtkupZaglavlje().getBrojOtkupa() == brojOtkupa) {
-                counter++;
                 System.out.println(i++ + ". ID Stavke: " + o + ", " + o.getKnjiga() + ", " + o.getKolicina() + ", " + o.getCijenaOtkupa() + "€");
             }
         }
         System.out.println("-----------------------");
-        return counter;
     }
     // Unos novog otkupa u evidenciju (unos zaglavlja te željenog broja stavaka otkupa):
     private void unosOtkup() {
+        if (izbornik.getObradaPartner().getPartneri().isEmpty()) {
+            System.out.println("\n--- Unos otkupa nemoguć bez unešenih partnera ---");
+            return;
+        } else if (izbornik.getObradaOperater().getOperateri().isEmpty()) {
+            System.out.println("\n--- Unos otkupa nemoguć bez unešenih operatera ---");
+            return;
+        }
         OtkupZaglavlje otkupZaglavlje = createUpdateOtkupZaglavlje(0, true);
         int odabirNastavka = Pomocno.unosRasponBroja("\n1. Unos stavaka \n2. Nastavak bez unosa stavaka \nOdabir: ", "Pogrešan unos", 1, 2);
         if (odabirNastavka == 1) {
+            if (izbornik.getObradaKnjiga().getKnjige().isEmpty()) {
+                System.out.println("\n--- Unos stavke nemoguć bez unešenih knjiga ---");
+                return;
+            }
             while (true) {
                 System.out.println("\n--- Unesite novu stavku otkupa ---");
 
@@ -164,36 +186,70 @@ public class ObradaOtkup {
     }
     // Promjena postojećih stavaka otkupa:
     private void promjenaOtkupStavka(int zaglavljeIndex) {
-        if (otkupStavkaList.isEmpty()) {
-            int odabir = Pomocno.unosRasponBroja("\n--- Nema unešenih stavaka za promjenu ---\n1. Dodaj stavku \n2. Nastavi \nOdabir: ", "Pogrešan unos", 1, 2);
-            if (odabir == 1) {
-                createUpdateOtkupStavka(zaglavljeIndex, 0, true);
+        boolean mozeDalje = true;
+        while (mozeDalje) {
+            pregledOtkupStavka(otkupZaglavljeList.get(zaglavljeIndex).getBrojOtkupa());
+            int odabir = Pomocno.unosRasponBroja("1. Unos nove stavke \n2. Promjena postojeće stavke " +
+                    "\n3. Brisanje stavaka \n4. Odustani \nOdabir: ", "Pogrešan unos", 1, 4);
+            switch (odabir) {
+                case 1:
+                    createUpdateOtkupStavka(zaglavljeIndex, 0, true);
+                    break;
+                case 2:
+                    if (provjeraPostojanjaStavaka(zaglavljeIndex)) {
+                        createUpdateOtkupStavka(0, odabirStavka(zaglavljeIndex, true), false);
+                        break;
+                    } else {
+                        System.out.println("\n--- Nema unešenih stavaka za brisanje ---\n");
+                    }
+                    break;
+                case 3:
+                    if (provjeraPostojanjaStavaka(zaglavljeIndex)) {
+                        otkupStavkaList.remove(odabirStavka(zaglavljeIndex, false));
+                        break;
+                    } else {
+                        System.out.println("\n--- Nema unešenih stavaka za brisanje ---\n");
+                    }
+                    break;
+                case 4:
+                    mozeDalje = false;
+                    break;
             }
-            return;
         }
-        int stavkeCounter = pregledOtkupStavka(otkupZaglavljeList.get(zaglavljeIndex).getBrojOtkupa());
-        int odabirStavke = Pomocno.unosRasponBroja("Unesite ID željene stavke: ", "Pogrešan unos", 1, stavkeCounter);
-        int stavkaIndex = 0;
+    }
+    private int odabirStavka(int zaglavljeIndex, boolean updateDelete) {
+        List<Integer> indexStavkaList = new ArrayList<>();
+        String createUpdateStr = updateDelete ? "promjenu" : "brisanje";
+        int indexStavka = -1;
+        while (true) {
+            int odabir = Pomocno.unosInt("Unesi ID željene stavke za " + createUpdateStr + ": ", "Pogrešan unos");
+            for (OtkupStavka o : otkupStavkaList) {
+                if (o.getOtkupZaglavlje().getId() == otkupZaglavljeList.get(zaglavljeIndex).getId()) {
+                    indexStavkaList.add(otkupStavkaList.indexOf(o));
+                }
+            }
+            for (int e : indexStavkaList) {
+                if (otkupStavkaList.get(e).getId() == odabir) {
+                    indexStavka = e;
+                }
+            }
+            if (indexStavka >= 0) {
+                break;
+            } else {
+                System.out.println("Pogrešan unos");
+            }
+        }
+        return indexStavka;
+    }
+    private boolean provjeraPostojanjaStavaka(int zaglavljeIndex) {
+        boolean stavkaPostoji = false;
         for (OtkupStavka o : otkupStavkaList) {
-            if (o.getId() == odabirStavke) {
-                stavkaIndex = otkupStavkaList.indexOf(o);
+            if (o.getOtkupZaglavlje().getId() == otkupZaglavljeList.get(zaglavljeIndex).getId()) {
+                stavkaPostoji = true;
+                break;
             }
         }
-        System.out.println("\n1. Promjena sadržaja stavki \n2. Dodavanje stavke \n3. Brisanje stavke \n4. Odustani");
-        int odabirOperacije = Pomocno.unosRasponBroja("Odabir: ", "Pogrešan unos", 1, 4);
-        switch (odabirOperacije) {
-            case 1:
-                createUpdateOtkupStavka(zaglavljeIndex, stavkaIndex, false);
-                break;
-            case 2:
-                createUpdateOtkupStavka(zaglavljeIndex, 0, true);
-                break;
-            case 3:
-                otkupStavkaList.remove(stavkaIndex);
-                break;
-            case 4:
-                break;
-        }
+        return stavkaPostoji;
     }
     // Univerzalna metoda za unos i promjenu zaglavlja otkupa:
     private OtkupZaglavlje createUpdateOtkupZaglavlje(int indexZaglavlje, boolean createUpdate) {
@@ -223,7 +279,8 @@ public class ObradaOtkup {
         otkupStavka.setKolicina(Pomocno.unosInt("Unesi količinu" + porukaKolicina + ": ", "Pogrešan unos"));
         otkupStavka.setCijenaOtkupaArtikla(Pomocno.unosDouble("Unesi cijenu otkupa artikla" + porukaCijenaArtikla + ": ", "Pogrešan unos"));
         otkupStavka.setCijenaOtkupa(otkupStavka.getCijenaOtkupaArtikla() * otkupStavka.getKolicina());
-        System.out.println(otkupStavka.getKnjiga() + " x " + otkupStavka.getKolicina() + " = " + otkupStavka.getCijenaOtkupaArtikla() * otkupStavka.getKolicina() + "€");
+        System.out.println("(" + otkupStavka.getKnjiga() + ") " + otkupStavka.getCijenaOtkupaArtikla() + " x "
+                + otkupStavka.getKolicina() + " = " + otkupStavka.getCijenaOtkupaArtikla() * otkupStavka.getKolicina() + "€");
 
         if (createUpdate) {
             otkupStavka.setId(idOtkupStavka++);

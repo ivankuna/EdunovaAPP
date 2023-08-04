@@ -1,6 +1,8 @@
 package obrada;
 
+import model.Autor;
 import model.Drzava;
+import model.Grad;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,12 @@ import java.util.List;
 public class ObradaDrzava {
     private int idDrzava = Pomocno.dev ? 3 : 1;
     private List<Drzava> drzave;
+    private Izbornik izbornik;
 
+    public ObradaDrzava(Izbornik izbornik) {
+        this();
+        this.izbornik = izbornik;
+    }
     public ObradaDrzava() {
         drzave = new ArrayList<>();
         if(Pomocno.dev) {
@@ -19,10 +26,10 @@ public class ObradaDrzava {
         drzave.add(new Drzava(1, "Republika Hrvatska"));
         drzave.add(new Drzava(2, "Bosna i Hercegovina"));
     }
-
     public List<Drzava> getDrzave() {
         return drzave;
     }
+
     public void prikaziIzbornik() {
         System.out.println();
         System.out.println("----- Države izbornik -----");
@@ -89,6 +96,26 @@ public class ObradaDrzava {
         }
         pregledDrzava();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj države: ", "Pogrešan unos", 1, drzave.size());
-        drzave.remove(index-1);
+        if (koristenjeDrzava(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati državu u korištenju ---");
+        } else {
+            drzave.remove(index-1);
+        }
+    }
+    private boolean koristenjeDrzava(int index) {
+        boolean koristiSe = false;
+        for (Grad g : izbornik.getObradaGrad().getGradovi()) {
+            if (drzave.get(index).equals(g.getDrzava())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        for (Autor a : izbornik.getObradaAutor().getAutori()) {
+            if (drzave.get(index).equals(a.getDrzava())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

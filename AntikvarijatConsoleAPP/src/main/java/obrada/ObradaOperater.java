@@ -1,6 +1,8 @@
 package obrada;
 
 import model.Operater;
+import model.OtkupZaglavlje;
+import model.ProdajaZaglavlje;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,12 @@ import java.util.List;
 public class ObradaOperater {
     private int idOperater = Pomocno.dev ? 3 : 1;
     private List<Operater> operateri;
+    private Izbornik izbornik;
+
+    public ObradaOperater(Izbornik izbornik) {
+        this();
+        this.izbornik = izbornik;
+    }
     public ObradaOperater() {
         operateri = new ArrayList<>();
         if(Pomocno.dev) {
@@ -97,6 +105,26 @@ public class ObradaOperater {
         }
         pregledOperatera();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj operatera: ", "Pogrešan unos", 1, operateri.size());
-        operateri.remove(index-1);
+        if (koristenjeOperater(index-1)) {
+            System.out.println("\n--- Nemoguće obrisati operatera u korištenju ---");
+        } else {
+            operateri.remove(index-1);
+        }
+    }
+    private boolean koristenjeOperater(int index) {
+        boolean koristiSe = false;
+        for (OtkupZaglavlje o : izbornik.getObradaOtkup().getOtkupZaglavljeList()) {
+            if (operateri.get(index).equals(o.getOperater())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        for (ProdajaZaglavlje p : izbornik.getObradaProdaja().getProdajaZaglavljeList()) {
+            if (operateri.get(index).equals(p.getOperater())) {
+                koristiSe = true;
+                break;
+            }
+        }
+        return koristiSe;
     }
 }

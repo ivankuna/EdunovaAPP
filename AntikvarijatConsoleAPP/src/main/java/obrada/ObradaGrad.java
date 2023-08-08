@@ -27,6 +27,7 @@ public class ObradaGrad {
     public List<Grad> getGradovi() {
         return gradovi;
     }
+
     public void prikaziIzbornik() {
         System.out.println();
         System.out.println("----- Gradovi izbornik -----");

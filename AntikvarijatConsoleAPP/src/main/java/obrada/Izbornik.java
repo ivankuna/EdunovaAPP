@@ -1,7 +1,5 @@
 package obrada;
 
-import model.NacinPlacanja;
-
 import java.util.Scanner;
 
 public class Izbornik {
@@ -15,6 +13,7 @@ public class Izbornik {
     private ObradaOtkup obradaOtkup;
     private ObradaProdaja obradaProdaja;
     private ObradaNacinPlacanja obradaNacinPlacanja;
+    private ObradaRezervacija obradaRezervacija;
 
     public Izbornik() {
         obradaDrzava = new ObradaDrzava(this);
@@ -27,6 +26,7 @@ public class Izbornik {
         obradaOtkup = new ObradaOtkup(this);
         obradaProdaja = new ObradaProdaja(this);
         obradaNacinPlacanja = new ObradaNacinPlacanja(this);
+        obradaRezervacija = new ObradaRezervacija(this);
         Pomocno.ulaz = new Scanner(System.in);
         pozdravnaPoruka();
         prikaziIzbornik();
@@ -50,12 +50,13 @@ public class Izbornik {
         System.out.println("8. Načini Plačanja");
         System.out.println("9. Otkup Obrada");
         System.out.println("10. Prodaja Obrada");
+        System.out.println("11. Rezervacije");
         System.out.println("(0) Izlaz iz programa");
         ucitajStavkuIzbornika();
     }
     private void ucitajStavkuIzbornika() {
         switch(Pomocno.unosRasponBroja("Odaberi stavku izbornika: ",
-                "Obavezno 0-10",0,10)) {
+                "Obavezno 0-12",0,12)) {
             case 1:
                 obradaDrzava.prikaziIzbornik();
                 prikaziIzbornik();
@@ -94,6 +95,10 @@ public class Izbornik {
                 break;
             case 10:
                 obradaProdaja.prikaziIzbornik();
+                prikaziIzbornik();
+                break;
+            case 11:
+                obradaRezervacija.prikaziIzbornik();
                 prikaziIzbornik();
                 break;
             case 0:

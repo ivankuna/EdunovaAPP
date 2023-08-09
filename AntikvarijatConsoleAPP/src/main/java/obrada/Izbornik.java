@@ -14,6 +14,7 @@ public class Izbornik {
     private ObradaProdaja obradaProdaja;
     private ObradaNacinPlacanja obradaNacinPlacanja;
     private ObradaRezervacija obradaRezervacija;
+    private ObradaStanje obradaStanje;
 
     public Izbornik() {
         obradaDrzava = new ObradaDrzava(this);
@@ -27,6 +28,7 @@ public class Izbornik {
         obradaProdaja = new ObradaProdaja(this);
         obradaNacinPlacanja = new ObradaNacinPlacanja(this);
         obradaRezervacija = new ObradaRezervacija(this);
+        obradaStanje = new ObradaStanje(this);
         Pomocno.ulaz = new Scanner(System.in);
         pozdravnaPoruka();
         prikaziIzbornik();
@@ -47,10 +49,11 @@ public class Izbornik {
         System.out.println("5. Partneri");
         System.out.println("6. Operateri");
         System.out.println("7. Knjige");
-        System.out.println("8. Načini Plačanja");
+        System.out.println("8. Načini Plaćanja");
         System.out.println("9. Otkup Obrada");
         System.out.println("10. Prodaja Obrada");
         System.out.println("11. Rezervacije");
+        System.out.println("12. Stanje");
         System.out.println("(0) Izlaz iz programa");
         ucitajStavkuIzbornika();
     }
@@ -101,6 +104,10 @@ public class Izbornik {
                 obradaRezervacija.prikaziIzbornik();
                 prikaziIzbornik();
                 break;
+            case 12:
+                obradaStanje.prikaziIzbornik();
+                prikaziIzbornik();
+                break;
             case 0:
                 System.out.println("Doviđenja");
                 break;
@@ -130,12 +137,16 @@ public class Izbornik {
     public ObradaNacinPlacanja getObradaNacinPlacanja() {
         return obradaNacinPlacanja;
     }
-
     public ObradaOtkup getObradaOtkup() {
         return obradaOtkup;
     }
-
     public ObradaProdaja getObradaProdaja() {
         return obradaProdaja;
+    }
+    public ObradaRezervacija getObradaRezervacija() {
+        return obradaRezervacija;
+    }
+    public ObradaStanje getObradaStanje() {
+        return obradaStanje;
     }
 }

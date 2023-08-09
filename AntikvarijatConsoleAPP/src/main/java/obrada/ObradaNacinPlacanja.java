@@ -22,8 +22,8 @@ public class ObradaNacinPlacanja {
         }
     }
     private void testniPodaci() {
-        nacinPlacanjaList.add(new NacinPlacanja(1, "Prvi način plačanja", "Oznaka 1"));
-        nacinPlacanjaList.add(new NacinPlacanja(2, "Drugi način plačanja", "Oznaka 2"));
+        nacinPlacanjaList.add(new NacinPlacanja(1, "Gotovina", "G"));
+        nacinPlacanjaList.add(new NacinPlacanja(2, "Kartica", "K"));
     }
     public List<NacinPlacanja> getNacinPlacanjaList() {
         return nacinPlacanjaList;
@@ -31,16 +31,16 @@ public class ObradaNacinPlacanja {
 
     public void prikaziIzbornik() {
         System.out.println();
-        System.out.println("--- Način plačanja izbornik ---");
-        System.out.println("1. Pregled postojećih načina plačanja");
-        System.out.println("2. Unos novog načina plačanja");
-        System.out.println("3. Promjena postojećih načina plačanja");
-        System.out.println("4. Brisanje postojećih načina plačanja");
+        System.out.println("--- Način plaćanja izbornik ---");
+        System.out.println("1. Pregled postojećih načina plaćanja");
+        System.out.println("2. Unos novog načina plaćanja");
+        System.out.println("3. Promjena postojećih načina plaćanja");
+        System.out.println("4. Brisanje postojećih načina plaćanja");
         System.out.println("5. Povratak na prethodni izbornik");
         ucitajStavkuIzbornika();
     }
     private void ucitajStavkuIzbornika() {
-        switch(Pomocno.unosRasponBroja("Odaberi stavku način plačanja izbornika: ",
+        switch(Pomocno.unosRasponBroja("Odaberi stavku način plaćanja izbornika: ",
                 "Odabir mora biti 1-5", 1, 5)) {
             case 1:
                 pregledNacinaPlacanja();
@@ -64,7 +64,7 @@ public class ObradaNacinPlacanja {
     }
     public void pregledNacinaPlacanja() {
         System.out.println("-----------------------");
-        System.out.println("--- Načini plačanja ---");
+        System.out.println("--- Načini plaćanja ---");
         System.out.println("-----------------------");
         int i = 1;
         for(NacinPlacanja n : nacinPlacanjaList) {
@@ -75,30 +75,30 @@ public class ObradaNacinPlacanja {
     private void dodavanjeNacinaPlacanja() {
         NacinPlacanja nacinPlacanja = new NacinPlacanja();
         nacinPlacanja.setId(idNacinPlacanja++);
-        nacinPlacanja.setNazivNacinaPlacanja(Pomocno.unosString("Unesi naziv načina plačanja: ","Pogrešan unos"));
-        nacinPlacanja.setOznakaNacinaPlacanja(Pomocno.unosString("Unesi oznaku načina plačanja: ","Pogrešan unos"));
+        nacinPlacanja.setNazivNacinaPlacanja(Pomocno.unosString("Unesi naziv načina plaćanja: ","Pogrešan unos"));
+        nacinPlacanja.setOznakaNacinaPlacanja(Pomocno.unosString("Unesi oznaku načina plaćanja: ","Pogrešan unos"));
         nacinPlacanjaList.add(nacinPlacanja);
     }
     private void promjenaNacinaPlacanja() {
         if (nacinPlacanjaList.isEmpty()) {
-            System.out.println("\n--- Nema unešenih načina plačanja za promjenu ---");
+            System.out.println("\n--- Nema unešenih načina plaćanja za promjenu ---");
             return;
         }
         pregledNacinaPlacanja();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plačanja: ","Pogrešan unos",1,nacinPlacanjaList.size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plaćanja: ","Pogrešan unos",1,nacinPlacanjaList.size());
         NacinPlacanja nacinPlacanja = nacinPlacanjaList.get(index-1);
-        nacinPlacanja.setNazivNacinaPlacanja(Pomocno.unosString("Unesi naziv načina plačanja (" + nacinPlacanja.getNazivNacinaPlacanja() + "): ","Pogrešan unos"));
-        nacinPlacanja.setOznakaNacinaPlacanja(Pomocno.unosString("Unesi oznaku načina plačanja (" + nacinPlacanja.getOznakaNacinaPlacanja() + "): ","Pogrešan unos"));
+        nacinPlacanja.setNazivNacinaPlacanja(Pomocno.unosString("Unesi naziv načina plaćanja (" + nacinPlacanja.getNazivNacinaPlacanja() + "): ","Pogrešan unos"));
+        nacinPlacanja.setOznakaNacinaPlacanja(Pomocno.unosString("Unesi oznaku načina plaćanja (" + nacinPlacanja.getOznakaNacinaPlacanja() + "): ","Pogrešan unos"));
     }
     private void brisanjeNacinaPlacanja() {
         if (nacinPlacanjaList.isEmpty()) {
-            System.out.println("\n--- Nema unešenih načina plačanja za brisanje ---");
+            System.out.println("\n--- Nema unešenih načina plaćanja za brisanje ---");
             return;
         }
         pregledNacinaPlacanja();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plačanja: ", "Pogrešan unos", 1, nacinPlacanjaList.size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plaćanja: ", "Pogrešan unos", 1, nacinPlacanjaList.size());
         if (koristenjeNacinPlacanja(index-1)) {
-            System.out.println("\n--- Nemoguće obrisati način plačanja u korištenju ---");
+            System.out.println("\n--- Nemoguće obrisati način plaćanja u korištenju ---");
         } else {
             nacinPlacanjaList.remove(index-1);
         }

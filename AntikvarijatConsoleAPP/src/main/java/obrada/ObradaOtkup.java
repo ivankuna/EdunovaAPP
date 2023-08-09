@@ -315,7 +315,7 @@ public class ObradaOtkup {
     }
     private Knjiga postaviKnjigu(OtkupStavka otkupStavka) {
         String knjiga = otkupStavka.getKnjiga() != null ? " (" + otkupStavka.getKnjiga().toString() + ")" : "";
-        izbornik.getObradaKnjiga().pregledKnjiga();
+        izbornik.getObradaKnjiga().pregledKnjiga(false);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ","Pogrešan unos",1,izbornik.getObradaKnjiga().getKnjige().size());
         return izbornik.getObradaKnjiga().getKnjige().get(index-1);
     }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ObradaProdaja {
     private int idProdajaZaglavlje = Pomocno.dev ? 2 : 1;
-    private int idProdajaStavka = Pomocno.dev ? 2 : 1;
+    private int idProdajaStavka = Pomocno.dev ? 3 : 1;
     private int brojProdajeCounter = Pomocno.dev ? 2 : 1;
     private List<ProdajaZaglavlje> prodajaZaglavljeList;
     private List<ProdajaStavka> prodajaStavkaList;
@@ -36,15 +36,22 @@ public class ObradaProdaja {
         LocalDateTime t1 = LocalDateTime.parse("01.05.2023. 17:35:00", Pomocno.formatter);
         prodajaZaglavljeList.add(new ProdajaZaglavlje(1, 1, t1, new Partner(1, "Beta Studio d.o.o",
                 "Hreljinska 19A", "12345678912", "beta.studio@poslovno.com", "091321123", new Grad(1, "Zagreb",
-                "10000", new Drzava(1, "Republika Hrvatska"))), "ZKI", "JIR", new NacinPlacanja(1, "Prvi način plačanja",
-                "Oznaka 1"), new Operater(1, "Ivan", "Kuna", "89877641989", "ivankuna@gmail.com", "ivanK", "123")));
+                "10000", new Drzava(1, "Republika Hrvatska"))), "ZKI", "JIR", new NacinPlacanja(1, "Gotovina",
+                "G"), new Operater(1, "Ivan", "Kuna", "89877641989", "ivankuna@gmail.com", "ivanK", "123")));
         prodajaStavkaList.add(new ProdajaStavka(1, new ProdajaZaglavlje(1, 1, t1, new Partner(1, "Beta Studio d.o.o",
                 "Hreljinska 19A", "12345678912", "beta.studio@poslovno.com", "091321123", new Grad(1, "Zagreb",
-                "10000", new Drzava(1, "Republika Hrvatska"))), "ZKI", "JIR", new NacinPlacanja(1, "Prvi način plačanja",
-                "Oznaka 1"), new Operater(1, "Ivan", "Kuna", "89877641989", "ivankuna@gmail.com", "ivanK", "123")),
+                "10000", new Drzava(1, "Republika Hrvatska"))), "ZKI", "JIR", new NacinPlacanja(1, "Gotovina",
+                "G"), new Operater(1, "Ivan", "Kuna", "89877641989", "ivankuna@gmail.com", "ivanK", "123")),
                 new Knjiga(1, "Zlatarovo zlato", new Autor(1, "August Šenoa", new Drzava(1, "Republika Hrvatska")), "1985",
                         new Izdavac(1, "Matica Hrvatska", new Grad(1, "Zagreb", "10000", new Drzava(1, "Republika Hrvatska"))),
                         "Hrvatski", 475, "Tvrdi uvez", "13,97 x 21,59 cm", 13.99), 1, 1.0));
+//        prodajaStavkaList.add(new ProdajaStavka(2, new ProdajaZaglavlje(1, 1, t1, new Partner(1, "Beta Studio d.o.o",
+//                "Hreljinska 19A", "12345678912", "beta.studio@poslovno.com", "091321123", new Grad(1, "Zagreb",
+//                "10000", new Drzava(1, "Republika Hrvatska"))), "ZKI", "JIR", new NacinPlacanja(1, "Gotovina",
+//                "G"), new Operater(1, "Ivan", "Kuna", "89877641989", "ivankuna@gmail.com", "ivanK", "123")),
+//                new Knjiga(2, "Na Drini ćuprija", new Autor(2, "Ivo Andrić", new Drzava(2, "Bosna i Hercegovina")), "1981",
+//                        new Izdavac(1, "ABC Naklada", new Grad(2, "Sarajevo", "51000", new Drzava(2, "Bosna i Hercegovina"))),
+//                        "Bošnjački", 400, "Tvrdi uvez", "13,97 x 21,59 cm", 14.99), 2, 1.0));
     }
     public void prikaziIzbornik() {
         System.out.println();
@@ -118,7 +125,7 @@ public class ObradaProdaja {
             System.out.println("\n--- Unos prodaje nemoguć bez unešenih partnera ---");
             return;
         } else if (izbornik.getObradaNacinPlacanja().getNacinPlacanjaList().isEmpty()){
-            System.out.println("\n--- Unos prodaje nemoguć bez unešenih načina plačanja ---");
+            System.out.println("\n--- Unos prodaje nemoguć bez unešenih načina plaćanja ---");
             return;
         } else if (izbornik.getObradaOperater().getOperateri().isEmpty()) {
             System.out.println("\n--- Unos prodaje nemoguć bez unešenih operatera ---");
@@ -129,6 +136,9 @@ public class ObradaProdaja {
         if (odabirNastavka == 1) {
             if (izbornik.getObradaKnjiga().getKnjige().isEmpty()) {
                 System.out.println("\n--- Unos stavke nemoguć bez unešenih knjiga ---");
+                return;
+            } else if (!izbornik.getObradaKnjiga().provjeraRaspolozivihKnjiga()) {
+                System.out.println("\n--- Unos stavke nemoguć bez raspoloživih knjiga ---");
                 return;
             }
             while (true) {
@@ -259,18 +269,25 @@ public class ObradaProdaja {
     }
     private void createUpdateProdajaStavka(int indexZaglavlje, int indexStavka, boolean createUpdate) {
         ProdajaStavka prodajaStavka = createUpdate ? new ProdajaStavka() : prodajaStavkaList.get(indexStavka);
-
-        String porukaKolicina = createUpdate ? "" : " (" + prodajaStavka.getKolicina() + ")";
-
-        prodajaStavka.setKnjiga(postaviKnjigu(prodajaStavka));
-        prodajaStavka.setKolicina(Pomocno.unosInt("Unesi količinu" + porukaKolicina + ": ", "Pogrešan unos"));
-        prodajaStavka.setCijenaProdaje(prodajaStavka.getKnjiga().getCijena() * prodajaStavka.getKolicina());
-        System.out.println("(" + prodajaStavka.getKnjiga() + ") " + prodajaStavka.getKnjiga().getCijena() + " x "
-                + prodajaStavka.getKolicina() + " = " + prodajaStavka.getKnjiga().getCijena() * prodajaStavka.getKolicina() + "€");
-
         if (createUpdate) {
             prodajaStavka.setId(idProdajaStavka++);
             prodajaStavka.setProdajaZaglavlje(prodajaZaglavljeList.get(indexZaglavlje));
+        }
+        prodajaStavka.setKnjiga(postaviKnjigu(prodajaStavka));
+
+        if (createUpdate) {
+            prodajaStavka.setKolicina(Pomocno.unosRasponBroja("Unesi količinu: ", "Pogrešan unos, broj raspoloživih kopija odabrane knjige iznosi: "
+                            + izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), 0, 0),
+                    1, izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), 0, 0)));
+        } else {
+            prodajaStavka.setKolicina(Pomocno.unosRasponBroja("Unesi količinu: ", "Pogrešan unos, broj raspoloživih kopija odabrane knjige iznosi: "
+                            + izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0),
+                    1, izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0) ));
+        }
+        prodajaStavka.setCijenaProdaje(prodajaStavka.getKnjiga().getCijena() * prodajaStavka.getKolicina());
+        System.out.println("(" + prodajaStavka.getKnjiga() + ") " + prodajaStavka.getKnjiga().getCijena() + " x "
+                + prodajaStavka.getKolicina() + " = " + prodajaStavka.getKnjiga().getCijena() * prodajaStavka.getKolicina() + "€");
+        if (createUpdate) {
             prodajaStavkaList.add(prodajaStavka);
         }
     }
@@ -302,13 +319,21 @@ public class ObradaProdaja {
     private NacinPlacanja postaviNacinPlacanja(ProdajaZaglavlje prodajaZaglavlje) {
         String nacinPlacanja = prodajaZaglavlje.getNacinPlacanja() != null ? " (" + prodajaZaglavlje.getNacinPlacanja().toString() + ")" : "";
         izbornik.getObradaNacinPlacanja().pregledNacinaPlacanja();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plačanja" + nacinPlacanja + ": ","Pogrešan unos",1,izbornik.getObradaNacinPlacanja().getNacinPlacanjaList().size());
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plaćanja" + nacinPlacanja + ": ","Pogrešan unos",1,izbornik.getObradaNacinPlacanja().getNacinPlacanjaList().size());
         return izbornik.getObradaNacinPlacanja().getNacinPlacanjaList().get(index-1);
     }
     private Knjiga postaviKnjigu(ProdajaStavka prodajaStavka) {
+        int index;
         String knjiga = prodajaStavka.getKnjiga() != null ? " (" + prodajaStavka.getKnjiga().toString() + ")" : "";
-        izbornik.getObradaKnjiga().pregledKnjiga();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ","Pogrešan unos",1,izbornik.getObradaKnjiga().getKnjige().size());
+        izbornik.getObradaKnjiga().pregledKnjiga(true, prodajaStavka.getProdajaZaglavlje().getId(),0);
+        while (true) {
+            index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ","Pogrešan unos",1,izbornik.getObradaKnjiga().getKnjige().size());
+            if (izbornik.getObradaStanje().brojRaspolozivo(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0) > 0) {
+                break;
+            } else {
+                System.out.println("\nOdabrana knjiga nije raspoloživa!\n");
+            }
+        }
         return izbornik.getObradaKnjiga().getKnjige().get(index-1);
     }
 }

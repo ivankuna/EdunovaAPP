@@ -32,6 +32,7 @@ public class ObradaKnjiga {
     public List<Knjiga> getKnjige() {
         return knjige;
     }
+
     public void prikaziIzbornik() {
         System.out.println();
         System.out.println("----- Knjige izbornik -----");
@@ -47,7 +48,7 @@ public class ObradaKnjiga {
         switch(Pomocno.unosRasponBroja("Odaberi stavku knjiga izbornika: ",
                 "Odabir mora biti 1-5", 1, 5)) {
             case 1:
-                pregledKnjiga();
+                pregledKnjiga(false);
                 prikaziIzbornik();
                 break;
             case 2:
@@ -66,13 +67,35 @@ public class ObradaKnjiga {
                 break;
         }
     }
-    public void pregledKnjiga() {
+    public void pregledKnjiga(boolean jeLiProdajaRezervacija) {
+        int raspolozivost;
         System.out.println("------------------");
         System.out.println("----- Knjige -----");
         System.out.println("------------------");
         int i = 1;
         for(Knjiga k : knjige) {
-            System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
+            if (jeLiProdajaRezervacija) {
+                raspolozivost = izbornik.getObradaStanje().brojRaspolozivo(k.getId(), 0, 0);
+                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
+            } else {
+                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
+            }
+        }
+        System.out.println("------------------");
+    }
+    public void pregledKnjiga(boolean jeLiProdajaRezervacija, int idZaglavlje, int idRezervacije) {
+        int raspolozivost;
+        System.out.println("------------------");
+        System.out.println("----- Knjige -----");
+        System.out.println("------------------");
+        int i = 1;
+        for(Knjiga k : knjige) {
+            if (jeLiProdajaRezervacija) {
+                raspolozivost = izbornik.getObradaStanje().brojRaspolozivo(k.getId(), idZaglavlje, idRezervacije);
+                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
+            } else {
+                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
+            }
         }
         System.out.println("------------------");
     }
@@ -102,7 +125,7 @@ public class ObradaKnjiga {
             System.out.println("\n--- Nema unešenih knjiga za promjenu ---");
             return;
         }
-        pregledKnjiga();
+        pregledKnjiga(false);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ","Pogrešan unos",1,knjige.size());
         Knjiga knjiga = knjige.get(index-1);
         knjiga.setNazivKnjige(Pomocno.unosString("Unesi naziv knjige (" + knjiga.getNazivKnjige() + "): ", "Pogrešan unos"));
@@ -120,7 +143,7 @@ public class ObradaKnjiga {
             System.out.println("\n--- Nema unešenih knjiga za brisanje ---");
             return;
         }
-        pregledKnjiga();
+        pregledKnjiga(false);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ", "Pogrešan unos", 1, knjige.size());
         if (koristenjeKnjiga(index-1)) {
             System.out.println("\n--- Nemoguće obrisati knjigu u korištenju ---");
@@ -173,5 +196,14 @@ public class ObradaKnjiga {
             }
         }
         return koristiSe;
+    }
+    public boolean provjeraRaspolozivihKnjiga() {
+        boolean postojiRaspolozivaKnjiga = false;
+        for (Knjiga k : knjige) {
+            if (izbornik.getObradaStanje().brojRaspolozivo(k.getId(), 0, 0) > 0) {
+                postojiRaspolozivaKnjiga = true;
+            }
+        }
+        return postojiRaspolozivaKnjiga;
     }
 }

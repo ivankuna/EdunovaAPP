@@ -89,25 +89,37 @@ public class ObradaRezervacija {
         } else if (izbornik.getObradaOperater().getOperateri().isEmpty()) {
             System.out.println("\n--- Unos rezervacije nemoguć bez unešenih operatera ---");
             return;
+        } else if (!izbornik.getObradaKnjiga().provjeraRaspolozivihKnjiga()) {
+            System.out.println("\n--- Unos rezervacije nemoguć bez raspoloživih knjiga ---");
+            return;
         }
         Rezervacija rezervacija = new Rezervacija();
         rezervacija.setId(idRezervacija++);
         rezervacija.setPartner(postaviPartnera(rezervacija));
-        rezervacija.setKnjiga(postaviKnjigu(rezervacija));
+        rezervacija.setKnjiga(postaviKnjigu(rezervacija, true));
         rezervacija.setStanje(postaviStanje(rezervacija));
         rezervacija.setOperater(postaviOperatera(rezervacija));
         rezervacijaList.add(rezervacija);
     }
     private void promjenaRezervacija() {
+        int index;
         if (rezervacijaList.isEmpty()) {
             System.out.println("\n--- Nema unešenih rezervacija za promjenu ---");
             return;
         }
         pregledRezervacija();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj rezervacije: ","Pogrešan unos",1,rezervacijaList.size());
+        while (true) {
+            index = Pomocno.unosRasponBroja("Odaberi redni broj rezervacije: ","Pogrešan unos",1,rezervacijaList.size());
+            if (rezervacijaList.get(index-1).getStanje().equals(stanjeField[1])) {
+                System.out.println("\nNemoguće mijenjati sadržaj izvršene rezervacije!\n");
+            } else {
+                break;
+            }
+        }
         Rezervacija rezervacija = rezervacijaList.get(index-1);
         rezervacija.setPartner(postaviPartnera(rezervacija));
-        rezervacija.setKnjiga(postaviKnjigu(rezervacija));
+
+        rezervacija.setKnjiga(postaviKnjigu(rezervacija, false));
         rezervacija.setStanje(postaviStanje(rezervacija));
         rezervacija.setOperater(postaviOperatera(rezervacija));
     }
@@ -126,10 +138,26 @@ public class ObradaRezervacija {
         int index = Pomocno.unosRasponBroja("Odaberi redni broj partnera" + partner + ": ", "Pogrešan unos", 1, izbornik.getObradaPartner().getPartneri().size());
         return  izbornik.getObradaPartner().getPartneri().get(index-1);
     }
-    private Knjiga postaviKnjigu(Rezervacija rezervacija) {
+    private Knjiga postaviKnjigu(Rezervacija rezervacija, boolean createUpdate) {
+        int index;
         String knjiga = rezervacija.getKnjiga() != null ? " (" + rezervacija.getKnjiga().toString() + ")" : "";
-        izbornik.getObradaKnjiga().pregledKnjiga();
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ", "Pogrešan unos", 1, izbornik.getObradaKnjiga().getKnjige().size());
+        izbornik.getObradaKnjiga().pregledKnjiga(true, 0, rezervacija.getId());
+        while (true) {
+            index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ", "Pogrešan unos", 1, izbornik.getObradaKnjiga().getKnjige().size());
+            if (createUpdate) {
+                if (izbornik.getObradaStanje().brojRaspolozivo(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), 0, 0 ) > 0) {
+                    break;
+                } else {
+                    System.out.println("\nOdabrana knjiga nije raspoloživa!\n");
+                }
+            } else {
+                if (izbornik.getObradaStanje().brojRaspolozivo(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), 0, rezervacija.getId() ) > 0) {
+                    break;
+                } else {
+                    System.out.println("\nOdabrana knjiga nije raspoloživa!\n");
+                }
+            }
+        }
         return izbornik.getObradaKnjiga().getKnjige().get(index-1);
     }
     private String postaviStanje(Rezervacija rezervacija) {
@@ -144,4 +172,13 @@ public class ObradaRezervacija {
         int index = Pomocno.unosRasponBroja("Odaberi redni broj operatera" + operater + ": ", "Pogrešan unos", 1, izbornik.getObradaOperater().getOperateri().size());
         return izbornik.getObradaOperater().getOperateri().get(index-1);
     }
+//    private boolean provjeraRaspolozivihKnjiga() {
+//        boolean postojiRaspolozivaKnjiga = false;
+//        for (Knjiga k : izbornik.getObradaKnjiga().getKnjige()) {
+//            if (izbornik.getObradaStanje().brojRaspolozivo(k.getId(), 0, 0) > 0) {
+//                postojiRaspolozivaKnjiga = true;
+//            }
+//        }
+//        return postojiRaspolozivaKnjiga;
+//    }
 }

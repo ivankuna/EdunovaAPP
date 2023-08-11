@@ -132,7 +132,10 @@ public class ObradaProdaja {
             System.out.println("\n--- Unos prodaje nemoguć bez unešenih operatera ---");
             return;
         }
-        ProdajaZaglavlje prodajaZaglavlje = unosPromjenaProdajaZaglavlje(0, true);
+        ProdajaZaglavlje prodajaZaglavlje = unosPromjenaProdajaZaglavlje(0, "Unos");
+        if (prodajaZaglavlje == null) {
+            return;
+        }
 
         int sljedeciKorak = Pomocno.unosRasponBroja("\n1. Unos stavaka \n2. Nastavak bez unosa stavaka \nOdabir: ", "Pogrešan unos", 1, 2);
         if (sljedeciKorak == 1) {
@@ -176,7 +179,7 @@ public class ObradaProdaja {
             odabirVrstePromjene = Pomocno.unosInt("Odabir: ", "Pogrešan unos");
             switch (odabirVrstePromjene) {
                 case 1:
-                    unosPromjenaProdajaZaglavlje(zaglavljeIndex, false);
+                    unosPromjenaProdajaZaglavlje(zaglavljeIndex, "Promjena");
                     break;
                 case 2:
                     promjenaProdajaStavka(zaglavljeIndex);
@@ -222,7 +225,6 @@ public class ObradaProdaja {
     // Parametar "jeLiUnos" -> true = Unos || false = Promjena:
     private ProdajaZaglavlje unosPromjenaProdajaZaglavlje(int indexZaglavlje, String unosPromjena) {
         ProdajaZaglavlje prodajaZaglavlje = new ProdajaZaglavlje();
-
         if (unosPromjena.equals("Unos")) {
             prodajaZaglavlje.setId(idProdajaZaglavlje++);
             prodajaZaglavlje.setBrojProdaje(brojProdajeCounter++);
@@ -237,17 +239,28 @@ public class ObradaProdaja {
         prodajaZaglavlje.setNacinPlacanja(postaviNacinPlacanja(prodajaZaglavlje));
         prodajaZaglavlje.setOperater(postaviOperatera(prodajaZaglavlje));
 
-        if (jeLiUnos) {
-            prodajaZaglavlje.setId(idProdajaZaglavlje++);
-            prodajaZaglavlje.setBrojProdaje(brojProdajeCounter++);
-            prodajaZaglavljeList.add(prodajaZaglavlje);
+        int odabir = Pomocno.unosRasponBroja("1. Odustani \n2. Spremi \nOdabir: ","Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            unosPromjena = "Odustani";
+        }
+        switch (unosPromjena) {
+            case "Unos":
+                prodajaZaglavljeList.add(prodajaZaglavlje);
+                break;
+            case "Promjena":
+                prodajaZaglavljeList.set(indexZaglavlje, prodajaZaglavlje);
+                break;
+            case "Odustani":
+                idProdajaZaglavlje--;
+                brojProdajeCounter--;
+                prodajaZaglavlje = null;
+                break;
         }
         return prodajaZaglavlje;
     }
     // Parametar "jeLiUnos" -> true = Unos || false = Promjena:
     private void unosPromjenaProdajaStavka(int indexZaglavlje, int indexStavka, String unosPromjena) {
         ProdajaStavka prodajaStavka = new ProdajaStavka();
-        
         if (unosPromjena.equals("Unos")) {
             prodajaStavka.setId(idProdajaStavka++);
             prodajaStavka.setProdajaZaglavlje(prodajaZaglavljeList.get(indexZaglavlje));

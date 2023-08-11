@@ -23,10 +23,10 @@ public class ObradaAutor {
         autori.add(new Autor(1, "August Šenoa", new Drzava(1, "Republika Hrvatska")));
         autori.add(new Autor(2, "Ivo Andrić", new Drzava(2, "Bosna i Hercegovina")));
     }
-
     public List<Autor> getAutori() {
         return autori;
     }
+
     public void prikaziIzbornik() {
         System.out.println();
         System.out.println("----- Autor izbornik -----");

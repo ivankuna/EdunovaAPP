@@ -89,7 +89,7 @@ public class ObradaRezervacija {
         } else if (izbornik.getObradaOperater().getOperateri().isEmpty()) {
             System.out.println("\n--- Unos rezervacije nemoguć bez unešenih operatera ---");
             return;
-        } else if (!izbornik.getObradaKnjiga().provjeraRaspolozivihKnjiga()) {
+        } else if (!izbornik.getObradaKnjiga().provjeraRaspolozivihKnjiga(0,0)) {
             System.out.println("\n--- Unos rezervacije nemoguć bez raspoloživih knjiga ---");
             return;
         }
@@ -138,20 +138,21 @@ public class ObradaRezervacija {
         int index = Pomocno.unosRasponBroja("Odaberi redni broj partnera" + partner + ": ", "Pogrešan unos", 1, izbornik.getObradaPartner().getPartneri().size());
         return  izbornik.getObradaPartner().getPartneri().get(index-1);
     }
-    private Knjiga postaviKnjigu(Rezervacija rezervacija, boolean createUpdate) {
+    // Parametar "jeLiUnos" -> true = Unos || false = Promjena
+    private Knjiga postaviKnjigu(Rezervacija rezervacija, boolean jeLiUnos) {
         int index;
         String knjiga = rezervacija.getKnjiga() != null ? " (" + rezervacija.getKnjiga().toString() + ")" : "";
         izbornik.getObradaKnjiga().pregledKnjiga(true, 0, rezervacija.getId());
         while (true) {
             index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ", "Pogrešan unos", 1, izbornik.getObradaKnjiga().getKnjige().size());
-            if (createUpdate) {
-                if (izbornik.getObradaStanje().brojRaspolozivo(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), 0, 0 ) > 0) {
+            if (jeLiUnos) {
+                if (izbornik.getObradaStanje().raspolozivostKnjige(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), 0, 0 ) > 0) {
                     break;
                 } else {
                     System.out.println("\nOdabrana knjiga nije raspoloživa!\n");
                 }
             } else {
-                if (izbornik.getObradaStanje().brojRaspolozivo(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), 0, rezervacija.getId() ) > 0) {
+                if (izbornik.getObradaStanje().raspolozivostKnjige(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), 0, rezervacija.getId()) > 0) {
                     break;
                 } else {
                     System.out.println("\nOdabrana knjiga nije raspoloživa!\n");
@@ -172,13 +173,4 @@ public class ObradaRezervacija {
         int index = Pomocno.unosRasponBroja("Odaberi redni broj operatera" + operater + ": ", "Pogrešan unos", 1, izbornik.getObradaOperater().getOperateri().size());
         return izbornik.getObradaOperater().getOperateri().get(index-1);
     }
-//    private boolean provjeraRaspolozivihKnjiga() {
-//        boolean postojiRaspolozivaKnjiga = false;
-//        for (Knjiga k : izbornik.getObradaKnjiga().getKnjige()) {
-//            if (izbornik.getObradaStanje().brojRaspolozivo(k.getId(), 0, 0) > 0) {
-//                postojiRaspolozivaKnjiga = true;
-//            }
-//        }
-//        return postojiRaspolozivaKnjiga;
-//    }
 }

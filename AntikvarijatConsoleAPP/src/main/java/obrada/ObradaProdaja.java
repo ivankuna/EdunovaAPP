@@ -10,8 +10,8 @@ public class ObradaProdaja {
     private int idProdajaZaglavlje = Pomocno.dev ? 2 : 1;
     private int idProdajaStavka = Pomocno.dev ? 3 : 1;
     private int brojProdajeCounter = Pomocno.dev ? 2 : 1;
-    private List<ProdajaZaglavlje> prodajaZaglavljeList;
-    private List<ProdajaStavka> prodajaStavkaList;
+    private final List<ProdajaZaglavlje> prodajaZaglavljeList;
+    private final List<ProdajaStavka> prodajaStavkaList;
     private Izbornik izbornik;
 
     public ObradaProdaja(Izbornik izbornik) {
@@ -81,7 +81,8 @@ public class ObradaProdaja {
                 break;
         }
     }
-    private void pregledProdajaZaglavlje(boolean pregledUnos) {
+    // Parametar "jeLiPregledStavaka" -> true = Pregled stavaka odabranog zaglavlja || false = Pregled zaglavlja:
+    private void pregledProdajaZaglavlje(boolean jeLiPregledStavaka) {
         System.out.println("-------------------");
         System.out.println("----- Prodaje -----");
         System.out.println("-------------------");
@@ -90,7 +91,7 @@ public class ObradaProdaja {
             System.out.println(i++ + ". Br. prodaje: " + p + ", " + p.getDatumProdaje().format(Pomocno.formatter) + ", " + (p.getPartner() != null ? p.getPartner().toString() : "Partner nije unešen"));
         }
         System.out.println("-------------------");
-        if (pregledUnos) {
+        if (jeLiPregledStavaka) {
             System.out.println("1. Pregled stavaka prodaje \n2. Izlaz");
             int odabir = Pomocno.unosRasponBroja("Odabir: ", "Pogrešan unos", 1, 2);
             int zaglavljeIndex;
@@ -131,20 +132,22 @@ public class ObradaProdaja {
             System.out.println("\n--- Unos prodaje nemoguć bez unešenih operatera ---");
             return;
         }
-        ProdajaZaglavlje prodajaZaglavlje = createUpdateProdajaZaglavlje(0, true);
-        int odabirNastavka = Pomocno.unosRasponBroja("\n1. Unos stavaka \n2. Nastavak bez unosa stavaka \nOdabir: ", "Pogrešan unos", 1, 2);
-        if (odabirNastavka == 1) {
+        ProdajaZaglavlje prodajaZaglavlje = unosPromjenaProdajaZaglavlje(0, true);
+
+        int sljedeciKorak = Pomocno.unosRasponBroja("\n1. Unos stavaka \n2. Nastavak bez unosa stavaka \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (sljedeciKorak == 1) {
             if (izbornik.getObradaKnjiga().getKnjige().isEmpty()) {
                 System.out.println("\n--- Unos stavke nemoguć bez unešenih knjiga ---");
                 return;
-            } else if (!izbornik.getObradaKnjiga().provjeraRaspolozivihKnjiga()) {
-                System.out.println("\n--- Unos stavke nemoguć bez raspoloživih knjiga ---");
-                return;
             }
             while (true) {
+                if (!izbornik.getObradaKnjiga().provjeraRaspolozivihKnjiga(0,0)) {
+                    System.out.println("\n--- Unos stavke nemoguć bez raspoloživih knjiga ---");
+                    break;
+                }
                 System.out.println("\n--- Unesite novu stavku prodaje ---");
 
-                createUpdateProdajaStavka(prodajaZaglavljeList.indexOf(prodajaZaglavlje), 0, true);
+                unosPromjenaProdajaStavka(prodajaZaglavljeList.indexOf(prodajaZaglavlje), 0, "Unos");
 
                 int odabir = Pomocno.unosRasponBroja("\n1. Unos nove stavke\n2. Izlaz \nOdabir: ", "Pogrešan unos", 1, 2);
                 if (odabir == 2) {
@@ -169,11 +172,11 @@ public class ObradaProdaja {
             }
         }
         while(mozeDalje) {
-            System.out.println("\n1. Promjena zaglavlja \n2. Promjena stavaka \n3. Odustani");
+            System.out.println("\n1. Promjena zaglavlja \n2. Promjena stavaka \n3. Izlaz");
             odabirVrstePromjene = Pomocno.unosInt("Odabir: ", "Pogrešan unos");
             switch (odabirVrstePromjene) {
                 case 1:
-                    createUpdateProdajaZaglavlje(zaglavljeIndex, false);
+                    unosPromjenaProdajaZaglavlje(zaglavljeIndex, false);
                     break;
                 case 2:
                     promjenaProdajaStavka(zaglavljeIndex);
@@ -189,17 +192,17 @@ public class ObradaProdaja {
         while (mozeDalje) {
             pregledProdajaStavka(prodajaZaglavljeList.get(zaglavljeIndex).getBrojProdaje());
             int odabir = Pomocno.unosRasponBroja("1. Unos nove stavke \n2. Promjena postojeće stavke " +
-                    "\n3. Brisanje stavaka \n4. Odustani \nOdabir: ", "Pogrešan unos", 1, 4);
+                    "\n3. Brisanje stavaka \n4. Izlaz \nOdabir: ", "Pogrešan unos", 1, 4);
             switch (odabir) {
                 case 1:
-                    createUpdateProdajaStavka(zaglavljeIndex, 0, true);
+                    unosPromjenaProdajaStavka(zaglavljeIndex, 0, "Unos");
                     break;
                 case 2:
                     if (provjeraPostojanjaStavaka(zaglavljeIndex)) {
-                        createUpdateProdajaStavka(0, odabirStavka(zaglavljeIndex, true), false);
+                        unosPromjenaProdajaStavka(0, odabirStavka(zaglavljeIndex, true), "Promjena");
                         break;
                     } else {
-                        System.out.println("\n--- Nema unešenih stavaka za brisanje ---\n");
+                        System.out.println("\n--- Nema unešenih stavaka za promjenu ---\n");
                     }
                     break;
                 case 3:
@@ -216,79 +219,69 @@ public class ObradaProdaja {
             }
         }
     }
-    private int odabirStavka(int zaglavljeIndex, boolean updateDelete) {
-        List<Integer> indexStavkaList = new ArrayList<>();
-        String createUpdateStr = updateDelete ? "promjenu" : "brisanje";
-        int indexStavka = -1;
-        while (true) {
-            int odabir = Pomocno.unosInt("Unesi ID željene stavke za " + createUpdateStr + ": ", "Pogrešan unos");
-            for (ProdajaStavka p : prodajaStavkaList) {
-                if (p.getProdajaZaglavlje().getId() == prodajaZaglavljeList.get(zaglavljeIndex).getId()) {
-                    indexStavkaList.add(prodajaStavkaList.indexOf(p));
-                }
-            }
-            for (int e : indexStavkaList) {
-                if (prodajaStavkaList.get(e).getId() == odabir) {
-                    indexStavka = e;
-                }
-            }
-            if (indexStavka >= 0) {
-                break;
-            } else {
-                System.out.println("Pogrešan unos");
-            }
-        }
-        return indexStavka;
-    }
-    private boolean provjeraPostojanjaStavaka(int zaglavljeIndex) {
-        boolean stavkaPostoji = false;
-        for (ProdajaStavka p : prodajaStavkaList) {
-            if (p.getProdajaZaglavlje().getId() == prodajaZaglavljeList.get(zaglavljeIndex).getId()) {
-                stavkaPostoji = true;
-                break;
-            }
-        }
-        return stavkaPostoji;
-    }
-    private ProdajaZaglavlje createUpdateProdajaZaglavlje(int indexZaglavlje, boolean createUpdate) {
-        ProdajaZaglavlje prodajaZaglavlje = createUpdate ? new ProdajaZaglavlje() : prodajaZaglavljeList.get(indexZaglavlje);
+    // Parametar "jeLiUnos" -> true = Unos || false = Promjena:
+    private ProdajaZaglavlje unosPromjenaProdajaZaglavlje(int indexZaglavlje, String unosPromjena) {
+        ProdajaZaglavlje prodajaZaglavlje = new ProdajaZaglavlje();
 
-        String porukaDatum = createUpdate ? "" : " (" + prodajaZaglavlje.getDatumProdaje().format(Pomocno.formatter) + ")";
+        if (unosPromjena.equals("Unos")) {
+            prodajaZaglavlje.setId(idProdajaZaglavlje++);
+            prodajaZaglavlje.setBrojProdaje(brojProdajeCounter++);
+        } else if (unosPromjena.equals("Promjena")) {
+            prodajaZaglavlje = prodajaZaglavljeList.get(indexZaglavlje);
+        }
+
+        String porukaDatum = unosPromjena.equals("Unos") ? "" : " (" + prodajaZaglavlje.getDatumProdaje().format(Pomocno.formatter) + ")";
 
         prodajaZaglavlje.setDatumProdaje(Pomocno.unosDatum("\nUnesi datum prodaje (dd.MM.yyyy. HH:mm:ss)" + porukaDatum + ": "));
         prodajaZaglavlje.setPartner(postaviPartnera(prodajaZaglavlje));
         prodajaZaglavlje.setNacinPlacanja(postaviNacinPlacanja(prodajaZaglavlje));
         prodajaZaglavlje.setOperater(postaviOperatera(prodajaZaglavlje));
 
-        if (createUpdate) {
+        if (jeLiUnos) {
             prodajaZaglavlje.setId(idProdajaZaglavlje++);
             prodajaZaglavlje.setBrojProdaje(brojProdajeCounter++);
             prodajaZaglavljeList.add(prodajaZaglavlje);
         }
         return prodajaZaglavlje;
     }
-    private void createUpdateProdajaStavka(int indexZaglavlje, int indexStavka, boolean createUpdate) {
-        ProdajaStavka prodajaStavka = createUpdate ? new ProdajaStavka() : prodajaStavkaList.get(indexStavka);
-        if (createUpdate) {
+    // Parametar "jeLiUnos" -> true = Unos || false = Promjena:
+    private void unosPromjenaProdajaStavka(int indexZaglavlje, int indexStavka, String unosPromjena) {
+        ProdajaStavka prodajaStavka = new ProdajaStavka();
+        
+        if (unosPromjena.equals("Unos")) {
             prodajaStavka.setId(idProdajaStavka++);
             prodajaStavka.setProdajaZaglavlje(prodajaZaglavljeList.get(indexZaglavlje));
+        } else if (unosPromjena.equals("Promjena")) {
+            prodajaStavka = prodajaStavkaList.get(indexStavka);
         }
-        prodajaStavka.setKnjiga(postaviKnjigu(prodajaStavka));
-
-        if (createUpdate) {
+        if (unosPromjena.equals("Unos")) {
+            prodajaStavka.setKnjiga(postaviKnjigu(prodajaStavka,0));
             prodajaStavka.setKolicina(Pomocno.unosRasponBroja("Unesi količinu: ", "Pogrešan unos, broj raspoloživih kopija odabrane knjige iznosi: "
-                            + izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), 0, 0),
-                    1, izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), 0, 0)));
+                            + izbornik.getObradaStanje().raspolozivostKnjige(prodajaStavka.getKnjiga().getId(), 0, 0),
+                    1, izbornik.getObradaStanje().raspolozivostKnjige(prodajaStavka.getKnjiga().getId(), 0, 0)));
         } else {
+            prodajaStavka.setKnjiga(postaviKnjigu(prodajaStavka, prodajaStavka.getProdajaZaglavlje().getId()));
             prodajaStavka.setKolicina(Pomocno.unosRasponBroja("Unesi količinu: ", "Pogrešan unos, broj raspoloživih kopija odabrane knjige iznosi: "
-                            + izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0),
-                    1, izbornik.getObradaStanje().brojRaspolozivo(prodajaStavka.getKnjiga().getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0) ));
+                            + izbornik.getObradaStanje().raspolozivostKnjige(prodajaStavka.getKnjiga().getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0),
+                    1, izbornik.getObradaStanje().raspolozivostKnjige(prodajaStavka.getKnjiga().getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0) ));
         }
         prodajaStavka.setCijenaProdaje(prodajaStavka.getKnjiga().getCijena() * prodajaStavka.getKolicina());
         System.out.println("(" + prodajaStavka.getKnjiga() + ") " + prodajaStavka.getKnjiga().getCijena() + " x "
                 + prodajaStavka.getKolicina() + " = " + prodajaStavka.getKnjiga().getCijena() * prodajaStavka.getKolicina() + "€");
-        if (createUpdate) {
-            prodajaStavkaList.add(prodajaStavka);
+        int odabir = Pomocno.unosRasponBroja("1. Odustani \n2. Spremi \nOdabir: ","Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            unosPromjena = "Odustani";
+        }
+        switch (unosPromjena) {
+            case "Unos":
+                prodajaStavkaList.add(prodajaStavka);
+                break;
+            case "Promjena":
+                prodajaStavkaList.set(indexStavka, prodajaStavka);
+                break;
+            case "Odustani":
+                idProdajaStavka--;
+                break;
         }
     }
     private Partner postaviPartnera(ProdajaZaglavlje prodajaZaglavlje) {
@@ -322,18 +315,53 @@ public class ObradaProdaja {
         int index = Pomocno.unosRasponBroja("Odaberi redni broj načina plaćanja" + nacinPlacanja + ": ","Pogrešan unos",1,izbornik.getObradaNacinPlacanja().getNacinPlacanjaList().size());
         return izbornik.getObradaNacinPlacanja().getNacinPlacanjaList().get(index-1);
     }
-    private Knjiga postaviKnjigu(ProdajaStavka prodajaStavka) {
+    private Knjiga postaviKnjigu(ProdajaStavka prodajaStavka, int idZaglavljeProdaje) {
         int index;
         String knjiga = prodajaStavka.getKnjiga() != null ? " (" + prodajaStavka.getKnjiga().toString() + ")" : "";
-        izbornik.getObradaKnjiga().pregledKnjiga(true, prodajaStavka.getProdajaZaglavlje().getId(),0);
+        izbornik.getObradaKnjiga().pregledKnjiga(true, idZaglavljeProdaje,0);
         while (true) {
             index = Pomocno.unosRasponBroja("Odaberi redni broj knjige" + knjiga + ": ","Pogrešan unos",1,izbornik.getObradaKnjiga().getKnjige().size());
-            if (izbornik.getObradaStanje().brojRaspolozivo(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), prodajaStavka.getProdajaZaglavlje().getId(), 0) > 0) {
+            if (izbornik.getObradaStanje().raspolozivostKnjige(izbornik.getObradaKnjiga().getKnjige().get(index-1).getId(), idZaglavljeProdaje, 0) > 0) {
                 break;
             } else {
                 System.out.println("\nOdabrana knjiga nije raspoloživa!\n");
             }
         }
         return izbornik.getObradaKnjiga().getKnjige().get(index-1);
+    }
+    // Parametar "jeLiPromjena" -> true = Promjena || false = Brisanje:
+    private int odabirStavka(int zaglavljeIndex, boolean jeLiPromjena) {
+        List<Integer> indexStavkaList = new ArrayList<>();
+        String createUpdateStr = jeLiPromjena ? "promjenu" : "brisanje";
+        int indexStavka = -1;
+        while (true) {
+            int odabir = Pomocno.unosInt("Unesi ID željene stavke za " + createUpdateStr + ": ", "Pogrešan unos");
+            for (ProdajaStavka p : prodajaStavkaList) {
+                if (p.getProdajaZaglavlje().getId() == prodajaZaglavljeList.get(zaglavljeIndex).getId()) {
+                    indexStavkaList.add(prodajaStavkaList.indexOf(p));
+                }
+            }
+            for (int e : indexStavkaList) {
+                if (prodajaStavkaList.get(e).getId() == odabir) {
+                    indexStavka = e;
+                }
+            }
+            if (indexStavka >= 0) {
+                break;
+            } else {
+                System.out.println("Pogrešan unos");
+            }
+        }
+        return indexStavka;
+    }
+    private boolean provjeraPostojanjaStavaka(int zaglavljeIndex) {
+        boolean stavkaPostoji = false;
+        for (ProdajaStavka p : prodajaStavkaList) {
+            if (p.getProdajaZaglavlje().getId() == prodajaZaglavljeList.get(zaglavljeIndex).getId()) {
+                stavkaPostoji = true;
+                break;
+            }
+        }
+        return stavkaPostoji;
     }
 }

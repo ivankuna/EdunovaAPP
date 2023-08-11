@@ -67,6 +67,7 @@ public class ObradaKnjiga {
                 break;
         }
     }
+    // Parametar "jeLiProdajaRezervacija" -> true = Metoda je pozvana iz klasa "ObradaProdaja" ili "ObradaRezervacija":
     public void pregledKnjiga(boolean jeLiProdajaRezervacija) {
         int raspolozivost;
         System.out.println("------------------");
@@ -75,7 +76,7 @@ public class ObradaKnjiga {
         int i = 1;
         for(Knjiga k : knjige) {
             if (jeLiProdajaRezervacija) {
-                raspolozivost = izbornik.getObradaStanje().brojRaspolozivo(k.getId(), 0, 0);
+                raspolozivost = izbornik.getObradaStanje().raspolozivostKnjige(k.getId(), 0, 0);
                 System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
             } else {
                 System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
@@ -91,7 +92,7 @@ public class ObradaKnjiga {
         int i = 1;
         for(Knjiga k : knjige) {
             if (jeLiProdajaRezervacija) {
-                raspolozivost = izbornik.getObradaStanje().brojRaspolozivo(k.getId(), idZaglavlje, idRezervacije);
+                raspolozivost = izbornik.getObradaStanje().raspolozivostKnjige(k.getId(), idZaglavlje, idRezervacije);
                 System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
             } else {
                 System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
@@ -197,10 +198,10 @@ public class ObradaKnjiga {
         }
         return koristiSe;
     }
-    public boolean provjeraRaspolozivihKnjiga() {
+    public boolean provjeraRaspolozivihKnjiga(int idProdaja, int idRezervacija) {
         boolean postojiRaspolozivaKnjiga = false;
         for (Knjiga k : knjige) {
-            if (izbornik.getObradaStanje().brojRaspolozivo(k.getId(), 0, 0) > 0) {
+            if (izbornik.getObradaStanje().raspolozivostKnjige(k.getId(), idProdaja, idRezervacija) > 0) {
                 postojiRaspolozivaKnjiga = true;
             }
         }

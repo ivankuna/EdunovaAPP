@@ -26,6 +26,7 @@ public class ObradaStanje {
     public List<Stanje> getStanjeList() {
         return stanjeList;
     }
+
     public void prikaziIzbornik() {
         System.out.println();
         System.out.println("----- Stanje izbornik -----");
@@ -34,7 +35,6 @@ public class ObradaStanje {
         ucitajStavkuIzbornika();
     }
     private void ucitajStavkuIzbornika() {
-
         switch(Pomocno.unosRasponBroja("Odaberi stavku stanje izbornika: ",
                 "Odabir mora biti 1-2", 1, 2)) {
             case 1:
@@ -46,7 +46,7 @@ public class ObradaStanje {
                 break;
         }
     }
-    private void refreshStanje() {
+    public void refreshStanje() {
         stanjeList = new ArrayList<>();
         int ulaz = 0;
         int izlaz = 0;
@@ -77,30 +77,9 @@ public class ObradaStanje {
             rezervirano = 0;
         }
     }
-//    public int brojRaspolozivo(int idKnjiga) {
-//        int ulaz = 0;
-//        int izlaz = 0;
-//        int rezervirano = 0;
-//        int stanjeKnjige;
-//        for (OtkupStavka os : izbornik.getObradaOtkup().getOtkupStavkaList()) {
-//            if (os.getKnjiga().getId() == idKnjiga) {
-//                ulaz += os.getKolicina();
-//            }
-//        }
-//        for (ProdajaStavka ps : izbornik.getObradaProdaja().getProdajaStavkaList()) {
-//            if (ps.getKnjiga().getId() == idKnjiga) {
-//                izlaz += ps.getKolicina();
-//            }
-//        }
-//        for (Rezervacija r : izbornik.getObradaRezervacija().getRezervacijaList()) {
-//            if (r.getKnjiga().getId() == idKnjiga && r.getStanje().equals("Rezervirano")) {
-//                rezervirano += 1;
-//            }
-//        }
-//        stanjeKnjige = ulaz - izlaz;
-//        return stanjeKnjige - rezervirano;
-//    }
-    public int brojRaspolozivo(int idKnjiga, int idZaglavljeProdaje, int idRezervacije) {
+    // Parametri "idZaglavljeProdaje" i "idRezervacije" služe kako bi u slučaju promjene otkupa zanemarili
+    // otkup u pitanju u provjeri raspoloživosti artikla. Time omogućujemo promjenu sadržaja stavke:
+    public int raspolozivostKnjige(int idKnjiga, int idZaglavljeProdaje, int idRezervacije) {
         int ulaz = 0;
         int izlaz = 0;
         int rezervirano = 0;

@@ -68,7 +68,7 @@ public class ObradaOperater {
         System.out.println("-----------------------");
         int i = 1;
         for(Operater o : operateri) {
-            System.out.println(i++ + ". " + o + " (" + o.getOib() + ")");
+            System.out.println(i++ + ". ID:" + o.getId() + " | " + o + " (" + o.getOib() + ")");
         }
         System.out.println("-----------------------");
     }
@@ -81,7 +81,13 @@ public class ObradaOperater {
         operater.setEmail(Pomocno.unosString("Unesi email operatera: ","Pogrešan unos"));
         operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera: ","Pogrešan unos"));
         operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera: ","Pogrešan unos"));
-        operateri.add(operater);
+
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            operateri.add(operater);
+        } else {
+            idOperater--;
+        }
     }
     private void promjenaOperatera() {
         if (operateri.isEmpty()) {
@@ -90,13 +96,18 @@ public class ObradaOperater {
         }
         pregledOperatera();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj operatera: ","Pogrešan unos",1,operateri.size());
-        Operater operater = operateri.get(index-1);
-        operater.setIme(Pomocno.unosString("Unesi ime operatera (" + operater.getIme() + "): ","Pogrešan unos"));
-        operater.setPrezime(Pomocno.unosString("Unesi prezime operatera (" + operater.getPrezime() + "): ","Pogrešan unos"));
-        operater.setOib(Pomocno.unosString("Unesi oib operatera (" + operater.getOib() + "): ","Pogrešan unos"));
-        operater.setEmail(Pomocno.unosString("Unesi email operatera (" + operater.getEmail() + "): ","Pogrešan unos"));
-        operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera (" + operater.getKorisnickoIme() + "): ","Pogrešan unos"));
-        operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera (" + operater.getLozinka() + "): ","Pogrešan unos"));
+        Operater operater = new Operater();
+        operater.setId(operateri.get(index-1).getId());
+        operater.setIme(Pomocno.unosString("Unesi ime operatera (" + operateri.get(index-1).getIme() + "): ","Pogrešan unos"));
+        operater.setPrezime(Pomocno.unosString("Unesi prezime operatera (" + operateri.get(index-1).getPrezime() + "): ","Pogrešan unos"));
+        operater.setOib(Pomocno.unosString("Unesi oib operatera (" + operateri.get(index-1).getOib() + "): ","Pogrešan unos"));
+        operater.setEmail(Pomocno.unosString("Unesi email operatera (" + operateri.get(index-1).getEmail() + "): ","Pogrešan unos"));
+        operater.setKorisnickoIme(Pomocno.unosString("Unesi korisničko ime operatera (" + operateri.get(index-1).getKorisnickoIme() + "): ","Pogrešan unos"));
+        operater.setLozinka(Pomocno.unosString("Unesi lozinku operatera (" + operateri.get(index-1).getLozinka() + "): ","Pogrešan unos"));
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            operateri.set(index-1, operater);
+        }
     }
     private void brisanjeOperatera() {
         if (operateri.isEmpty()) {
@@ -105,10 +116,14 @@ public class ObradaOperater {
         }
         pregledOperatera();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj operatera: ", "Pogrešan unos", 1, operateri.size());
-        if (koristenjeOperater(index-1)) {
-            System.out.println("\n--- Nemoguće obrisati operatera u korištenju ---");
-        } else {
-            operateri.remove(index-1);
+
+        int odlukaOBrisanju = Pomocno.unosRasponBroja("Jeste li sigurni? \n1. Da \n2. Ne \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odlukaOBrisanju == 1) {
+            if (koristenjeOperater(index-1)) {
+                System.out.println("\n--- Nemoguće obrisati operatera u korištenju ---");
+            } else {
+                operateri.remove(index-1);
+            }
         }
     }
     private boolean koristenjeOperater(int index) {

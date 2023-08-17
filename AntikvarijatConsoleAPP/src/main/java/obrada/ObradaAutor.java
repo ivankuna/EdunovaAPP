@@ -66,7 +66,7 @@ public class ObradaAutor {
         System.out.println("--------------------");
         int i = 1;
         for(Autor a : autori) {
-            System.out.println(i++ + ". " + a + " (" + a.getDrzava() + ")");
+            System.out.println(i++ + ". ID:" + a.getId() + " | " + a + " (" + a.getDrzava() + ")");
         }
         System.out.println("--------------------");
     }
@@ -79,7 +79,12 @@ public class ObradaAutor {
         autor.setId(idAutor++);
         autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora: ","Pogrešan unos"));
         autor.setDrzava(postaviDrzavu(autor));
-        autori.add(autor);
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ","Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            autori.add(autor);
+        } else {
+            idAutor--;
+        }
     }
     private void promjenaAutora() {
         if (autori.isEmpty()) {
@@ -88,9 +93,14 @@ public class ObradaAutor {
         }
         pregledAutora();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj autora: ","Pogrešan unos",1,autori.size());
-        Autor autor = autori.get(index-1);
-        autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora (" + autor.getNazivAutora() + "): ","Pogrešan unos"));
-        autor.setDrzava(postaviDrzavu(autor));
+        Autor autor = new Autor();
+        autor.setId(autori.get(index-1).getId());
+        autor.setNazivAutora(Pomocno.unosString("Unesi naziv autora (" + autori.get(index-1).getNazivAutora() + "): ","Pogrešan unos"));
+        autor.setDrzava(postaviDrzavu(autori.get(index-1)));
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ","Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            autori.set(index-1, autor);
+        }
     }
     private void brisanjeAutora() {
         if (autori.isEmpty()) {
@@ -99,10 +109,13 @@ public class ObradaAutor {
         }
         pregledAutora();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj autora: ", "Pogrešan unos", 1, autori.size());
-        if (koristenjeAutor(index-1)) {
-            System.out.println("\n--- Nemoguće obrisati autora u korištenju ---");
-        } else {
-            autori.remove(index-1);
+        int odlukaOBrisanju = Pomocno.unosRasponBroja("Jeste li sigurni? \n1. Da \n2. Ne \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odlukaOBrisanju == 1) {
+            if (koristenjeAutor(index-1)) {
+                System.out.println("\n--- Nemoguće obrisati autora u korištenju ---");
+            } else {
+                autori.remove(index-1);
+            }
         }
     }
     private Drzava postaviDrzavu(Autor autor) {

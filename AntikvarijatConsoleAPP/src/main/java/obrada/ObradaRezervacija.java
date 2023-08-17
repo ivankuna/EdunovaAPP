@@ -75,7 +75,7 @@ public class ObradaRezervacija {
         System.out.println("-------------------");
         int i = 1;
         for(Rezervacija r : rezervacijaList) {
-            System.out.println(i++ + ". " + r + " (" + r.getKnjiga() + ", " + r.getPartner() + ")");
+            System.out.println(i++ + ". ID:" + r.getId() + " | " + r + " (" + r.getKnjiga() + ", " + r.getPartner() + ")");
         }
         System.out.println("-------------------");
     }
@@ -99,7 +99,12 @@ public class ObradaRezervacija {
         rezervacija.setKnjiga(postaviKnjigu(rezervacija, true));
         rezervacija.setStanje(postaviStanje(rezervacija));
         rezervacija.setOperater(postaviOperatera(rezervacija));
-        rezervacijaList.add(rezervacija);
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ","Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            rezervacijaList.add(rezervacija);
+        } else {
+            idRezervacija--;
+        }
     }
     private void promjenaRezervacija() {
         int index;
@@ -116,12 +121,16 @@ public class ObradaRezervacija {
                 break;
             }
         }
-        Rezervacija rezervacija = rezervacijaList.get(index-1);
-        rezervacija.setPartner(postaviPartnera(rezervacija));
-
-        rezervacija.setKnjiga(postaviKnjigu(rezervacija, false));
-        rezervacija.setStanje(postaviStanje(rezervacija));
-        rezervacija.setOperater(postaviOperatera(rezervacija));
+        Rezervacija rezervacija = new Rezervacija();
+        rezervacija.setId(rezervacijaList.get(index-1).getId());
+        rezervacija.setPartner(postaviPartnera(rezervacijaList.get(index-1)));
+        rezervacija.setKnjiga(postaviKnjigu(rezervacijaList.get(index-1), false));
+        rezervacija.setStanje(postaviStanje(rezervacijaList.get(index-1)));
+        rezervacija.setOperater(postaviOperatera(rezervacijaList.get(index-1)));
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ","Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            rezervacijaList.set(index-1, rezervacija);
+        }
     }
     private void brisanjeRezervacija() {
         if (rezervacijaList.isEmpty()) {
@@ -130,7 +139,10 @@ public class ObradaRezervacija {
         }
         pregledRezervacija();
         int index = Pomocno.unosRasponBroja("Odaberi redni broj rezervacije: ", "Pogrešan unos", 1, rezervacijaList.size());
-        rezervacijaList.remove(index-1);
+        int odlukaOBrisanju = Pomocno.unosRasponBroja("Jeste li sigurni? \n1. Da \n2. Ne \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odlukaOBrisanju == 1) {
+            rezervacijaList.remove(index-1);
+        }
     }
     private Partner postaviPartnera(Rezervacija rezervacija) {
         String partner = rezervacija.getPartner() != null ? " (" + rezervacija.getPartner().toString() + ")" : "";

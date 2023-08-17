@@ -108,10 +108,43 @@ public class ObradaStanje {
     }
 
     private void pregledStanja() {
-        System.out.println();
+        System.out.println("\nUlaz -> UL \nIzlaz -> IZ \nRezervirano -> REZ \nStanje -> ST \nRaspoloživo -> RAS");
+        System.out.println("--------------- -------------------- --- --- --- --- ---");
+        System.out.println("Autor           Knjiga               UL  IZ  REZ ST  RAS");
+        System.out.println("--------------- -------------------- --- --- --- --- ---");
         for (Stanje stanje : stanjeList) {
-            System.out.println(stanje.getNaslovKnjige() + " " + stanje.getNazivAutora() + " " + stanje.getUlaz() + " " + stanje.getIzlaz()
-                    + " " + stanje.getRezervirano() + " " + stanje.getStanje() + " " + stanje.getRaspolozivo());
+            System.out.println(formatNaslovKnjigeIliNazivAutora(15, stanje.getNazivAutora()) + " " + formatNaslovKnjigeIliNazivAutora(20, stanje.getNaslovKnjige())
+            + " " + formatBrojcanaVrijednost(stanje.getUlaz()) + " " + formatBrojcanaVrijednost(stanje.getIzlaz()) + " " + formatBrojcanaVrijednost(stanje.getRezervirano())
+            + " " + formatBrojcanaVrijednost(stanje.getStanje()) + " " + formatBrojcanaVrijednost(stanje.getRaspolozivo()));
         }
+        System.out.println("--------------- -------------------- --- --- --- --- ---");
+    }
+    private String formatNaslovKnjigeIliNazivAutora(int maxLen, String ulaz) {
+        StringBuilder sb = new StringBuilder();
+        char c;
+        if (ulaz.length() > maxLen) {
+            for (int i = 0; i < maxLen; i++) {
+                c = ulaz.charAt(i);
+                sb.append(c);
+            }
+        } else {
+            sb = new StringBuilder(ulaz);
+            for (int i = 0; i < maxLen - ulaz.length(); i++) {
+                sb.append(" ");
+            }
+        }
+        return sb.toString();
+    }
+    private String formatBrojcanaVrijednost(int ulaz) {
+        StringBuilder sb = new StringBuilder();
+
+        if (ulaz > 99) {
+            return String.valueOf(ulaz);
+        } else if (ulaz > 9) {
+            sb.append(ulaz).append(" ");
+        } else {
+            sb.append(ulaz).append("  ");
+        }
+        return sb.toString();
     }
 }

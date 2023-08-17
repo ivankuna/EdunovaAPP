@@ -48,7 +48,7 @@ public class ObradaKnjiga {
         switch(Pomocno.unosRasponBroja("Odaberi stavku knjiga izbornika: ",
                 "Odabir mora biti 1-5", 1, 5)) {
             case 1:
-                pregledKnjiga(false);
+                pregledKnjiga(false, 0, 0);
                 prikaziIzbornik();
                 break;
             case 2:
@@ -68,22 +68,6 @@ public class ObradaKnjiga {
         }
     }
     // Parametar "jeLiProdajaRezervacija" -> true = Metoda je pozvana iz klasa "ObradaProdaja" ili "ObradaRezervacija":
-    public void pregledKnjiga(boolean jeLiProdajaRezervacija) {
-        int raspolozivost;
-        System.out.println("------------------");
-        System.out.println("----- Knjige -----");
-        System.out.println("------------------");
-        int i = 1;
-        for(Knjiga k : knjige) {
-            if (jeLiProdajaRezervacija) {
-                raspolozivost = izbornik.getObradaStanje().raspolozivostKnjige(k.getId(), 0, 0);
-                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
-            } else {
-                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
-            }
-        }
-        System.out.println("------------------");
-    }
     public void pregledKnjiga(boolean jeLiProdajaRezervacija, int idZaglavlje, int idRezervacije) {
         int raspolozivost;
         System.out.println("------------------");
@@ -93,9 +77,9 @@ public class ObradaKnjiga {
         for(Knjiga k : knjige) {
             if (jeLiProdajaRezervacija) {
                 raspolozivost = izbornik.getObradaStanje().raspolozivostKnjige(k.getId(), idZaglavlje, idRezervacije);
-                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
+                System.out.println(i++ + ". ID:" + k.getId() + " | " + k + " (" + k.getAutor().getNazivAutora() + ") " + "(" + raspolozivost + ")");
             } else {
-                System.out.println(i++ + ". " + k + " (" + k.getAutor().getNazivAutora() + ")");
+                System.out.println(i++ + ". ID:" + k.getId() + " | " + k + " (" + k.getAutor().getNazivAutora() + ")");
             }
         }
         System.out.println("------------------");
@@ -119,37 +103,51 @@ public class ObradaKnjiga {
         knjiga.setVrstaUveza(postaviUvez(knjiga));
         knjiga.setDimenzije(postaviDimenzije(knjiga));
         knjiga.setCijena(Pomocno.unosDouble("Unesi cijenu knjige: ", "Pogrešan unos"));
-        knjige.add(knjiga);
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            knjige.add(knjiga);
+        } else {
+            idKnjiga--;
+        }
     }
     private void promjenaKnjiga() {
         if (knjige.isEmpty()) {
             System.out.println("\n--- Nema unešenih knjiga za promjenu ---");
             return;
         }
-        pregledKnjiga(false);
-        int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ","Pogrešan unos",1,knjige.size());
-        Knjiga knjiga = knjige.get(index-1);
-        knjiga.setNazivKnjige(Pomocno.unosString("Unesi naziv knjige (" + knjiga.getNazivKnjige() + "): ", "Pogrešan unos"));
-        knjiga.setAutor(postaviAutora(knjiga));
-        knjiga.setGodinaIzdanja(Pomocno.unosString("Unesi godinu izdanja knjige (yyyy) (" + knjiga.getGodinaIzdanja() + "): ", "Pogrešan unos"));
-        knjiga.setIzdavac(postaviIzdavaca(knjiga));
-        knjiga.setJezik(Pomocno.unosString("Unesi jezik na kojem je pisana knjiga (" + knjiga.getJezik() + "): ", "Pogrešan unos"));
-        knjiga.setBrojStranica(Pomocno.unosInt("Unesi broj stranica knjige (" + knjiga.getBrojStranica() + "): ", "Pogrešan unos"));
-        knjiga.setVrstaUveza(postaviUvez(knjiga));
-        knjiga.setDimenzije(postaviDimenzije(knjiga));
-        knjiga.setCijena(Pomocno.unosDouble("Unesi cijenu knjige (" + knjiga.getCijena() + "): ", "Pogrešan unos"));
+        pregledKnjiga(false, 0, 0);
+        int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ","Pogrešan unos",1, knjige.size());
+        Knjiga knjiga = new Knjiga();
+        knjiga.setId(knjige.get(index-1).getId());
+        knjiga.setNazivKnjige(Pomocno.unosString("Unesi naziv knjige (" + knjige.get(index-1).getNazivKnjige() + "): ", "Pogrešan unos"));
+        knjiga.setAutor(postaviAutora(knjige.get(index-1)));
+        knjiga.setGodinaIzdanja(Pomocno.unosString("Unesi godinu izdanja knjige (yyyy) (" + knjige.get(index-1).getGodinaIzdanja() + "): ", "Pogrešan unos"));
+        knjiga.setIzdavac(postaviIzdavaca(knjige.get(index-1)));
+        knjiga.setJezik(Pomocno.unosString("Unesi jezik na kojem je pisana knjiga (" + knjige.get(index-1).getJezik() + "): ", "Pogrešan unos"));
+        knjiga.setBrojStranica(Pomocno.unosInt("Unesi broj stranica knjige (" + knjige.get(index-1).getBrojStranica() + "): ", "Pogrešan unos"));
+        knjiga.setVrstaUveza(postaviUvez(knjige.get(index-1)));
+        knjiga.setDimenzije(postaviDimenzije(knjige.get(index-1)));
+        knjiga.setCijena(Pomocno.unosDouble("Unesi cijenu knjige (" + knjige.get(index-1).getCijena() + "): ", "Pogrešan unos"));
+        int odabir = Pomocno.unosRasponBroja("1. Spremi \n2. Odustani \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odabir == 1) {
+            knjige.set(index-1, knjiga);
+        }
     }
     private void brisanjeKnjiga() {
         if (knjige.isEmpty()) {
             System.out.println("\n--- Nema unešenih knjiga za brisanje ---");
             return;
         }
-        pregledKnjiga(false);
+        pregledKnjiga(false, 0, 0);
         int index = Pomocno.unosRasponBroja("Odaberi redni broj knjige: ", "Pogrešan unos", 1, knjige.size());
-        if (koristenjeKnjiga(index-1)) {
-            System.out.println("\n--- Nemoguće obrisati knjigu u korištenju ---");
-        } else {
-            knjige.remove(index-1);
+
+        int odlukaOBrisanju = Pomocno.unosRasponBroja("Jeste li sigurni? \n1. Da \n2. Ne \nOdabir: ", "Pogrešan unos", 1, 2);
+        if (odlukaOBrisanju == 1) {
+            if (koristenjeKnjiga(index-1)) {
+                System.out.println("\n--- Nemoguće obrisati knjigu u korištenju ---");
+            } else {
+                knjige.remove(index-1);
+            }
         }
     }
     private Autor postaviAutora(Knjiga knjiga) {

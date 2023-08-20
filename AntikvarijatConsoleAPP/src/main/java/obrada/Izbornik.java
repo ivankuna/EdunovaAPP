@@ -35,9 +35,9 @@ public class Izbornik {
         Pomocno.ulaz.close();
     }
     private void pozdravnaPoruka() {
-        System.out.println("**************************************");
-        System.out.println("*** Antikvarijat Console APP v 1.0 ***");
-        System.out.println("**************************************");
+        System.out.println("************************************");
+        System.out.println("**** Antikvarijat Console APP  ****");
+        System.out.println("************************************");
     }
     private void prikaziIzbornik() {
         System.out.println();

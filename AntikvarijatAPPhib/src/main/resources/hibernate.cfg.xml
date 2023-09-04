@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+  "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!-- https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/An-example-hibernatecfgxml-for-MySQL-8-and-Hibernate-5 -->
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.driver_class">org.mariadb.jdbc.Driver</property>
+    <property name="connection.url">jdbc:mariadb://localhost/antikvarijat</property>
+    <property name="dialect">org.hibernate.dialect.MariaDBDialect</property>
+    <property name="connection.username">root</property>
+    <property name="connection.password"></property>
+    <property name="connection.pool_size">3</property>
+    <property name="current_session_context_class">thread</property>
+    <property name="show_sql">true</property>
+    <property name="format_sql">true</property>
+    <property name="hbm2ddl.auto">update</property>
+    
+    <mapping class="antikvarijat.model.Drzava" />    
+    <mapping class="antikvarijat.model.Grad" />    
+    <mapping class="antikvarijat.model.Autor" />    
+    <mapping class="antikvarijat.model.Izdavac" />    
+    <mapping class="antikvarijat.model.Partner" />    
+    <mapping class="antikvarijat.model.Operater" />    
+    <mapping class="antikvarijat.model.Knjiga" />    
+    <mapping class="antikvarijat.model.NacinPlacanja" />    
+    <mapping class="antikvarijat.model.ProdajaZaglavlje" />    
+    <mapping class="antikvarijat.model.ProdajaStavka" />    
+    <mapping class="antikvarijat.model.OtkupZaglavlje" />    
+    <mapping class="antikvarijat.model.OtkupStavka" />    
+    <mapping class="antikvarijat.model.Rezervacija" />  
+
+    
+  </session-factory>
+</hibernate-configuration>

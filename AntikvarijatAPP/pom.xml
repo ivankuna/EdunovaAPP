@@ -54,6 +54,19 @@
             <artifactId>xsoup</artifactId>
             <version>0.3.7</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>de.mkammerer</groupId>
+            <artifactId>argon2-jvm</artifactId>
+            <version>2.11</version>
+        </dependency>
     </dependencies>
     <name>AntikvarijatAPPgson</name>
 </project>

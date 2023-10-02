@@ -20,6 +20,8 @@ public class Operater extends Entitet {
     
     private String lozinka;
     
+    private String uloga;
+    
     @OneToMany(mappedBy = "operater")
     private List<ProdajaZaglavlje> prodaje = new ArrayList<>();
     
@@ -90,5 +92,14 @@ public class Operater extends Entitet {
     public void setLozinka(String lozinka) {
         this.lozinka = lozinka;
     }    
+
+    public String getUloga() {
+        return uloga;
+    }
+
+    public void setUloga(String uloga) {
+        this.uloga = uloga;
+    }
+    
 }
 

@@ -37,4 +37,9 @@ public class Drzava extends Entitet {
     public void setGradovi(List<Grad> gradovi) {
         this.gradovi = gradovi;
     }    
+
+    @Override
+    public String toString() {
+        return nazivDrzave;
+    }    
 }

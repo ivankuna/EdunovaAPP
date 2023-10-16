@@ -50,4 +50,9 @@ public class Autor extends Entitet {
     public void setKnjige(List<Knjiga> knjige) {
         this.knjige = knjige;
     }    
+
+    @Override
+    public String toString() {
+        return nazivAutora;
+    }        
 }

@@ -4,13 +4,32 @@ import antikvarijat.model.Grad;
 import antikvarijat.model.Izdavac;
 import antikvarijat.model.Partner;
 import antikvarijat.util.SimpleException;
+import java.text.Collator;
 import java.util.List;
+import java.util.Locale;
 
 public class ObradaGrad extends Obrada<Grad>{
 
     @Override
     public List<Grad> read() {
         return session.createQuery("from Grad", Grad.class).list();
+    }
+    
+    public List<Grad> read(String uvjet) {
+        uvjet = uvjet == null ? "" : uvjet;
+        uvjet = uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+
+        List<Grad> lista = session.createQuery("from Grad g "
+                + " where g.nazivGrada like :uvjet "
+                + " order by g.nazivGrada ", Grad.class)
+                .setParameter("uvjet", uvjet).list();
+                
+        Collator spCollator = Collator.getInstance(Locale.of("hr", "HR"));
+        
+        lista.sort((e1, e2) -> spCollator.compare(e1.getNazivGrada(), e2.getNazivGrada()));
+        
+        return lista;
     }
     
     public Grad readBySifra(int id){
@@ -21,11 +40,12 @@ public class ObradaGrad extends Obrada<Grad>{
     protected void kontrolaUnos() throws SimpleException {
         kontrolaNaziv();
         kontrolaPostanskiBroj();
+        kontrolaDrzava();
     }
 
     @Override
     protected void kontrolaPromjena() throws SimpleException {
-        kontrolaUnos();
+        kontrolaUnos();        
     }
 
     @Override
@@ -75,6 +95,12 @@ public class ObradaGrad extends Obrada<Grad>{
         }
         if (entitet.getPostanskiBroj().isEmpty()) {
             throw new SimpleException("Poštanski broj ne smije ostati prazan");
+        }
+    }
+    
+    private void kontrolaDrzava() throws SimpleException {
+        if(getEntitet().getDrzava() == null || getEntitet().getDrzava().getId().equals(0)){
+            throw new SimpleException("Odabir države obavezan");
         }
     }
 }

@@ -77,18 +77,18 @@ public class TestniPodaci {
         kreirajNacinePlacanja();
         kreirajProdaje();
         session.getTransaction().commit();
-    }        
+    }
 
     private void kreirajDrzave() {
         Drzava d;
-        
+
         for (int i = 0; i < BROJ_DRZAVA; i++) {
             d = new Drzava();
-            
+
             d.setNazivDrzave(faker.country().name());
-            
+
             session.persist(d);
-            drzave.add(d);            
+            drzave.add(d);
         }
     }
 
@@ -157,7 +157,7 @@ public class TestniPodaci {
             o.setIme(faker.name().firstName());
             o.setPrezime(faker.name().lastName());
             o.setKorisnickoIme(o.getIme().charAt(0) + o.getPrezime());
-            o.setEmail(o.getKorisnickoIme().toLowerCase() + "@" + faker.job().field().strip().toLowerCase() + ".com");
+            o.setEmail(o.getKorisnickoIme().trim().toLowerCase() + "@" + faker.job().field().strip().toLowerCase() + ".com");
             o.setLozinka(String.valueOf(faker.number().numberBetween(1000, 9999)));
             o.setOib(OibGenerator.getOib());
 
@@ -173,10 +173,10 @@ public class TestniPodaci {
             p = new Partner();
             String nazivPartnera = (i % 2 == 0) ? faker.company().name() : faker.name().firstName() + " " + faker.name().lastName();
             p.setNazivPartnera(nazivPartnera);
-            p.setEmail(nazivPartnera.toLowerCase() + "@" + faker.job().field().strip().toLowerCase() + ".com");
-            p.setTelefon(String.valueOf(faker.phoneNumber()));
+            p.setEmail(nazivPartnera.trim().toLowerCase().replaceAll("[^a-zA-Z0-9]", "") + "@" + faker.job().field().strip().toLowerCase() + ".com");
+            p.setTelefon(String.valueOf(faker.phoneNumber().phoneNumber()));
             p.setOib(OibGenerator.getOib());
-            p.setUlicaBroj(faker.funnyName() + " street, " + String.valueOf(faker.number().numberBetween(1, 120)));
+            p.setUlicaBroj(faker.funnyName().name().trim() + " street " + String.valueOf(faker.number().numberBetween(1, 120)));
             p.setGrad(gradovi.get(faker.number().numberBetween(0, gradovi.size())));
 
             session.persist(p);
@@ -193,12 +193,12 @@ public class TestniPodaci {
             k = new Knjiga();
             k.setNazivKnjige(faker.book().title());
             k.setAutor(autori.get(faker.number().numberBetween(0, autori.size())));
-            k.setGodinaIzdanja(String.valueOf(faker.number().numberBetween(1778, 2023)) + ".");
+            k.setGodinaIzdanja(faker.number().numberBetween(1778, 2023));
             k.setIzdavac(izdavaci.get(faker.number().numberBetween(0, izdavaci.size())));
             k.setJezik(faker.country().name());
             k.setBrojStranica(faker.number().numberBetween(80, 1015));
-            k.setVrstaUveza(vrsteUveza[faker.number().numberBetween(0, vrsteUveza.length - 1)]);
-            k.setDimenzije(dimenzije[faker.number().numberBetween(0, dimenzije.length - 1)]);
+            k.setVrstaUveza(vrsteUveza[faker.number().numberBetween(0, vrsteUveza.length)]);
+            k.setDimenzije(dimenzije[faker.number().numberBetween(0, dimenzije.length)]);
             k.setCijena(new BigDecimal(faker.number().randomDouble(2, 9, 50)));
 
             session.persist(k);
@@ -264,7 +264,7 @@ public class TestniPodaci {
                 ps.setKnjiga(knjige.get(faker.number().numberBetween(0, knjige.size())));
                 ps.setKolicina(faker.number().numberBetween(1, 10));
                 ps.setCijenaProdaje(ps.getKnjiga().getCijena().multiply(new BigDecimal(ps.getKolicina())));
-                
+
                 session.persist(ps);
                 prodajaStavke.add(ps);
             }

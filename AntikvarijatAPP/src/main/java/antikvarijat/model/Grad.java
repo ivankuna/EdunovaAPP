@@ -72,4 +72,9 @@ public class Grad extends Entitet {
     public void setPartneri(List<Partner> partneri) {
         this.partneri = partneri;
     }    
+
+    @Override
+    public String toString() {
+        return nazivGrada;
+    }    
 }

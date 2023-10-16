@@ -15,7 +15,7 @@ public class Knjiga extends Entitet {
     @ManyToOne
     private Autor autor;
     
-    private String godinaIzdanja;
+    private Integer godinaIzdanja;
     
     @ManyToOne
     private Izdavac izdavac;
@@ -39,7 +39,7 @@ public class Knjiga extends Entitet {
     @OneToMany(mappedBy = "knjiga")
     private List<OtkupStavka> otkupi = new ArrayList<>();
 
-    public Knjiga(int id, String nazivKnjige, Autor autor, String godinaIzdanja, Izdavac izdavac, 
+    public Knjiga(int id, String nazivKnjige, Autor autor, Integer godinaIzdanja, Izdavac izdavac, 
             String jezik, Integer brojStranica, String vrstaUveza, String dimenzije, BigDecimal cijena) {
         super(id);
         this.nazivKnjige = nazivKnjige;
@@ -73,13 +73,13 @@ public class Knjiga extends Entitet {
         this.autor = autor;
     }
 
-    public String getGodinaIzdanja() {
+    public Integer getGodinaIzdanja() {
         return godinaIzdanja;
     }
 
-    public void setGodinaIzdanja(String godinaIzdanja) {
+    public void setGodinaIzdanja(Integer godinaIzdanja) {
         this.godinaIzdanja = godinaIzdanja;
-    }
+    }  
 
     public Izdavac getIzdavac() {
         return izdavac;
@@ -152,4 +152,9 @@ public class Knjiga extends Entitet {
     public void setOtkupi(List<OtkupStavka> otkupi) {
         this.otkupi = otkupi;
     }    
+
+    @Override
+    public String toString() {
+        return getAutor().getNazivAutora() + ", " + nazivKnjige;
+    }        
 }

@@ -4,7 +4,9 @@ import antikvarijat.model.Operater;
 import antikvarijat.util.SimpleException;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import java.text.Collator;
 import java.util.List;
+import java.util.Locale;
 
 public class ObradaOperater extends Obrada<Operater> {
 
@@ -12,7 +14,24 @@ public class ObradaOperater extends Obrada<Operater> {
     public List<Operater> read() {
         return session.createQuery("from Operater", Operater.class).list();
     }
+        
+    public List<Operater> read(String uvjet) {
+        uvjet = uvjet == null ? "" : uvjet;
+        uvjet = uvjet.trim();
+        uvjet = "%" + uvjet + "%";
 
+        List<Operater> lista = session.createQuery("from Operater o "
+                + " where o.korisnickoIme like :uvjet "
+                + " order by o.korisnickoIme ", Operater.class)
+                .setParameter("uvjet", uvjet).list();
+                
+        Collator spCollator = Collator.getInstance(Locale.of("hr", "HR"));
+        
+        lista.sort((e1, e2) -> spCollator.compare(e1.getKorisnickoIme(), e2.getKorisnickoIme()));
+        
+        return lista;
+    }
+    
     public Operater readBySifra(int id) {
         return session.get(Operater.class, id);
     }

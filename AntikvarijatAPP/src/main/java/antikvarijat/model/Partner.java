@@ -116,4 +116,9 @@ public class Partner extends Entitet {
     public void setRezervacije(List<Rezervacija> rezervacije) {
         this.rezervacije = rezervacije;
     }    
+
+    @Override
+    public String toString() {
+        return nazivPartnera;
+    }        
 }

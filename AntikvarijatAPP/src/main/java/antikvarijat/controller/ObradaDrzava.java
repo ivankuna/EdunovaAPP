@@ -3,7 +3,9 @@ package antikvarijat.controller;
 import antikvarijat.model.Drzava;
 import antikvarijat.model.Grad;
 import antikvarijat.util.SimpleException;
+import java.text.Collator;
 import java.util.List;
+import java.util.Locale;
 
 public class ObradaDrzava extends Obrada<Drzava> {
 
@@ -11,10 +13,27 @@ public class ObradaDrzava extends Obrada<Drzava> {
     public List<Drzava> read() {
         return session.createQuery("from Drzava", Drzava.class).list();
     }
-    
-    public Drzava readBySifra(int id){
+
+    public List<Drzava> read(String uvjet) {
+        uvjet = uvjet == null ? "" : uvjet;
+        uvjet = uvjet.trim();
+        uvjet = "%" + uvjet + "%";
+
+        List<Drzava> lista = session.createQuery("from Drzava d "
+                + " where d.nazivDrzave like :uvjet "
+                + " order by d.nazivDrzave", Drzava.class)
+                .setParameter("uvjet", uvjet).list();
+                
+        Collator spCollator = Collator.getInstance(Locale.of("hr", "HR"));
+        
+        lista.sort((e1, e2) -> spCollator.compare(e1.getNazivDrzave(), e2.getNazivDrzave()));
+        
+        return lista;
+    }
+
+    public Drzava readBySifra(int id) {
         return session.get(Drzava.class, id);
-    } 
+    }
 
     @Override
     protected void kontrolaUnos() throws SimpleException {
@@ -32,17 +51,17 @@ public class ObradaDrzava extends Obrada<Drzava> {
             StringBuilder sb = new StringBuilder();
             int brojacZareza = 0;
             sb.append("Nemoguće obrisati državu sa unešenim gradovima (");
-            for (Grad g : entitet.getGradovi()) {    
+            for (Grad g : entitet.getGradovi()) {
                 brojacZareza++;
                 sb.append(g.getNazivGrada());
                 if (brojacZareza < entitet.getGradovi().size()) {
                     sb.append(",");
-                }                
+                }
             }
-            sb.append(")");                      
+            sb.append(")");
             throw new SimpleException(sb.toString());
         }
-    }    
+    }
 
     private void kontrolaNaziv() throws SimpleException {
         if (entitet.getNazivDrzave() == null) {

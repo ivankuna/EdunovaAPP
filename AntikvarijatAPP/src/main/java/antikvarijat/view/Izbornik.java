@@ -20,26 +20,69 @@ public class Izbornik extends javax.swing.JFrame {
         lblOperater = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuItemDrzave = new javax.swing.JMenuItem();
+        menuItemGradovi = new javax.swing.JMenuItem();
+        menuItemAutori = new javax.swing.JMenuItem();
+        menuItemIzdavaci = new javax.swing.JMenuItem();
+        menuItemPartneri = new javax.swing.JMenuItem();
+        menuItemKnjige = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
-
-        lblOperater.setText("jLabel1");
         jToolBar1.add(lblOperater);
 
         jMenu1.setText("Podaci");
 
-        jMenuItem1.setText("Države");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuItemDrzave.setText("Države");
+        menuItemDrzave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuItemDrzaveActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(menuItemDrzave);
+
+        menuItemGradovi.setText("Gradovi");
+        menuItemGradovi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemGradoviActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemGradovi);
+
+        menuItemAutori.setText("Autori");
+        menuItemAutori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemAutoriActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemAutori);
+
+        menuItemIzdavaci.setText("Izdavači");
+        menuItemIzdavaci.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemIzdavaciActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemIzdavaci);
+
+        menuItemPartneri.setText("Partneri");
+        menuItemPartneri.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemPartneriActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemPartneri);
+
+        menuItemKnjige.setText("Knjige");
+        menuItemKnjige.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemKnjigeActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemKnjige);
 
         jMenuBar1.add(jMenu1);
 
@@ -78,18 +121,43 @@ public class Izbornik extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void menuItemDrzaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDrzaveActionPerformed
         new FrameDrzava().setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_menuItemDrzaveActionPerformed
+
+    private void menuItemGradoviActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGradoviActionPerformed
+        new FrameGrad().setVisible(true);
+    }//GEN-LAST:event_menuItemGradoviActionPerformed
+
+    private void menuItemAutoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAutoriActionPerformed
+        new FrameAutor().setVisible(true);
+    }//GEN-LAST:event_menuItemAutoriActionPerformed
+
+    private void menuItemIzdavaciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemIzdavaciActionPerformed
+        new FrameIzdavac().setVisible(true);
+    }//GEN-LAST:event_menuItemIzdavaciActionPerformed
+
+    private void menuItemPartneriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPartneriActionPerformed
+        new FramePartner().setVisible(true);
+    }//GEN-LAST:event_menuItemPartneriActionPerformed
+
+    private void menuItemKnjigeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemKnjigeActionPerformed
+        new FrameKnjiga().setVisible(true);
+    }//GEN-LAST:event_menuItemKnjigeActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblOperater;
+    private javax.swing.JMenuItem menuItemAutori;
+    private javax.swing.JMenuItem menuItemDrzave;
+    private javax.swing.JMenuItem menuItemGradovi;
+    private javax.swing.JMenuItem menuItemIzdavaci;
+    private javax.swing.JMenuItem menuItemKnjige;
+    private javax.swing.JMenuItem menuItemPartneri;
     // End of variables declaration//GEN-END:variables
 }

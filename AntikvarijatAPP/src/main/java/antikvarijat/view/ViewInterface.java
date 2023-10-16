@@ -4,4 +4,5 @@ public interface ViewInterface {
     void ucitaj();
     void popuniModel();
     void popuniView();
+    void isprazniView();
 }

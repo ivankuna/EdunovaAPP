@@ -2,7 +2,6 @@ package antikvarijat;
 
 import antikvarijat.controller.ObradaOperater;
 import antikvarijat.model.Operater;
-import antikvarijat.util.HibernateUtil;
 import antikvarijat.util.TestniPodaci;
 import antikvarijat.view.SplashScreen;
 import de.mkammerer.argon2.Argon2;
@@ -12,16 +11,13 @@ public class Glavna {
 
     public static void main(String[] args) {
         
-        // HibernateUtil.getSession();
-        // new TestniPodaci();    
-        // lozinka();
+//        new TestniPodaci();    
+//        lozinka();
         
-        new SplashScreen().setVisible(true);
-        
+        new SplashScreen().setVisible(true);        
     }
     
     private static void lozinka() {
-        // factory pattern
         Argon2 argon2 = Argon2Factory.create();
 
         String hash = argon2.hash(10, 65536, 1, "oper".toCharArray());
@@ -42,5 +38,5 @@ public class Glavna {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }            
 }

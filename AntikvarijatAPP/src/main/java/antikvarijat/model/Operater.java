@@ -100,6 +100,10 @@ public class Operater extends Entitet {
     public void setUloga(String uloga) {
         this.uloga = uloga;
     }
-    
+
+    @Override
+    public String toString() {
+        return korisnickoIme;
+    }        
 }
 

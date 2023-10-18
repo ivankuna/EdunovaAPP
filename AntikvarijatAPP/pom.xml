@@ -68,5 +68,5 @@
             <version>2.11</version>
         </dependency>
     </dependencies>
-    <name>AntikvarijatAPPgson</name>
+    <name>AntikvarijatAPP</name>
 </project>

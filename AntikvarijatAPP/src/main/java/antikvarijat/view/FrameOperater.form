@@ -35,35 +35,38 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="cmbUloge" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="btnDelete" max="32767" attributes="0"/>
-                          <Component id="btnCreate" min="-2" pref="81" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="btnDelete" max="32767" attributes="0"/>
+                                  <Component id="btnCreate" min="-2" pref="81" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="btnOdustani" max="32767" attributes="0"/>
+                                  <Component id="btnUpdate" pref="91" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="jLabel1" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="txtIme" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="txtPrezime" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="txtOib" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
+                          <Component id="jLabel5" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="jLabel6" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="txtLozinka" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtEmail" alignment="0" pref="174" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnOdustani" max="32767" attributes="0"/>
-                          <Component id="btnUpdate" pref="91" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Component id="jLabel1" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Component id="txtIme" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Component id="txtPrezime" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Component id="txtOib" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Component id="txtKorisnickoIme" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
-                  <Component id="jLabel5" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Component id="txtEmail" alignment="0" min="-2" pref="174" max="-2" attributes="0"/>
-                  <Component id="jLabel6" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Component id="jLabel7" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="txtLozinka" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jComboBox1" alignment="0" pref="174" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -90,10 +93,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtOib" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtKorisnickoIme" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
@@ -102,9 +101,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtLozinka" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbUloge" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnCreate" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -225,13 +224,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtOib">
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Korisni&#x10d;ko ime:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtKorisnickoIme">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="text" type="java.lang.String" value="Email:"/>
@@ -244,13 +236,14 @@
         <Property name="text" type="java.lang.String" value="Lozinka:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel7">
+    <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
         <Property name="text" type="java.lang.String" value="Uloga:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="cmbUloge">
       <Properties>
+        <Property name="editable" type="boolean" value="true"/>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
@@ -259,7 +252,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="txtLozinka">
+    <Component class="javax.swing.JTextField" name="txtLozinka">
     </Component>
   </SubComponents>
 </Form>

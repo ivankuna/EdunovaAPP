@@ -2,10 +2,11 @@
 package antikvarijat.view;
 
 import antikvarijat.util.Tools;
+import javax.swing.JOptionPane;
 
-public class Izbornik extends javax.swing.JFrame {
+public class FrameIzbornik extends javax.swing.JFrame {
 
-    public Izbornik() {
+    public FrameIzbornik() {
         initComponents();
         setTitle(Tools.NAZIV_APP + " | Glavni izbornik");
         lblOperater.setText(Tools.getOperater());
@@ -27,6 +28,7 @@ public class Izbornik extends javax.swing.JFrame {
         menuItemPartneri = new javax.swing.JMenuItem();
         menuItemKnjige = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menuItemOperateri = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -88,6 +90,14 @@ public class Izbornik extends javax.swing.JFrame {
 
         jMenu2.setText("Servis");
 
+        menuItemOperateri.setText("Operateri");
+        menuItemOperateri.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemOperateriActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuItemOperateri);
+
         jMenuItem2.setText("Izlaz");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,6 +155,14 @@ public class Izbornik extends javax.swing.JFrame {
         new FrameKnjiga().setVisible(true);
     }//GEN-LAST:event_menuItemKnjigeActionPerformed
 
+    private void menuItemOperateriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemOperateriActionPerformed
+        if (!Tools.OPERATER.getUloga().equals("admin")) {
+            JOptionPane.showMessageDialog(getRootPane(), "Pristup operatorima ograničen na admina");
+            return;
+        }
+        new FrameOperater().setVisible(true);
+    }//GEN-LAST:event_menuItemOperateriActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -158,6 +176,7 @@ public class Izbornik extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemGradovi;
     private javax.swing.JMenuItem menuItemIzdavaci;
     private javax.swing.JMenuItem menuItemKnjige;
+    private javax.swing.JMenuItem menuItemOperateri;
     private javax.swing.JMenuItem menuItemPartneri;
     // End of variables declaration//GEN-END:variables
 }

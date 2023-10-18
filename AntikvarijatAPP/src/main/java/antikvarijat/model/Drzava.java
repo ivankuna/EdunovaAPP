@@ -12,6 +12,9 @@ public class Drzava extends Entitet {
     
     @OneToMany(mappedBy = "drzava")
     private List<Grad> gradovi = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "drzava")
+    private List<Autor> autori = new ArrayList<>();
 
     public Drzava(int id, String nazivDrzave) {
         super(id);
@@ -36,6 +39,14 @@ public class Drzava extends Entitet {
 
     public void setGradovi(List<Grad> gradovi) {
         this.gradovi = gradovi;
+    }    
+
+    public List<Autor> getAutori() {
+        return autori;
+    }
+
+    public void setAutori(List<Autor> autori) {
+        this.autori = autori;
     }    
 
     @Override

@@ -15,13 +15,22 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
     private ObradaGrad obrada;    
     
     private Drzava drzava;
+    
+    private OdabirGrad pozivatelj;
 
     public FrameGrad() {
         initComponents();
-        obrada = new ObradaGrad();        
+        btnOdaberi.setVisible(false);
+        obrada = new ObradaGrad();                
         setTitle(Tools.NAZIV_APP + " | Gradovi");
         ucitajDrzave();
         ucitaj();
+    }
+    
+    public FrameGrad(OdabirGrad odabirGrad) {
+        this();
+        pozivatelj = odabirGrad;
+        btnOdaberi.setVisible(true);
     }
 
     @Override
@@ -29,7 +38,7 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
         DefaultListModel<Grad> m = new DefaultListModel<>();
         m.addAll(obrada.read());
         lstPodaci.setModel(m);
-        lstPodaci.repaint();
+        lstPodaci.repaint();        
     }
     
     private void ucitajDrzave() {
@@ -64,6 +73,7 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
         btnTrazi = new javax.swing.JButton();
         cmbDrzava = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        btnOdaberi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -122,6 +132,13 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
 
         jLabel3.setText("Država:");
 
+        btnOdaberi.setText("Odaberi");
+        btnOdaberi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOdaberiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,30 +151,39 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
                         .addGap(18, 18, 18)
                         .addComponent(btnTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtPostanskiBroj, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbDrzava, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtPostanskiBroj, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbDrzava, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 52, Short.MAX_VALUE))
+                                    .addComponent(txtNazivGrada))
+                                .addGap(6, 6, 6))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                                            .addComponent(btnCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnOdustani, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 8, Short.MAX_VALUE))
-                            .addComponent(txtNazivGrada))
-                        .addGap(6, 6, 6))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnUpdate)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(btnOdustani, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(56, 56, 56)
+                        .addComponent(btnOdaberi)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,14 +206,17 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
                         .addComponent(jLabel3)
                         .addGap(7, 7, 7)
                         .addComponent(cmbDrzava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnUpdate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOdaberi)
+                        .addGap(6, 6, 6))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -230,7 +259,7 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
         obrada.setEntitet(e);
         popuniModel();
 
-        try {
+        try {            
             obrada.update();
             ucitaj();
             
@@ -257,6 +286,7 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
         obrada.setEntitet(e);
 
         try {
+            obrada.refresh();
             obrada.delete();
             ucitaj();
             isprazniView();
@@ -275,6 +305,13 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
         lstPodaci.setModel(m);
         lstPodaci.repaint();
     }//GEN-LAST:event_btnTraziActionPerformed
+
+    private void btnOdaberiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdaberiActionPerformed
+        if (pozivatelj != null && lstPodaci.getSelectedValue() != null) {
+            pozivatelj.setGrad(lstPodaci.getSelectedValue());
+            dispose();
+        }
+    }//GEN-LAST:event_btnOdaberiActionPerformed
 
     @Override
     public void popuniView() {
@@ -297,14 +334,15 @@ public class FrameGrad extends javax.swing.JFrame implements ViewInterface {
     public void popuniModel() {
         var e = obrada.getEntitet();
 
-        e.setNazivGrada(txtNazivGrada.getText());
-        e.setPostanskiBroj(txtPostanskiBroj.getText());        
+        e.setNazivGrada(txtNazivGrada.getText().trim());
+        e.setPostanskiBroj(txtPostanskiBroj.getText().trim());
         e.setDrzava((Drzava)cmbDrzava.getSelectedItem());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnOdaberi;
     private javax.swing.JButton btnOdustani;
     private javax.swing.JButton btnTrazi;
     private javax.swing.JButton btnUpdate;

@@ -5,6 +5,7 @@ import antikvarijat.model.OtkupStavka;
 import antikvarijat.model.ProdajaStavka;
 import antikvarijat.model.Rezervacija;
 import antikvarijat.util.SimpleException;
+import antikvarijat.util.Tools;
 import java.math.BigDecimal;
 import java.text.Collator;
 import java.util.List;
@@ -48,6 +49,7 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
         kontrolaJezik();
         kontrolaBrojStranica();        
         kontrolaVrstaUveza();
+        kontrolaDimenzije();
         kontrolaCijena();        
     }
 
@@ -149,12 +151,18 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
     }
 
     private void kontrolaVrstaUveza() throws SimpleException {        
-        if (entitet.getVrstaUveza() == null) {
+        if (entitet.getVrstaUveza() == null || entitet.getVrstaUveza().equals(Tools.VRSTA_UVEZA_TEMP)) {
             throw new SimpleException("Vrsta uveza mora biti definirana");
         }
         if (entitet.getVrstaUveza().isEmpty()) {
             throw new SimpleException("Vrsta uveza ne smije ostati prazna");
         }
+    }
+    
+    private void kontrolaDimenzije() throws SimpleException {        
+        if (entitet.getDimenzije().equals(Tools.DIMENZIJE_TEMP) || entitet.getDimenzije().isEmpty()) {
+            entitet.setDimenzije("");
+        }        
     }
     
     private void kontrolaCijena() throws SimpleException {

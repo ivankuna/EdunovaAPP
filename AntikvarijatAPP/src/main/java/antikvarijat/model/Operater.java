@@ -14,9 +14,7 @@ public class Operater extends Entitet {
     
     private String oib;
     
-    private String email;
-    
-    private String korisnickoIme;
+    private String email;        
     
     private String lozinka;
     
@@ -31,13 +29,12 @@ public class Operater extends Entitet {
     @OneToMany(mappedBy = "operater")
     private List<Rezervacija> rezervacije = new ArrayList<>();
 
-    public Operater(int id, String ime, String prezime, String oib, String email, String korisnickoIme, String lozinka) {
+    public Operater(int id, String ime, String prezime, String oib, String email, String lozinka) {
         super(id);
         this.ime = ime;
         this.prezime = prezime;
         this.oib = oib;
-        this.email = email;
-        this.korisnickoIme = korisnickoIme;
+        this.email = email;        
         this.lozinka = lozinka;
     }
     
@@ -77,14 +74,6 @@ public class Operater extends Entitet {
         this.email = email;
     }
 
-    public String getKorisnickoIme() {
-        return korisnickoIme;
-    }
-
-    public void setKorisnickoIme(String korisnickoIme) {
-        this.korisnickoIme = korisnickoIme;
-    }
-
     public String getLozinka() {
         return lozinka;
     }
@@ -101,9 +90,33 @@ public class Operater extends Entitet {
         this.uloga = uloga;
     }
 
+    public List<ProdajaZaglavlje> getProdaje() {
+        return prodaje;
+    }
+
+    public void setProdaje(List<ProdajaZaglavlje> prodaje) {
+        this.prodaje = prodaje;
+    }
+
+    public List<OtkupZaglavlje> getOtkupi() {
+        return otkupi;
+    }
+
+    public void setOtkupi(List<OtkupZaglavlje> otkupi) {
+        this.otkupi = otkupi;
+    }
+
+    public List<Rezervacija> getRezervacije() {
+        return rezervacije;
+    }
+
+    public void setRezervacije(List<Rezervacija> rezervacije) {
+        this.rezervacije = rezervacije;
+    }    
+
     @Override
     public String toString() {
-        return korisnickoIme;
+        return ime + " " + prezime;
     }        
 }
 

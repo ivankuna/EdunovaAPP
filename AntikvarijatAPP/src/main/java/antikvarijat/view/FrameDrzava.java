@@ -209,7 +209,8 @@ public class FrameDrzava extends javax.swing.JFrame implements ViewInterface {
 
         obrada.setEntitet(e);
 
-        try {
+        try {            
+            obrada.refresh();
             obrada.delete();
             ucitaj();
             isprazniView();
@@ -245,7 +246,7 @@ public class FrameDrzava extends javax.swing.JFrame implements ViewInterface {
     public void popuniModel() {
         var e = obrada.getEntitet();
 
-        e.setNazivDrzave(txtNazivDrzave.getText());
+        e.setNazivDrzave(txtNazivDrzave.getText().trim());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -25,7 +25,7 @@ public class SplashScreen extends javax.swing.JFrame {
                         "Problem u radu s bazom");
                 return;
             }
-            new Autorizacija().setVisible(true);
+            new FrameAutorizacija().setVisible(true);
             dispose();
         }
     }

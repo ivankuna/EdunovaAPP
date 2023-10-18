@@ -9,11 +9,11 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import org.apache.commons.validator.routines.EmailValidator;
 
-public class Autorizacija extends javax.swing.JFrame {
+public class FrameAutorizacija extends javax.swing.JFrame {
 
     private ObradaOperater obrada;
 
-    public Autorizacija() {
+    public FrameAutorizacija() {
         initComponents();
         obrada = new ObradaOperater();
         setTitle(Tools.NAZIV_APP);
@@ -34,7 +34,7 @@ public class Autorizacija extends javax.swing.JFrame {
 
         jLabel1.setText("Email:");
 
-        txtEmail.setText("oper@edunova.hr");
+        txtEmail.setText("ikuna@edunova.com");
         txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtEmailKeyPressed(evt);
@@ -50,7 +50,7 @@ public class Autorizacija extends javax.swing.JFrame {
             }
         });
 
-        txtLozinka.setText("oper");
+        txtLozinka.setText("lozinka");
         txtLozinka.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtLozinkaKeyPressed(evt);
@@ -133,7 +133,7 @@ public class Autorizacija extends javax.swing.JFrame {
 
         Tools.OPERATER = logiran;
 
-        new Izbornik().setVisible(true);
+        new FrameIzbornik().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnAutorizirajActionPerformed
 

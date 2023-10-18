@@ -1,31 +1,24 @@
 package antikvarijat.view;
 
-import antikvarijat.controller.ObradaGrad;
 import antikvarijat.controller.ObradaIzdavac;
+import antikvarijat.model.Grad;
 import antikvarijat.model.Izdavac;
 import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
+public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface, OdabirGrad {
 
-    private ObradaIzdavac obrada;    
-    
-    private ObradaGrad obradaGrad;            
-    
-    private Integer idGrad = 0;
-    
+    private ObradaIzdavac obrada;
+
+    private Grad odabraniGrad;
+
     public FrameIzdavac() {
         initComponents();
-        obrada = new ObradaIzdavac(); 
-        obradaGrad = new ObradaGrad();        
-        setTitle(Tools.NAZIV_APP + " | Izdavači");               
+        obrada = new ObradaIzdavac();
+        setTitle(Tools.NAZIV_APP + " | Izdavači");
         ucitaj();
-    }
-   
-    public void setIdGrad(int id) {
-        idGrad = id;
     }
 
     @Override
@@ -34,7 +27,13 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
         m.addAll(obrada.read());
         lstPodaci.setModel(m);
         lstPodaci.repaint();
-    }     
+    }
+
+    @Override
+    public void setGrad(Grad grad) {
+        txtGrad.setText(grad.getNazivGrada());
+        odabraniGrad = grad;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -203,7 +202,8 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
         if (lstPodaci.getSelectedValue() == null) {
             return;
         }
-        obrada.setEntitet(lstPodaci.getSelectedValue());           
+        obrada.setEntitet(lstPodaci.getSelectedValue());
+        odabraniGrad = obrada.getEntitet().getGrad();
         popuniView();
     }//GEN-LAST:event_lstPodaciValueChanged
 
@@ -213,8 +213,8 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
         try {
             obrada.create();
             ucitaj();
-            
-            Izdavac dodaniEntitet = obrada.getEntitet();           
+
+            Izdavac dodaniEntitet = obrada.getEntitet();
             lstPodaci.setSelectedValue(dodaniEntitet, true);
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
@@ -232,9 +232,9 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
 
         try {
             obrada.update();
-            ucitaj();                        
-            
-            Izdavac promijenjeniEntitet = obrada.getEntitet();           
+            ucitaj();
+
+            Izdavac promijenjeniEntitet = obrada.getEntitet();
             lstPodaci.setSelectedValue(promijenjeniEntitet, true);
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());
@@ -257,10 +257,11 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
         obrada.setEntitet(e);
 
         try {
+            obrada.refresh();
             obrada.delete();
             ucitaj();
             isprazniView();
-            idGrad = 0;
+            odabraniGrad = null;
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
         }
@@ -276,36 +277,36 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
         lstPodaci.setModel(m);
         lstPodaci.repaint();
     }//GEN-LAST:event_btnTraziActionPerformed
-
+    
     private void btnGradoviActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGradoviActionPerformed
-        new FrameGradOdabir<>(this, null, null).setVisible(true);        
+        new FrameGrad(this).setVisible(true);        
     }//GEN-LAST:event_btnGradoviActionPerformed
 
     @Override
     public void popuniView() {
         var e = obrada.getEntitet();
 
-        txtNazivIzdavaca.setText(e.getNazivIzdavaca());    
+        txtNazivIzdavaca.setText(e.getNazivIzdavaca());
         txtGrad.setText(e.getGrad().getNazivGrada());
     }
-    
+
     public void popuniTxtGrad(String nazivGrada) {
         txtGrad.setText(nazivGrada);
     }
-    
+
     @Override
     public void isprazniView() {
-        txtNazivIzdavaca.setText("");                
-        txtGrad.setText("");        
+        txtNazivIzdavaca.setText("");
+        txtGrad.setText("");
     }
 
     @Override
-    public void popuniModel() {        
+    public void popuniModel() {
         var e = obrada.getEntitet();
 
-        e.setNazivIzdavaca(txtNazivIzdavaca.getText());          
-        e.setGrad(obradaGrad.readBySifra(idGrad));
-    }    
+        e.setNazivIzdavaca(txtNazivIzdavaca.getText().trim());
+        e.setGrad(odabraniGrad);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
@@ -322,5 +323,5 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface {
     private javax.swing.JTextField txtNazivIzdavaca;
     private javax.swing.JTextField txtTrazi;
     // End of variables declaration//GEN-END:variables
-    
+
 }

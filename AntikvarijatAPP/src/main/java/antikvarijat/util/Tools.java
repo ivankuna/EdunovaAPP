@@ -1,15 +1,20 @@
 package antikvarijat.util;
 
+import antikvarijat.controller.ObradaOperater;
 import antikvarijat.model.Operater;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import java.text.SimpleDateFormat;
 
 public class Tools {
     
     public static final String NAZIV_APP = "Antikvarijat APP";     
     
-    public static final String VRSTA_UVEZA_TEMP = "Odaberite/upišite vr. uv.";
+    public static final String VRSTA_UVEZA_TEMP = "Odaberite/upišite uvez";
     
     public static final String DIMENZIJE_TEMP = "Odaberite/upišite dimenzije";
+    
+    public static final String ULOGA_TEMP = "Odaberite ulogu";
     
     public static Operater OPERATER;
     
@@ -17,10 +22,33 @@ public class Tools {
         return OPERATER.getIme() + " " + OPERATER.getPrezime() + " (" + OPERATER.getUloga() + ")";
     }
     
+    public static void unesiAdmina() {
+        Argon2 argon2 = Argon2Factory.create();
+
+        String hash = argon2.hash(10, 65536, 1, "lozinka".toCharArray());
+
+        ObradaOperater oo = new ObradaOperater();
+        Operater o = new Operater();
+        o.setIme("Ivan");
+        o.setPrezime("Kuna");
+        o.setEmail("ikuna@edunova.com");
+        o.setUloga("admin");
+        o.setOib("81425134722");
+        o.setLozinka(hash);
+                
+        oo.setEntitet(o);
+
+        try {
+            oo.create();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");        
     
     public static boolean isValjanOIB(String oib){
-        if(oib==null || oib.length() != 11) {
+        if(oib == null || oib.length() != 11) {
             return false;
         }
         char[] chars = oib.toCharArray();
@@ -41,5 +69,5 @@ public class Tools {
         int kontrolni = 11 - a;
         kontrolni = kontrolni % 10;
         return (kontrolni == (chars[10] - '0'));
-    }
+    }               
 }

@@ -1,5 +1,6 @@
 package antikvarijat.controller;
 
+import antikvarijat.model.Autor;
 import antikvarijat.model.Drzava;
 import antikvarijat.model.Grad;
 import antikvarijat.util.SimpleException;
@@ -55,6 +56,20 @@ public class ObradaDrzava extends Obrada<Drzava> {
                 brojacZareza++;
                 sb.append(g.getNazivGrada());
                 if (brojacZareza < entitet.getGradovi().size()) {
+                    sb.append(",");
+                }
+            }
+            sb.append(")");
+            throw new SimpleException(sb.toString());
+        }
+        if (!entitet.getAutori().isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            int brojacZareza = 0;
+            sb.append("Nemoguće obrisati državu sa unešenim autorima (");
+            for (Autor a : entitet.getAutori()) {
+                brojacZareza++;
+                sb.append(a.getNazivAutora());
+                if (brojacZareza < entitet.getAutori().size()) {
                     sb.append(",");
                 }
             }

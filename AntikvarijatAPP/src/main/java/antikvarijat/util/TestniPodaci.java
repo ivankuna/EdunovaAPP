@@ -23,6 +23,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 
 public class TestniPodaci {
 
@@ -69,8 +71,8 @@ public class TestniPodaci {
         session.getTransaction().begin();
         kreirajDrzaveGradove();
         kreirajAutore();
-        kreirajIzdavaca();
-        kreirajOperatera();
+        kreirajIzdavace();
+        kreirajOperatere();
         kreirajPartnere();
         kreirajKnjige();
         kreirajOtkupe();
@@ -136,7 +138,7 @@ public class TestniPodaci {
         }
     }
 
-    private void kreirajIzdavaca() {
+    private void kreirajIzdavace() {
         Izdavac iz;
 
         for (int i = 0; i < BROJ_IZDAVACA; i++) {
@@ -149,17 +151,20 @@ public class TestniPodaci {
         }
     }
 
-    private void kreirajOperatera() {
+    private void kreirajOperatere() {
         Operater o;
+
+        Argon2 argon2 = Argon2Factory.create();
 
         for (int i = 0; i < BROJ_OPERATERA; i++) {
             o = new Operater();
             o.setIme(faker.name().firstName());
             o.setPrezime(faker.name().lastName());
-            o.setKorisnickoIme(o.getIme().charAt(0) + o.getPrezime());
-            o.setEmail(o.getKorisnickoIme().trim().toLowerCase() + "@" + faker.job().field().strip().toLowerCase() + ".com");
-            o.setLozinka(String.valueOf(faker.number().numberBetween(1000, 9999)));
+            o.setEmail((o.getIme() + o.getPrezime()).trim().toLowerCase() + "@" + faker.job().field().strip().toLowerCase() + ".com");
+            String hash = argon2.hash(10, 65536, 1, String.valueOf(faker.number().numberBetween(1000, 9999)).toCharArray());
+            o.setLozinka(hash);            
             o.setOib(OibGenerator.getOib());
+            o.setUloga("oper");
 
             session.persist(o);
             operateri.add(o);

@@ -1,10 +1,10 @@
 package antikvarijat.view;
 
-import antikvarijat.controller.ObradaAutor;
 import antikvarijat.controller.ObradaIzdavac;
 import antikvarijat.controller.ObradaKnjiga;
 import antikvarijat.model.Izdavac;
 import antikvarijat.model.Knjiga;
+import antikvarijat.model.Autor;
 import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
 import java.math.BigDecimal;
@@ -19,22 +19,19 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
+public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, OdabirAutor {
 
     private ObradaKnjiga obrada;
 
     private Izdavac izdavacTemp;
-
-    private ObradaAutor obradaAutor;
-
-    private Integer idAutor = 0;
-
+    
+    private Autor odabraniAutor;
+       
     private DecimalFormat df;
 
     public FrameKnjiga() {
         initComponents();
-        obrada = new ObradaKnjiga();
-        obradaAutor = new ObradaAutor();
+        obrada = new ObradaKnjiga();        
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.of("hr", "HR"));
         df = new DecimalFormat("###,##0.00", dfs);
         setTitle(Tools.NAZIV_APP + " | Knjige");
@@ -105,7 +102,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
         for (Knjiga k : knjige) {
             dopustenUnos = true;
             for (String d : dimenzije) {
-                if (k.getDimenzije().equals(d)) {
+                if (k.getDimenzije().equals(d) || k.getDimenzije().equals("")) {
                     dopustenUnos = false;
                 }
             }
@@ -119,9 +116,11 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
         cmbDimenzije.setModel(m);
         cmbDimenzije.repaint();
     }
-
-    public void setIdAutor(int id) {
-        idAutor = id;
+    
+    @Override
+    public void setAutor(Autor autor) {
+        txtAutor.setText(autor.getNazivAutora());
+        odabraniAutor = autor;
     }
 
     @SuppressWarnings("unchecked")
@@ -370,8 +369,8 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
         if (lstPodaci.getSelectedValue() == null) {
             return;
         }
-        obrada.setEntitet(lstPodaci.getSelectedValue());
-        idAutor = lstPodaci.getSelectedValue().getAutor().getId();
+        obrada.setEntitet(lstPodaci.getSelectedValue()); 
+        odabraniAutor = obrada.getEntitet().getAutor();
         popuniView();
     }//GEN-LAST:event_lstPodaciValueChanged
 
@@ -430,10 +429,11 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
         obrada.setEntitet(e);
 
         try {
+            obrada.refresh();
             obrada.delete();
             ucitaj();
-            isprazniView();
-            idAutor = 0;
+            isprazniView();     
+            odabraniAutor = null;
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
         }
@@ -451,7 +451,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
     }//GEN-LAST:event_btnTraziActionPerformed
 
     private void btnAutoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoriActionPerformed
-        new FrameAutorOdabir(this).setVisible(true);
+        new FrameAutor(this).setVisible(true);
     }//GEN-LAST:event_btnAutoriActionPerformed
 
     @Override
@@ -502,22 +502,24 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
     public void popuniModel() {
         var e = obrada.getEntitet();
 
-        e.setNazivKnjige(txtNazivKnjige.getText());
-        e.setAutor(obradaAutor.readBySifra(idAutor));
+        e.setNazivKnjige(txtNazivKnjige.getText().trim());
+        e.setAutor(odabraniAutor);
         e.setIzdavac((Izdavac) cmbIzdavac.getSelectedItem());
         try {
             e.setGodinaIzdanja(Integer.parseInt(txtGodinaIzdanja.getText()));
         } catch (NumberFormatException ex) {
             e.setGodinaIzdanja(0);
         }
-        e.setJezik(txtJezik.getText());
+        e.setJezik(txtJezik.getText().trim());
         try {
             e.setBrojStranica(Integer.parseInt(txtBrojStranica.getText()));
         } catch (NumberFormatException ex) {
             e.setBrojStranica(0);
         }
-        e.setVrstaUveza((String) cmbVrstaUveza.getSelectedItem());
-        e.setDimenzije((String) cmbDimenzije.getSelectedItem());
+        String vrstaUvezaTemp = (String) cmbVrstaUveza.getSelectedItem();
+        e.setVrstaUveza(vrstaUvezaTemp.trim());
+        String dimenzijeTemp = (String) cmbDimenzije.getSelectedItem();
+        e.setDimenzije(dimenzijeTemp.trim());
         try {
             e.setCijena(BigDecimal.valueOf(df.parse(txtCijena.getText()).doubleValue()));
         } catch (ParseException ex) {
@@ -545,8 +547,12 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
     public void dodajDimenziju() {
         boolean mozeDalje = true;
 
-        String novaDimenzija = (String) cmbDimenzije.getSelectedItem();
-
+        String novaDimenzija = ((String) cmbDimenzije.getSelectedItem()).trim();
+        
+        if (novaDimenzija.equals("")) {
+            return;            
+        }
+        
         ComboBoxModel<String> m = cmbDimenzije.getModel();
 
         for (int i = 0; i < m.getSize(); i++) {
@@ -588,5 +594,5 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface {
     private javax.swing.JTextField txtNazivKnjige;
     private javax.swing.JTextField txtTrazi;
     // End of variables declaration//GEN-END:variables
-
+    
 }

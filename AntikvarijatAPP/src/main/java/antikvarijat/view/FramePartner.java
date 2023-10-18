@@ -1,32 +1,25 @@
 package antikvarijat.view;
 
-import antikvarijat.controller.ObradaGrad;
 import antikvarijat.controller.ObradaPartner;
+import antikvarijat.model.Grad;
 import antikvarijat.model.Partner;
 import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-public class FramePartner extends javax.swing.JFrame implements ViewInterface {
+public class FramePartner extends javax.swing.JFrame implements ViewInterface, OdabirGrad {
 
-    private ObradaPartner obrada;    
+    private ObradaPartner obrada;            
     
-    private ObradaGrad obradaGrad;            
-    
-    private Integer idGrad = 0;
+    private Grad odabraniGrad;
     
     public FramePartner() {
         initComponents();
-        obrada = new ObradaPartner();    
-        obradaGrad = new ObradaGrad();   
+        obrada = new ObradaPartner();            
         setTitle(Tools.NAZIV_APP + " | Partneri");               
         ucitaj();
-    }
-    
-    public void setIdGrad(int id) {
-        idGrad = id;
-    }
+    }  
 
     @Override
     public void ucitaj() {
@@ -35,6 +28,12 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface {
         lstPodaci.setModel(m);
         lstPodaci.repaint();
     }   
+    
+    @Override
+    public void setGrad(Grad grad) {
+        txtGrad.setText(grad.getNazivGrada());
+        odabraniGrad = grad;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -246,7 +245,8 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface {
         if (lstPodaci.getSelectedValue() == null) {
             return;
         }
-        obrada.setEntitet(lstPodaci.getSelectedValue());        
+        obrada.setEntitet(lstPodaci.getSelectedValue());   
+        odabraniGrad = obrada.getEntitet().getGrad();
         popuniView();
     }//GEN-LAST:event_lstPodaciValueChanged
 
@@ -300,10 +300,11 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface {
         obrada.setEntitet(e);
 
         try {
+            obrada.refresh();
             obrada.delete();
             ucitaj();
-            isprazniView();
-            idGrad = 0;
+            isprazniView();    
+            odabraniGrad = null;
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
         }
@@ -321,7 +322,7 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface {
     }//GEN-LAST:event_btnTraziActionPerformed
 
     private void btnGradoviActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGradoviActionPerformed
-        new FrameGradOdabir<>(this, null, null).setVisible(true);        
+        new FrameGrad(this).setVisible(true);
     }//GEN-LAST:event_btnGradoviActionPerformed
 
     @Override
@@ -354,12 +355,12 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface {
     public void popuniModel() {
         var e = obrada.getEntitet();
 
-        e.setNazivPartnera(txtNazivPartnera.getText());   
-        e.setEmail(txtEmail.getText());
-        e.setOib(txtOib.getText());
-        e.setTelefon(txtTelefon.getText());
-        e.setGrad(obradaGrad.readBySifra(idGrad));
-        e.setUlicaBroj(txtUlicaBroj.getText());
+        e.setNazivPartnera(txtNazivPartnera.getText().trim());   
+        e.setEmail(txtEmail.getText().trim());
+        e.setOib(txtOib.getText().trim());
+        e.setTelefon(txtTelefon.getText().trim());
+        e.setGrad(odabraniGrad);
+        e.setUlicaBroj(txtUlicaBroj.getText().trim());
     }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -385,5 +386,5 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface {
     private javax.swing.JTextField txtTrazi;
     private javax.swing.JTextField txtUlicaBroj;
     // End of variables declaration//GEN-END:variables
-    
+        
 }

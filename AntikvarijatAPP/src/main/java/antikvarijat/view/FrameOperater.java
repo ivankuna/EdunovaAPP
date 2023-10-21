@@ -8,10 +8,10 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import java.util.Arrays;
 
 public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
 
@@ -83,7 +83,9 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         cmbUloge = new javax.swing.JComboBox<>();
-        txtLozinka = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtLozinka = new javax.swing.JPasswordField();
+        txtLozinkaPotvrda = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -99,11 +101,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         });
 
         btnUpdate.setText("Promijeni");
-        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateActionPerformed(evt);
-            }
-        });
+        btnUpdate.setEnabled(false);
 
         btnDelete.setText("Obriši");
         btnDelete.setMaximumSize(new java.awt.Dimension(81, 23));
@@ -150,6 +148,8 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
 
         cmbUloge.setEditable(true);
 
+        jLabel7.setText("Potvrdi lozinku:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -164,7 +164,6 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbUloge, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -183,12 +182,17 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
                             .addComponent(txtOib, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtLozinka, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbUloge, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtLozinka, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtLozinkaPotvrda, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,6 +223,10 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtLozinka, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtLozinkaPotvrda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -258,34 +266,11 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
             ucitaj();
             
             Operater dodaniEntitet = obrada.getEntitet();           
-            lstPodaci.setSelectedValue(dodaniEntitet, true);
-            dodajUlogu();
+            lstPodaci.setSelectedValue(dodaniEntitet, true);            
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
         }
     }//GEN-LAST:event_btnCreateActionPerformed
-
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        if (lstPodaci.getSelectedValue() == null) {
-            return;
-        }
-        var e = lstPodaci.getSelectedValue();
-
-        obrada.setEntitet(e);
-        popuniModel();
-
-        try {
-            obrada.update();
-            ucitaj();
-            
-            Operater promijenjeniEntitet = obrada.getEntitet();           
-            lstPodaci.setSelectedValue(promijenjeniEntitet, true);
-            dodajUlogu();
-        } catch (SimpleException ex) {
-            JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());
-            obrada.refresh();
-        }
-    }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         if (lstPodaci.getSelectedValue() == null) {
@@ -330,7 +315,8 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         txtPrezime.setText(e.getPrezime());
         txtOib.setText(e.getOib());
         txtEmail.setText(e.getEmail());
-        txtLozinka.setText(e.getLozinka());
+        txtLozinka.setText("");
+        txtLozinkaPotvrda.setText("");
         cmbUloge.setSelectedItem(e.getUloga());
     }
     
@@ -341,40 +327,38 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         txtOib.setText("");
         txtEmail.setText("");
         txtLozinka.setText("");
+        txtLozinkaPotvrda.setText("");
         cmbUloge.setSelectedItem(Tools.ULOGA_TEMP);
     }
 
     @Override
     public void popuniModel() {
-        var e = obrada.getEntitet();
-
+        var e = obrada.getEntitet();        
+        String hash = "";
+        StringBuilder sb = new StringBuilder();
+        
+        for (char c : txtLozinka.getPassword()) {
+            sb.append(c);
+        }        
+        
         e.setIme(txtIme.getText().trim());
         e.setPrezime(txtPrezime.getText().trim());
         e.setOib(txtOib.getText().trim());
-        e.setEmail(txtEmail.getText().trim());        
-        Argon2 argon2 = Argon2Factory.create();        
-        String hash = argon2.hash(10, 65536, 1, txtLozinka.getText().trim().toCharArray());
-        e.setLozinka(hash);        
+        e.setEmail(txtEmail.getText().trim());
+        
+        if (sb.toString().trim().equals("")) {
+            e.setLozinka(hash);
+        } else if (Arrays.equals(txtLozinka.getPassword(), txtLozinkaPotvrda.getPassword())) {
+            Argon2 argon2 = Argon2Factory.create();
+            hash = argon2.hash(10, 65536, 1, txtLozinka.getPassword());
+            e.setLozinka(hash);
+        } else {
+            e.setLozinka(null);
+        }               
+        
         String ulogaTemp = (String) cmbUloge.getSelectedItem();        
         e.setUloga(ulogaTemp.trim());
-    }
-    
-    public void dodajUlogu() {
-        boolean mozeDalje = true;
-
-        String novaUloga = (String) cmbUloge.getSelectedItem();
-
-        ComboBoxModel<String> m = cmbUloge.getModel();
-
-        for (int i = 0; i < m.getSize(); i++) {
-            if (novaUloga.equals(m.getElementAt(i))) {
-                mozeDalje = false;
-            }
-        }
-        if (mozeDalje) {
-            cmbUloge.addItem(novaUloga);
-        }
-    }
+    }   
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -389,12 +373,14 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<Operater> lstPodaci;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtIme;
-    private javax.swing.JTextField txtLozinka;
+    private javax.swing.JPasswordField txtLozinka;
+    private javax.swing.JPasswordField txtLozinkaPotvrda;
     private javax.swing.JTextField txtOib;
     private javax.swing.JTextField txtPrezime;
     private javax.swing.JTextField txtTrazi;

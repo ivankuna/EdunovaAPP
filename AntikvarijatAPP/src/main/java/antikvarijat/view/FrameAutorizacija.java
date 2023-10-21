@@ -1,7 +1,6 @@
 package antikvarijat.view;
 
 import antikvarijat.controller.ObradaOperater;
-import antikvarijat.model.Operater;
 import antikvarijat.util.Tools;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -50,7 +49,7 @@ public class FrameAutorizacija extends javax.swing.JFrame {
             }
         });
 
-        txtLozinka.setText("lozinka");
+        txtLozinka.setText("123");
         txtLozinka.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtLozinkaKeyPressed(evt);
@@ -118,20 +117,13 @@ public class FrameAutorizacija extends javax.swing.JFrame {
             return;
         }
         
-        Operater o = obrada.autoriziraj(email, new String(txtLozinka.getPassword()));
+        Tools.OPERATER = obrada.autoriziraj(email, new String(txtLozinka.getPassword()));
 
-        if (o == null) {
+        if (Tools.OPERATER == null) {
             JOptionPane.showMessageDialog(getRootPane(),
                     "Neispravna kombinacija email i lozinka");
             return;
         }
-        
-        Operater logiran = new Operater();
-        logiran.setIme(o.getIme());
-        logiran.setPrezime(o.getPrezime());
-        logiran.setUloga(o.getUloga());
-
-        Tools.OPERATER = logiran;
 
         new FrameIzbornik().setVisible(true);
         dispose();

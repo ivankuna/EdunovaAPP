@@ -67,6 +67,21 @@
             <artifactId>argon2-jvm</artifactId>
             <version>2.11</version>
         </dependency>
+        
+        <!-- https://projectlombok.org/setup/maven -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>        
+        
+        <!-- https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker -->
+        <dependency>
+            <groupId>com.github.lgooddatepicker</groupId>
+            <artifactId>LGoodDatePicker</artifactId>
+            <version>11.2.1</version>
+        </dependency>
     </dependencies>
     <name>AntikvarijatAPP</name>
 </project>

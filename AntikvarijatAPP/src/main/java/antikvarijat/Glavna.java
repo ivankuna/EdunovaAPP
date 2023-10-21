@@ -13,6 +13,6 @@ public class Glavna {
 //        HibernateUtil.getSession();
 //        Tools.unesiAdmina();
 
-        new SplashScreen().setVisible(true);
+        new SplashScreen().setVisible(true);        
     }
 }

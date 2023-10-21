@@ -4,6 +4,7 @@ C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarij
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\Knjiga.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\controller\ObradaKnjiga.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\view\FramePartner.java
+C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\view\FrameOtkup.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\Izdavac.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\view\ViewInterface.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\controller\Obrada.java
@@ -29,6 +30,7 @@ C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarij
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\Grad.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\util\SimpleException.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\OtkupStavka.java
+C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\view\FrameOtkupZaglavlje.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\controller\ObradaProdajaStavka.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\importpodataka\GradGson.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\NacinPlacanja.java
@@ -44,6 +46,7 @@ C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarij
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\OtkupZaglavlje.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\Glavna.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\Entitet.java
+C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\view\FramePromjenaLozinke.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\controller\ObradaGrad.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\model\ProdajaStavka.java
 C:\Users\ivank\[Posao]\NetBeansProjects\AntikvarijatAPP\src\main\java\antikvarijat\view\FrameGrad.java

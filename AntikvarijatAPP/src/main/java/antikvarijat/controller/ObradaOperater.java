@@ -40,7 +40,7 @@ public class ObradaOperater extends Obrada<Operater> {
     public Operater readBySifra(int id) {
         return session.get(Operater.class, id);
     }
-
+        
     @Override
     protected void kontrolaUnos() throws SimpleException {
         kontrolaIme();
@@ -59,7 +59,7 @@ public class ObradaOperater extends Obrada<Operater> {
     @Override
     protected void kontrolaBrisanje() throws SimpleException {
         if (entitet.getUloga().equals("admin")) {
-            throw new SimpleException("Nemoguće obrisati admina");            
+            throw new SimpleException("Nemoguće obrisati admina");
         }
         if (!entitet.getOtkupi().isEmpty()) {
             StringBuilder sb = new StringBuilder();
@@ -171,7 +171,7 @@ public class ObradaOperater extends Obrada<Operater> {
         if (!validator.isValid(entitet.getEmail())) {
             throw new SimpleException("Email nije u dobrom formatu");
         }
-        
+
         List<Operater> operateri = session.createQuery("from Operater o where o.email =:uvjet "
                 + " and o.id!=:id", Operater.class)
                 .setParameter("uvjet", entitet.getEmail())
@@ -183,30 +183,21 @@ public class ObradaOperater extends Obrada<Operater> {
         }
     }
 
-    private void kontrolaLozinka() throws SimpleException {
-        if (entitet.getEmail() == null) {
-            throw new SimpleException("Email mora biti definiran");
+    private void kontrolaLozinka() throws SimpleException {                
+        if (entitet.getLozinka() == null) {
+            throw new SimpleException("Lozinke se ne podudaraju");
         }
-        if (entitet.getEmail().isEmpty()) {
-            throw new SimpleException("Email ne smije ostati prazan");
-        }
-        List<Operater> operateri = session.createQuery("from Operater o where o.lozinka =:uvjet "
-                + " and o.id!=:id", Operater.class)
-                .setParameter("uvjet", entitet.getLozinka())
-                .setParameter("id", entitet.getId() == null ? 0 : entitet.getId())
-                .list();
-
-        if (operateri != null && !operateri.isEmpty()) {
-            throw new SimpleException("Lozinka je zauzeta");
-        }       
-    }
+        if (entitet.getLozinka().isEmpty()) {
+            throw new SimpleException("Lozinka ne smije ostati prazna");
+        }                
+    }   
 
     private void kontrolaUloga() throws SimpleException {
-        if (entitet.getUloga()== null || entitet.getUloga().equals(Tools.ULOGA_TEMP)) {
+        if (entitet.getUloga() == null || entitet.getUloga().equals(Tools.ULOGA_TEMP)) {
             throw new SimpleException("Uloga mora biti definirana");
         }
         if (entitet.getUloga().isEmpty()) {
             throw new SimpleException("Uloga ne smije ostati prazna");
         }
-    }
+    }        
 }

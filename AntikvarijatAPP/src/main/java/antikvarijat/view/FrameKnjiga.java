@@ -25,15 +25,11 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
 
     private Izdavac izdavacTemp;
     
-    private Autor odabraniAutor;
-       
-    private DecimalFormat df;
+    private Autor odabraniAutor;           
 
     public FrameKnjiga() {
         initComponents();
-        obrada = new ObradaKnjiga();        
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.of("hr", "HR"));
-        df = new DecimalFormat("###,##0.00", dfs);
+        obrada = new ObradaKnjiga();                
         setTitle(Tools.NAZIV_APP + " | Knjige");
         ucitajIzdavace();
         ucitajVrsteUveza();
@@ -475,9 +471,9 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         cmbVrstaUveza.setSelectedItem(e.getVrstaUveza());
         cmbDimenzije.setSelectedItem(e.getDimenzije());
         try {
-            txtCijena.setText(df.format(e.getCijena()));
+            txtCijena.setText(Tools.DECIMAL_FORMAT.format(e.getCijena()));
         } catch (Exception ex) {
-            txtCijena.setText(df.format(0));
+            txtCijena.setText(Tools.DECIMAL_FORMAT.format(0));
         }
     }
 
@@ -494,7 +490,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         txtJezik.setText("");
         txtBrojStranica.setText("");
         cmbVrstaUveza.setSelectedItem(Tools.VRSTA_UVEZA_TEMP);
-        cmbDimenzije.setSelectedItem(Tools.DIMENZIJE_TEMP);
+        cmbDimenzije.setSelectedItem(Tools.DIMENZIJE_TEMP);        
         txtCijena.setText("");
     }
 
@@ -521,7 +517,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         String dimenzijeTemp = (String) cmbDimenzije.getSelectedItem();
         e.setDimenzije(dimenzijeTemp.trim());
         try {
-            e.setCijena(BigDecimal.valueOf(df.parse(txtCijena.getText()).doubleValue()));
+            e.setCijena(BigDecimal.valueOf(Tools.DECIMAL_FORMAT.parse(txtCijena.getText()).doubleValue()));
         } catch (ParseException ex) {
             e.setCijena(BigDecimal.ZERO);
         }

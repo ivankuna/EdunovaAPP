@@ -4,12 +4,9 @@ import antikvarijat.util.Tools;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Entity
 public class OtkupZaglavlje extends Entitet {
@@ -70,8 +67,6 @@ public class OtkupZaglavlje extends Entitet {
 
     @Override
     public String toString() {
-        return "Br. otkupa: " + String.valueOf(getId()) + " | " + "formatirati datum" + " | "
-                + operater.getIme() + " " + operater.getPrezime() + " (" + operater.getUloga() + ")";
-
+        return "ID: " + String.valueOf(getId()) + " | " + Tools.DATE_FORMAT.format(datumOtkupa) + " | Partner: " + partner.getNazivPartnera();
     }
 }

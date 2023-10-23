@@ -4,13 +4,15 @@ import antikvarijat.controller.ObradaOtkupStavka;
 import antikvarijat.controller.ObradaOtkupZaglavlje;
 import antikvarijat.model.OtkupStavka;
 import antikvarijat.model.OtkupZaglavlje;
+import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 public class FrameOtkup extends javax.swing.JFrame {
 
-    private ObradaOtkupZaglavlje obradaZaglavlje;
-    
+    protected ObradaOtkupZaglavlje obradaZaglavlje;
+
     private ObradaOtkupStavka obradaStavka;
 
     public FrameOtkup() {
@@ -20,17 +22,17 @@ public class FrameOtkup extends javax.swing.JFrame {
         setTitle(Tools.NAZIV_APP + " | Otkup");
         ucitajZaglavlja();
     }
-    
+
     public void ucitajZaglavlja() {
         DefaultListModel<OtkupZaglavlje> m = new DefaultListModel<>();
         m.addAll(obradaZaglavlje.read());
         lstZaglavlja.setModel(m);
         lstZaglavlja.repaint();
     }
-    
-    public void ucitajStavke() {
+
+    public void ucitajStavke(OtkupZaglavlje otkupZaglavlje) {
         DefaultListModel<OtkupStavka> m = new DefaultListModel<>();
-        m.addAll(obradaZaglavlje.getEntitet().getOtkupi());
+        m.addAll(obradaStavka.read(otkupZaglavlje));
         lstStavke.setModel(m);
         lstStavke.repaint();
     }
@@ -73,6 +75,11 @@ public class FrameOtkup extends javax.swing.JFrame {
         btnObrisiStavku.setText("Obriši");
         btnObrisiStavku.setMaximumSize(new java.awt.Dimension(81, 23));
         btnObrisiStavku.setMinimumSize(new java.awt.Dimension(81, 23));
+        btnObrisiStavku.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObrisiStavkuActionPerformed(evt);
+            }
+        });
 
         lstStavke.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstStavke.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -101,8 +108,18 @@ public class FrameOtkup extends javax.swing.JFrame {
         btnDodajStavku.setText("Dodaj");
         btnDodajStavku.setMaximumSize(new java.awt.Dimension(81, 23));
         btnDodajStavku.setMinimumSize(new java.awt.Dimension(81, 23));
+        btnDodajStavku.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDodajStavkuActionPerformed(evt);
+            }
+        });
 
         btnPromijeniStavku.setText("Promijeni");
+        btnPromijeniStavku.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPromijeniStavkuActionPerformed(evt);
+            }
+        });
 
         lstZaglavlja.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstZaglavlja.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -117,28 +134,27 @@ public class FrameOtkup extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(398, 398, 398)
-                .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnPromijeniZaglavlje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDodajZaglavlje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDodajStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPromijeniStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnObrisiStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(16, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(btnPromijeniZaglavlje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDodajZaglavlje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDodajStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPromijeniStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnObrisiStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,7 +168,7 @@ public class FrameOtkup extends javax.swing.JFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnDodajZaglavlje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPromijeniZaglavlje)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,8 +193,17 @@ public class FrameOtkup extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOdustaniActionPerformed
 
     private void btnTraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraziActionPerformed
+        int searchNumber;
+        if (txtTrazi.getText().trim().equals("")) {
+            return;
+        }
+        try {
+            searchNumber = Integer.parseInt(txtTrazi.getText().trim());
+        } catch (NumberFormatException ex) {
+            return;
+        }
         DefaultListModel<OtkupZaglavlje> m = new DefaultListModel<>();
-        m.addAll(obradaZaglavlje.read(txtTrazi.getText()));
+        m.addAll(obradaZaglavlje.read(searchNumber));
         lstZaglavlja.setModel(m);
         lstZaglavlja.repaint();
     }//GEN-LAST:event_btnTraziActionPerformed
@@ -189,9 +214,9 @@ public class FrameOtkup extends javax.swing.JFrame {
         }
         if (lstZaglavlja.getSelectedValue() == null) {
             return;
-        }        
+        }
         obradaZaglavlje.setEntitet(lstZaglavlja.getSelectedValue());
-        ucitajStavke();
+        ucitajStavke(obradaZaglavlje.getEntitet());
     }//GEN-LAST:event_lstZaglavljaValueChanged
 
     private void lstStavkeValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstStavkeValueChanged
@@ -200,24 +225,64 @@ public class FrameOtkup extends javax.swing.JFrame {
         }
         if (lstStavke.getSelectedValue() == null) {
             return;
-        }        
+        }
         obradaStavka.setEntitet(lstStavke.getSelectedValue());
     }//GEN-LAST:event_lstStavkeValueChanged
 
     private void btnDodajZaglavljeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajZaglavljeActionPerformed
-        new FrameOtkupZaglavlje(null).setVisible(true);
-        
-//        ucitajZaglavlja();
-        lstZaglavlja.setSelectedIndex(lstZaglavlja.getModel().getSize());        
+        new FrameOtkupZaglavlje(null, this).setVisible(true);
     }//GEN-LAST:event_btnDodajZaglavljeActionPerformed
 
     private void btnPromijeniZaglavljeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromijeniZaglavljeActionPerformed
-        new FrameOtkupZaglavlje(obradaZaglavlje.getEntitet()).setVisible(true);
-        
-        OtkupZaglavlje promjenjeniEntitet = obradaZaglavlje.getEntitet();           
-        lstZaglavlja.setSelectedValue(promjenjeniEntitet, true);
+        if (lstZaglavlja.getSelectedValue() == null) {
+            return;
+        }
+        new FrameOtkupZaglavlje(obradaZaglavlje.getEntitet(), this).setVisible(true);
     }//GEN-LAST:event_btnPromijeniZaglavljeActionPerformed
 
+    private void btnDodajStavkuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDodajStavkuActionPerformed
+        if (lstZaglavlja.getSelectedValue() == null) {
+            return;
+        }
+        new FrameOtkupStavka(null, obradaZaglavlje.getEntitet(), this).setVisible(true);
+    }//GEN-LAST:event_btnDodajStavkuActionPerformed
+
+    private void btnPromijeniStavkuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPromijeniStavkuActionPerformed
+        if (lstStavke.getSelectedValue() == null) {
+            return;
+        }
+        new FrameOtkupStavka(obradaStavka.getEntitet(), null, this).setVisible(true);
+    }//GEN-LAST:event_btnPromijeniStavkuActionPerformed
+        
+    private void btnObrisiStavkuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrisiStavkuActionPerformed
+        if (lstStavke.getSelectedValue() == null) {
+            return;
+        }
+
+        var e = lstStavke.getSelectedValue();
+
+        if (JOptionPane.showConfirmDialog(getRootPane(), "ID: " + e.getId(), "Jeste li sigurni?",
+                JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        obradaStavka.setEntitet(e);
+
+        try {            
+            obradaStavka.refresh();
+            obradaStavka.delete();            
+            ucitajStavke(obradaStavka.getEntitet().getOtkupZaglavlje());            
+        } catch (SimpleException ex) {
+            JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+        }
+    }//GEN-LAST:event_btnObrisiStavkuActionPerformed
+    public void setSelectedValueLstZaglavlja(OtkupZaglavlje oz) {
+        lstZaglavlja.setSelectedValue(oz, true);
+    }
+
+    public void setSelectedValueLstStavke(OtkupStavka os) {
+        lstStavke.setSelectedValue(os, true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodajStavku;
@@ -233,5 +298,5 @@ public class FrameOtkup extends javax.swing.JFrame {
     private javax.swing.JList<OtkupZaglavlje> lstZaglavlja;
     private javax.swing.JTextField txtTrazi;
     // End of variables declaration//GEN-END:variables
-    
+
 }

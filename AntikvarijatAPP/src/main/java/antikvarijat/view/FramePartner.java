@@ -280,8 +280,7 @@ public class FramePartner extends javax.swing.JFrame implements ViewInterface, O
             Partner promijenjeniEntitet = obrada.getEntitet();           
             lstPodaci.setSelectedValue(promijenjeniEntitet, true);
         } catch (SimpleException ex) {
-            JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());
-            obrada.refresh();
+            JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());            
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 

@@ -25,16 +25,25 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
 
     private Izdavac izdavacTemp;
     
-    private Autor odabraniAutor;           
+    private Autor odabraniAutor;   
+    
+    private OdabirKnjiga pozivatelj;
 
     public FrameKnjiga() {
         initComponents();
+        btnOdaberi.setVisible(false);
         obrada = new ObradaKnjiga();                
         setTitle(Tools.NAZIV_APP + " | Knjige");
         ucitajIzdavace();
         ucitajVrsteUveza();
         ucitajDimenzije();
         ucitaj();
+    }
+    
+    public FrameKnjiga(OdabirKnjiga odabirKnjiga) {
+        this();
+        pozivatelj = odabirKnjiga;
+        btnOdaberi.setVisible(true);
     }
 
     @Override
@@ -150,6 +159,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         txtCijena = new javax.swing.JTextField();
         cmbVrstaUveza = new javax.swing.JComboBox<>();
         cmbDimenzije = new javax.swing.JComboBox<>();
+        btnOdaberi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -233,6 +243,13 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
 
         cmbDimenzije.setEditable(true);
 
+        btnOdaberi.setText("Odaberi");
+        btnOdaberi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOdaberiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -266,31 +283,35 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                                            .addComponent(btnCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(btnOdustani, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 17, Short.MAX_VALUE))
+                                .addGap(0, 61, Short.MAX_VALUE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(6, 6, 6))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmbVrstaUveza, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(cmbDimenzije, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnUpdate)
+                                    .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addComponent(btnOdaberi)))
+                        .addContainerGap(14, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,14 +363,16 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCijena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnUpdate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOdaberi))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -405,8 +428,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
             dodajVrstuUveza();
             dodajDimenziju();
         } catch (SimpleException ex) {
-            JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());
-            obrada.refresh();
+            JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());            
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -450,6 +472,13 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         new FrameAutor(this).setVisible(true);
     }//GEN-LAST:event_btnAutoriActionPerformed
 
+    private void btnOdaberiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdaberiActionPerformed
+        if (pozivatelj != null && lstPodaci.getSelectedValue() != null) {
+            pozivatelj.setKnjiga(lstPodaci.getSelectedValue());
+            dispose();
+        }
+    }//GEN-LAST:event_btnOdaberiActionPerformed
+
     @Override
     public void popuniView() {
         var e = obrada.getEntitet();
@@ -477,10 +506,6 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         }
     }
 
-    public void popuniTxtAutor(String nazivAutora) {
-        txtAutor.setText(nazivAutora);
-    }
-
     @Override
     public void isprazniView() {
         txtNazivKnjige.setText("");
@@ -502,13 +527,13 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         e.setAutor(odabraniAutor);
         e.setIzdavac((Izdavac) cmbIzdavac.getSelectedItem());
         try {
-            e.setGodinaIzdanja(Integer.parseInt(txtGodinaIzdanja.getText()));
+            e.setGodinaIzdanja(Integer.valueOf(txtGodinaIzdanja.getText()));
         } catch (NumberFormatException ex) {
             e.setGodinaIzdanja(0);
         }
         e.setJezik(txtJezik.getText().trim());
         try {
-            e.setBrojStranica(Integer.parseInt(txtBrojStranica.getText()));
+            e.setBrojStranica(Integer.valueOf(txtBrojStranica.getText()));
         } catch (NumberFormatException ex) {
             e.setBrojStranica(0);
         }
@@ -565,6 +590,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
     private javax.swing.JButton btnAutori;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnOdaberi;
     private javax.swing.JButton btnOdustani;
     private javax.swing.JButton btnTrazi;
     private javax.swing.JButton btnUpdate;

@@ -155,6 +155,6 @@ public class Knjiga extends Entitet {
 
     @Override
     public String toString() {
-        return getAutor().getNazivAutora() + ", " + nazivKnjige;
+        return autor.getNazivAutora() + ", " + nazivKnjige;
     }        
 }

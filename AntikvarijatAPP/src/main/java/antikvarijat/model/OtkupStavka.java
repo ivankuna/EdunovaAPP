@@ -6,17 +6,17 @@ import java.math.BigDecimal;
 
 @Entity
 public class OtkupStavka extends Entitet {
-    
+
     @ManyToOne
     private OtkupZaglavlje otkupZaglavlje;
-    
+
     @ManyToOne
     private Knjiga knjiga;
-    
+
     private Integer kolicina;
-    
+
     private BigDecimal cijenaOtkupaArtikla;
-    
+
     private BigDecimal cijenaOtkupa;
 
     public OtkupStavka(int id, OtkupZaglavlje otkupZaglavlje, Knjiga knjiga, Integer kolicina, BigDecimal cijenaOtkupaArtikla, BigDecimal cijenaOtkupa) {
@@ -27,9 +27,9 @@ public class OtkupStavka extends Entitet {
         this.cijenaOtkupaArtikla = cijenaOtkupaArtikla;
         this.cijenaOtkupa = cijenaOtkupa;
     }
-    
+
     public OtkupStavka() {
-        
+
     }
 
     public OtkupZaglavlje getOtkupZaglavlje() {
@@ -71,5 +71,11 @@ public class OtkupStavka extends Entitet {
     public void setCijenaOtkupa(BigDecimal cijenaOtkupa) {
         this.cijenaOtkupa = cijenaOtkupa;
     }
-}
 
+    @Override
+    public String toString() {
+        return "ID: " + String.valueOf(getId()) + " | " + knjiga.getAutor().getNazivAutora() + ", " + knjiga.getNazivKnjige() + " | kolicina: " + String.valueOf(kolicina) 
+                + " | cijena: " + String.valueOf(cijenaOtkupaArtikla) + " | iznos: " +  String.valueOf(cijenaOtkupa);
+
+    }
+}

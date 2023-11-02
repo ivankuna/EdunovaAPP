@@ -40,7 +40,7 @@ public class ObradaOperater extends Obrada<Operater> {
     public Operater readBySifra(int id) {
         return session.get(Operater.class, id);
     }
-        
+
     @Override
     protected void kontrolaUnos() throws SimpleException {
         kontrolaIme();
@@ -58,8 +58,8 @@ public class ObradaOperater extends Obrada<Operater> {
 
     @Override
     protected void kontrolaBrisanje() throws SimpleException {
-        if (entitet.getUloga().equals("admin")) {
-            throw new SimpleException("Nemoguće obrisati admina");
+        if (entitet.getUloga().equals("administrator")) {
+            throw new SimpleException("Nemoguće obrisati administratora");
         }
         if (!entitet.getOtkupi().isEmpty()) {
             StringBuilder sb = new StringBuilder();
@@ -183,14 +183,14 @@ public class ObradaOperater extends Obrada<Operater> {
         }
     }
 
-    private void kontrolaLozinka() throws SimpleException {                
+    private void kontrolaLozinka() throws SimpleException {
         if (entitet.getLozinka() == null) {
             throw new SimpleException("Lozinke se ne podudaraju");
         }
         if (entitet.getLozinka().isEmpty()) {
             throw new SimpleException("Lozinka ne smije ostati prazna");
-        }                
-    }   
+        }
+    }
 
     private void kontrolaUloga() throws SimpleException {
         if (entitet.getUloga() == null || entitet.getUloga().equals(Tools.ULOGA_TEMP)) {
@@ -199,5 +199,19 @@ public class ObradaOperater extends Obrada<Operater> {
         if (entitet.getUloga().isEmpty()) {
             throw new SimpleException("Uloga ne smije ostati prazna");
         }
-    }        
+    }
+
+    public boolean checkIfAdminExists() {
+        boolean exists = true;
+        String emailTemp = "ikuna@edunova.com";
+        List<Operater> operateri = session.createQuery("from Operater o where"
+                + " o.email =:uvjet ", Operater.class)
+                .setParameter("uvjet", emailTemp)                
+                .list();
+
+        if (operateri == null || operateri.isEmpty() ) {
+            exists = false;
+        }
+        return exists;
+    }
 }

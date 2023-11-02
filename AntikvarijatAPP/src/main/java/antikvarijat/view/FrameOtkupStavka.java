@@ -8,6 +8,8 @@ import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class FrameOtkupStavka extends javax.swing.JFrame implements ViewInterface, OdabirKnjiga {
@@ -85,6 +87,12 @@ public class FrameOtkupStavka extends javax.swing.JFrame implements ViewInterfac
         jLabel1.setText("Količina:");
 
         jLabel2.setText("Cijena:");
+
+        txtCijena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCijenaActionPerformed(evt);
+            }
+        });
 
         txtKnjiga.setEditable(false);
 
@@ -180,6 +188,10 @@ public class FrameOtkupStavka extends javax.swing.JFrame implements ViewInterfac
         new FrameKnjiga(this).setVisible(true);
     }//GEN-LAST:event_btnKnjigaActionPerformed
 
+    private void txtCijenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCijenaActionPerformed
+        
+    }//GEN-LAST:event_txtCijenaActionPerformed
+
     private void setContext() {
         if (otkupStavka != null) {
             obrada.setEntitet(otkupStavka);
@@ -211,9 +223,7 @@ public class FrameOtkupStavka extends javax.swing.JFrame implements ViewInterfac
 
     @Override
     public void isprazniView() {
-        txtKnjiga.setText("");
-        txtKolicina.setText("");
-        txtCijena.setText("");
+        // Metoda isprazniView() je u ovom slučaju suvišna  
     }
 
     @Override
@@ -223,12 +233,12 @@ public class FrameOtkupStavka extends javax.swing.JFrame implements ViewInterfac
         e.setOtkupZaglavlje(otkupZaglavlje);
         e.setKnjiga(odabranaKnjiga);
         try {
-            e.setKolicina(Integer.valueOf(txtKolicina.getText()));
+            e.setKolicina(Integer.valueOf(txtKolicina.getText().trim()));
         } catch (NumberFormatException ex) {
             e.setKolicina(0);
         }
         try {
-            e.setCijenaOtkupaArtikla(BigDecimal.valueOf(Tools.DECIMAL_FORMAT.parse(txtCijena.getText()).doubleValue()));
+            e.setCijenaOtkupaArtikla(BigDecimal.valueOf(Tools.DECIMAL_FORMAT.parse(txtCijena.getText().trim()).doubleValue()));
         } catch (ParseException ex) {
             e.setCijenaOtkupaArtikla(BigDecimal.ZERO);
         }

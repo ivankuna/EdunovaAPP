@@ -12,6 +12,7 @@ import antikvarijat.model.ProdajaZaglavlje;
 import antikvarijat.model.Drzava;
 import antikvarijat.model.Grad;
 import antikvarijat.model.NacinPlacanja;
+import antikvarijat.model.Rezervacija;
 import antikvarijat.model.importpodataka.DrzavaGson;
 import com.github.javafaker.Faker;
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ public class TestniPodaci {
     private static final int BROJ_PRODAJA = 1500;
     private static final int BROJ_OTKUPA = 1350;
     private static final int BROJ_NACINA_PLACANJA = 4;
+    private static final int BROJ_REZERVACIJA = 1000;   
 
     private Faker faker;
     private Session session;
@@ -52,6 +54,7 @@ public class TestniPodaci {
     private List<ProdajaStavka> prodajaStavke;
     private List<OtkupZaglavlje> otkupi;
     private List<OtkupStavka> otkupStavke;
+    private List<Rezervacija> rezervacije;
 
     public TestniPodaci() {
         faker = new Faker();
@@ -68,6 +71,7 @@ public class TestniPodaci {
         prodajaStavke = new ArrayList<>();
         otkupi = new ArrayList<>();
         otkupStavke = new ArrayList<>();
+        rezervacije = new ArrayList<>();
         session.getTransaction().begin();
         kreirajDrzaveGradove();
         kreirajAutore();
@@ -78,6 +82,7 @@ public class TestniPodaci {
         kreirajOtkupe();
         kreirajNacinePlacanja();
         kreirajProdaje();
+        kreirajRezervacije();
         session.getTransaction().commit();
     }
 
@@ -164,7 +169,7 @@ public class TestniPodaci {
             String hash = argon2.hash(10, 65536, 1, String.valueOf(faker.number().numberBetween(1000, 9999)).toCharArray());
             o.setLozinka(hash);            
             o.setOib(OibGenerator.getOib());
-            o.setUloga("oper");
+            o.setUloga("operater");
 
             session.persist(o);
             operateri.add(o);
@@ -274,6 +279,23 @@ public class TestniPodaci {
                 prodajaStavke.add(ps);
             }
             prodaje.add(pz);
+        }
+    }
+    
+    private void kreirajRezervacije() {
+        Rezervacija r;
+        
+        String[] stanja = {"Aktivno", "Otkazano", "Izvršeno"};
+        
+        for (int i = 0; i < BROJ_REZERVACIJA; i++) {
+            r = new Rezervacija();
+            r.setKnjiga(knjige.get(faker.number().numberBetween(0, knjige.size())));
+            r.setOperater(operateri.get(faker.number().numberBetween(0, operateri.size())));
+            r.setPartner(partneri.get(faker.number().numberBetween(0, partneri.size())));
+            r.setStanje(stanja[faker.number().numberBetween(0, stanja.length)]);
+            
+            session.persist(r);
+            rezervacije.add(r);
         }
     }
 }

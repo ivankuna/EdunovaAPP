@@ -18,8 +18,10 @@ public class Tools {
     public static final String DIMENZIJE_TEMP = "Odaberite/upišite dimenzije";
 
     public static final String ULOGA_TEMP = "Odaberite ulogu";
-
+    
     public static Operater OPERATER;
+    
+    private static ObradaOperater obradaOperater;
 
     public static String getOperater() {
         return OPERATER.getIme() + " " + OPERATER.getPrezime() + " (" + OPERATER.getUloga() + ")";
@@ -29,8 +31,15 @@ public class Tools {
 
     public static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.of("hr", "HR"));
     
-    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###,##0.00", DECIMAL_FORMAT_SYMBOLS);
-
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###,##0.00", DECIMAL_FORMAT_SYMBOLS);   
+    
+    public static void appSetUp() {        
+        obradaOperater = new ObradaOperater();
+        if (!obradaOperater.checkIfAdminExists()) {
+            unesiAdmina();
+        }
+    }
+    
     public static void unesiAdmina() {
         Argon2 argon2 = Argon2Factory.create();                
 
@@ -41,7 +50,7 @@ public class Tools {
         o.setIme("Ivan");
         o.setPrezime("Kuna");
         o.setEmail("ikuna@edunova.com");
-        o.setUloga("admin");
+        o.setUloga("administrator");
         o.setOib("81425134722");
         o.setLozinka(hash);
 
@@ -53,8 +62,7 @@ public class Tools {
             e.printStackTrace();
         }
     }
-   
-
+           
     public static boolean isValjanOIB(String oib) {
         if (oib == null || oib.length() != 11) {
             return false;

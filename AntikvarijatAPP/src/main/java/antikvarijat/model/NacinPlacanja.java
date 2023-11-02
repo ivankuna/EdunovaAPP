@@ -48,4 +48,9 @@ public class NacinPlacanja extends Entitet {
     public void setProdaje(List<ProdajaZaglavlje> prodaje) {
         this.prodaje = prodaje;
     }    
+
+    @Override
+    public String toString() {
+        return nazivNacinaPlacanja;
+    }        
 }

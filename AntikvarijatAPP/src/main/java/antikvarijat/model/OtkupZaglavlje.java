@@ -67,6 +67,6 @@ public class OtkupZaglavlje extends Entitet {
 
     @Override
     public String toString() {
-        return "ID: " + String.valueOf(getId()) + " | " + Tools.DATE_FORMAT.format(datumOtkupa) + " | Partner: " + partner.getNazivPartnera();
+        return "ID: " + String.valueOf(getId()) + " | " + Tools.DATE_FORMAT.format(datumOtkupa) + " | partner: " + partner.getNazivPartnera();
     }
 }

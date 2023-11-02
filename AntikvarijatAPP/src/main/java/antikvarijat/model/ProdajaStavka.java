@@ -60,5 +60,11 @@ public class ProdajaStavka extends Entitet {
     public void setCijenaProdaje(BigDecimal cijenaProdaje) {
         this.cijenaProdaje = cijenaProdaje;
     }    
+    
+    @Override
+    public String toString() {
+        return "ID: " + String.valueOf(getId()) + " | " + knjiga.getAutor().getNazivAutora() + ", " + knjiga.getNazivKnjige() + " | količina: " + String.valueOf(kolicina) 
+                + " | cijena: " + String.valueOf(knjiga.getCijena()) + " | iznos: " +  String.valueOf(cijenaProdaje);
+    }
 }
 

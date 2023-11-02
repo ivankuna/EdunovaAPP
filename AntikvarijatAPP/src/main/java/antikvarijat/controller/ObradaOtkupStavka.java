@@ -14,10 +14,10 @@ public class ObradaOtkupStavka extends Obrada<OtkupStavka> {
     }
 
     public List<OtkupStavka> read(OtkupZaglavlje otkupZaglavlje) {
-    return session.createQuery("from OtkupStavka where otkupZaglavlje = :zaglavlje", OtkupStavka.class)
-            .setParameter("zaglavlje", otkupZaglavlje)
-            .list();
-}
+        return session.createQuery("from OtkupStavka where otkupZaglavlje = :zaglavlje", OtkupStavka.class)
+                .setParameter("zaglavlje", otkupZaglavlje)
+                .list();
+    }
 
     public OtkupStavka readBySifra(int id) {
         return session.get(OtkupStavka.class, id);
@@ -40,9 +40,21 @@ public class ObradaOtkupStavka extends Obrada<OtkupStavka> {
     protected void kontrolaBrisanje() throws SimpleException {
         // Operater je slobodan brisati sve stavke
     }
+    
+    private void kontrolaZaglavlje() throws SimpleException {
+        if (entitet.getOtkupZaglavlje() == null) {
+            throw new SimpleException("Zaglavlje otkupa mora biti definirano");
+        }
+    }
+    
+    private void kontrolaKnjiga() throws SimpleException {
+        if (entitet.getKnjiga() == null) {
+            throw new SimpleException("Knjiga mora biti definirana");
+        }
+    }
 
     private void kontrolaKolicina() throws SimpleException {
-        if (entitet.getKolicina() < 1 || entitet.getKolicina() == null) {
+        if (entitet.getKolicina() <= 0 || entitet.getKolicina() == null) {
             throw new SimpleException("Neispravan unos količine");
         }
     }
@@ -54,17 +66,5 @@ public class ObradaOtkupStavka extends Obrada<OtkupStavka> {
         if (entitet.getCijenaOtkupaArtikla().equals(BigDecimal.ZERO)) {
             throw new SimpleException("Neispravan unos cijene otkupa artikla");
         }
-    }
-
-    private void kontrolaKnjiga() throws SimpleException {
-        if (entitet.getKnjiga() == null || getEntitet().getKnjiga().getId().equals(0)) {
-            throw new SimpleException("Knjiga mora biti definirana");
-        }
-    }
-
-    private void kontrolaZaglavlje() throws SimpleException {
-        if (entitet.getOtkupZaglavlje() == null) {
-            throw new SimpleException("Zaglavlje otkupa mora biti definirano");
-        }
-    }
+    }  
 }

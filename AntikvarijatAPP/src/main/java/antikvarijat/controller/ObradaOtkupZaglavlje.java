@@ -13,23 +13,6 @@ public class ObradaOtkupZaglavlje extends Obrada<OtkupZaglavlje> {
     public List<OtkupZaglavlje> read() {
         return session.createQuery("from OtkupZaglavlje", OtkupZaglavlje.class).list();
     }
-
-    public List<OtkupZaglavlje> read(String uvjet) {
-        uvjet = uvjet == null ? "" : uvjet;
-        uvjet = uvjet.trim();
-        uvjet = "%" + uvjet + "%";
-
-        List<OtkupZaglavlje> lista = session.createQuery("from OtkupZaglavlje oz "
-                + " where oz.id like :uvjet "
-                + " order by oz.id ", OtkupZaglavlje.class)
-                .setParameter("uvjet", uvjet).list();
-
-        Collator spCollator = Collator.getInstance(Locale.of("hr", "HR"));
-
-        lista.sort((e1, e2) -> spCollator.compare(e1.getId(), e2.getId()));
-
-        return lista;
-    }
     
     public List<OtkupZaglavlje> read(int searchNumber) {
         List<OtkupZaglavlje> OtkupZaglavljeList = new ArrayList<>();
@@ -49,8 +32,8 @@ public class ObradaOtkupZaglavlje extends Obrada<OtkupZaglavlje> {
 
     @Override
     protected void kontrolaUnos() throws SimpleException {
-        kontrolaDatumVrijeme();
-        kontrolaOperater();        
+        kontrolaOperater(); 
+        kontrolaDatumVrijeme();               
         kontrolaPartner();
     }
 

@@ -289,10 +289,6 @@ public class FrameIzdavac extends javax.swing.JFrame implements ViewInterface, O
         txtGrad.setText(e.getGrad().getNazivGrada());
     }
 
-    public void popuniTxtGrad(String nazivGrada) {
-        txtGrad.setText(nazivGrada);
-    }
-
     @Override
     public void isprazniView() {
         txtNazivIzdavaca.setText("");

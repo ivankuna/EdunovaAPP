@@ -38,8 +38,16 @@ public class FrameIzbornik extends javax.swing.JFrame {
         menuItemPartneri = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         menuItemKnjige = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        menuItemNacinPlacanja = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuItemOtkup = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        menuItemProdaja = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        menuItemRezervacija = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        menuItemStanje = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(600, 480));
@@ -131,20 +139,59 @@ public class FrameIzbornik extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuItemKnjige);
+        jMenu1.add(jSeparator8);
+
+        menuItemNacinPlacanja.setText("Načini Plaćanja");
+        menuItemNacinPlacanja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemNacinPlacanjaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemNacinPlacanja);
 
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Dokumenti");
 
-        menuItemOtkup.setText("Otkup knjiga");
+        menuItemOtkup.setText("Otkup Knjiga");
         menuItemOtkup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemOtkupActionPerformed(evt);
             }
         });
         jMenu3.add(menuItemOtkup);
+        jMenu3.add(jSeparator9);
+
+        menuItemProdaja.setText("Prodaja Knjiga");
+        menuItemProdaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemProdajaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemProdaja);
+        jMenu3.add(jSeparator10);
+
+        menuItemRezervacija.setText("Rezervacije");
+        menuItemRezervacija.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemRezervacijaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuItemRezervacija);
 
         jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Pregledi");
+
+        menuItemStanje.setText("Stanje");
+        menuItemStanje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemStanjeActionPerformed(evt);
+            }
+        });
+        jMenu4.add(menuItemStanje);
+
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -194,8 +241,8 @@ public class FrameIzbornik extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemKnjigeActionPerformed
 
     private void menuItemOperateriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemOperateriActionPerformed
-        if (!Tools.OPERATER.getUloga().equals("admin")) {
-            JOptionPane.showMessageDialog(getRootPane(), "Pristup operaterima ograničen na admina");            
+        if (!Tools.OPERATER.getUloga().equals("administrator")) {
+            JOptionPane.showMessageDialog(getRootPane(), "Pristup operaterima ograničen na administratora");            
             return;
         }         
         new FrameOperater().setVisible(true);
@@ -209,20 +256,40 @@ public class FrameIzbornik extends javax.swing.JFrame {
         new FrameOtkup().setVisible(true);
     }//GEN-LAST:event_menuItemOtkupActionPerformed
 
+    private void menuItemNacinPlacanjaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemNacinPlacanjaActionPerformed
+        new FrameNacinPlacanja().setVisible(true);
+    }//GEN-LAST:event_menuItemNacinPlacanjaActionPerformed
+
+    private void menuItemProdajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemProdajaActionPerformed
+        new FrameProdaja().setVisible(true);
+    }//GEN-LAST:event_menuItemProdajaActionPerformed
+
+    private void menuItemRezervacijaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRezervacijaActionPerformed
+        new FrameRezervacija().setVisible(true);
+    }//GEN-LAST:event_menuItemRezervacijaActionPerformed
+
+    private void menuItemStanjeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemStanjeActionPerformed
+        new FrameStanje().setVisible(true);
+    }//GEN-LAST:event_menuItemStanjeActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblOperater;
     private javax.swing.JMenuItem menuItemAutori;
@@ -230,9 +297,13 @@ public class FrameIzbornik extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemGradovi;
     private javax.swing.JMenuItem menuItemIzdavaci;
     private javax.swing.JMenuItem menuItemKnjige;
+    private javax.swing.JMenuItem menuItemNacinPlacanja;
     private javax.swing.JMenuItem menuItemOperateri;
     private javax.swing.JMenuItem menuItemOtkup;
     private javax.swing.JMenuItem menuItemPartneri;
+    private javax.swing.JMenuItem menuItemProdaja;
     private javax.swing.JMenuItem menuItemPromjenaLozinke;
+    private javax.swing.JMenuItem menuItemRezervacija;
+    private javax.swing.JMenuItem menuItemStanje;
     // End of variables declaration//GEN-END:variables
 }

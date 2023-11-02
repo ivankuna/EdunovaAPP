@@ -6,9 +6,6 @@ import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import java.util.Arrays;
@@ -21,7 +18,6 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         initComponents();
         obrada = new ObradaOperater();
         setTitle(Tools.NAZIV_APP + " | Operateri");
-        ucitajUloge();
         ucitaj();
     }
 
@@ -31,34 +27,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         m.addAll(obrada.read());
         lstPodaci.setModel(m);
         lstPodaci.repaint();
-    }
-    
-    private void ucitajUloge() {
-        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
-        
-        m.addElement(Tools.ULOGA_TEMP);
-
-        List<Operater> operateri = obrada.read();
-        List<String> uloge = new ArrayList<>();
-        boolean dopustenUnos;
-
-        for (Operater o : operateri) {
-            dopustenUnos = true;
-            for (String u : uloge) {
-                if (o.getUloga().equals(u)) {
-                    dopustenUnos = false;
-                }
-            }
-            if (dopustenUnos) {
-                uloge.add(o.getUloga());
-            }
-        }
-
-        m.addAll(uloge);
-
-        cmbUloge.setModel(m);
-        cmbUloge.repaint();
-    }
+    }        
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -146,7 +115,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
 
         jLabel8.setText("Uloga:");
 
-        cmbUloge.setEditable(true);
+        cmbUloge.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Odaberite ulogu", "administrator", "operater" }));
 
         jLabel7.setText("Potvrdi lozinku:");
 

@@ -1,5 +1,6 @@
 package antikvarijat.model;
 
+import antikvarijat.util.Tools;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import java.util.Date;
@@ -60,5 +61,10 @@ public class ProdajaZaglavlje extends Entitet {
 
     public void setOperater(Operater operater) {
         this.operater = operater;
+    }
+    
+    @Override
+    public String toString() {
+        return "ID: " + String.valueOf(getId()) + " | " + Tools.DATE_FORMAT.format(datumProdaje) + " | partner: " + partner.getNazivPartnera();
     }
 }

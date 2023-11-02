@@ -31,12 +31,12 @@ public class FrameOtkupZaglavlje extends javax.swing.JFrame implements ViewInter
         obrada = new ObradaOtkupZaglavlje();
         obrada.setEntitet(otkupZaglavlje);
         this.frameOtkup = frameOtkup;
-        setTitle(Tools.NAZIV_APP + " | Zaglavlje otkupa");
+        setTitle(Tools.NAZIV_APP + " | Otkup");
         ucitajPartnere();
+        definirajDatumOtkupa();
         if (otkupZaglavlje != null) {
             popuniView();
         }
-        definirajDatumOtkupa();
     }
 
     @Override
@@ -78,6 +78,9 @@ public class FrameOtkupZaglavlje extends javax.swing.JFrame implements ViewInter
         }
 
         tps.generatePotentialMenuTimes(lista);
+
+        dtpDatumOtkupa.datePicker.setDate(LocalDate.now());
+        dtpDatumOtkupa.timePicker.setTime(LocalTime.now());
     }
 
     @SuppressWarnings("unchecked")
@@ -225,10 +228,7 @@ public class FrameOtkupZaglavlje extends javax.swing.JFrame implements ViewInter
 
     @Override
     public void isprazniView() {
-        lblId.setText("");
-        dtpDatumOtkupa.getDatePicker().setText("");
-        dtpDatumOtkupa.getTimePicker().setText("");
-        cmbPartner.setSelectedItem(partner);
+        // Metoda isprazniView() je u ovom slučaju suvišna  
     }
 
     @Override

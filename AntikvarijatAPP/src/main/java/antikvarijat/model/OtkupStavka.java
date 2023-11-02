@@ -74,8 +74,7 @@ public class OtkupStavka extends Entitet {
 
     @Override
     public String toString() {
-        return "ID: " + String.valueOf(getId()) + " | " + knjiga.getAutor().getNazivAutora() + ", " + knjiga.getNazivKnjige() + " | kolicina: " + String.valueOf(kolicina) 
+        return "ID: " + String.valueOf(getId()) + " | " + knjiga.getAutor().getNazivAutora() + ", " + knjiga.getNazivKnjige() + " | količina: " + String.valueOf(kolicina) 
                 + " | cijena: " + String.valueOf(cijenaOtkupaArtikla) + " | iznos: " +  String.valueOf(cijenaOtkupa);
-
     }
 }

@@ -6,10 +6,15 @@ import antikvarijat.model.ProdajaStavka;
 import antikvarijat.model.Rezervacija;
 import antikvarijat.util.SimpleException;
 import antikvarijat.util.Tools;
+import com.mysql.cj.util.SaslPrep;
+import com.sun.jdi.IntegerType;
+import com.sun.jdi.LongType;
 import java.math.BigDecimal;
 import java.text.Collator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.hibernate.query.Query;
 
 public class ObradaKnjiga extends Obrada<Knjiga> {
 
@@ -35,7 +40,7 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
 
         return lista;
     }
-        
+
     public Knjiga readBySifra(int id) {
         return session.get(Knjiga.class, id);
     }
@@ -47,10 +52,10 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
         kontrolaIzdavac();
         kontrolaGodinaIzdanja();
         kontrolaJezik();
-        kontrolaBrojStranica();        
+        kontrolaBrojStranica();
         kontrolaVrstaUveza();
         kontrolaDimenzije();
-        kontrolaCijena();        
+        kontrolaCijena();
     }
 
     @Override
@@ -118,13 +123,13 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
             throw new SimpleException("Autor mora biti definiran");
         }
     }
-    
+
     private void kontrolaIzdavac() throws SimpleException {
-        if(getEntitet().getIzdavac() == null || getEntitet().getIzdavac().getId().equals(0)){
+        if (getEntitet().getIzdavac() == null || getEntitet().getIzdavac().getId().equals(0)) {
             throw new SimpleException("Odabir izdavača obavezan");
         }
     }
-    
+
     private void kontrolaGodinaIzdanja() throws SimpleException {
         if (entitet.getGodinaIzdanja() <= 0) {
             throw new SimpleException("Neispravan unos godine izdanja");
@@ -141,7 +146,7 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
             throw new SimpleException("Jezik ne smije ostati prazan");
         }
     }
-       
+
     private void kontrolaBrojStranica() throws SimpleException {
         if (entitet.getBrojStranica() <= 0) {
             throw new SimpleException("Neispravan unos broja stranica");
@@ -150,7 +155,7 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
         }
     }
 
-    private void kontrolaVrstaUveza() throws SimpleException {        
+    private void kontrolaVrstaUveza() throws SimpleException {
         if (entitet.getVrstaUveza() == null || entitet.getVrstaUveza().equals(Tools.VRSTA_UVEZA_TEMP)) {
             throw new SimpleException("Vrsta uveza mora biti definirana");
         }
@@ -158,18 +163,108 @@ public class ObradaKnjiga extends Obrada<Knjiga> {
             throw new SimpleException("Vrsta uveza ne smije ostati prazna");
         }
     }
-    
-    private void kontrolaDimenzije() throws SimpleException {        
+
+    private void kontrolaDimenzije() throws SimpleException {
         if (entitet.getDimenzije().equals(Tools.DIMENZIJE_TEMP) || entitet.getDimenzije().isEmpty()) {
             entitet.setDimenzije("");
-        }        
+        }
     }
-    
+
     private void kontrolaCijena() throws SimpleException {
         if (entitet.getCijena().compareTo(BigDecimal.ZERO) <= 0) {
             throw new SimpleException("Neispravan unos cijene");
         } else if (entitet.getCijena() == null) {
             throw new SimpleException("Cijena mora biti definirana");
         }
-    }   
+    }
+
+    public int dohvatiUlazZaKnjigu(Knjiga knjiga, Date datumUnosa) {
+        Long ulaz = (Long) session.createSelectionQuery("SELECT COALESCE(SUM(os.kolicina), 0) FROM OtkupStavka os WHERE os.knjiga = :knjiga "
+                + " AND os.otkupZaglavlje.datumOtkupa <= :datumunosa")
+                .setParameter("knjiga", knjiga)
+                .setParameter("datumunosa", datumUnosa)
+                .uniqueResult();
+        return ulaz.intValue();
+    }
+
+    public int dohvatiIzlazZaKnjigu(Knjiga knjiga, Date datumUnosa) {
+        Long izlaz = (Long) session.createSelectionQuery("SELECT COALESCE(SUM(ps.kolicina), 0) FROM ProdajaStavka ps WHERE ps.knjiga = :knjiga "
+                + " AND ps.prodajaZaglavlje.datumProdaje <= :datumunosa")
+                .setParameter("knjiga", knjiga)
+                .setParameter("datumunosa", datumUnosa)
+                .uniqueResult();
+        return izlaz.intValue();
+    }
+
+    public int dohvatiBrojRezervacijaZaKnjigu(Knjiga knjiga, Date datumUnosa) {
+        Long brojRezervacija = (Long) session.createSelectionQuery("SELECT COUNT(*) FROM Rezervacija r WHERE r.knjiga = :knjiga AND r.stanje = 'Aktivno' "
+                + " AND datumRezervacije <= : datumunosa")
+                .setParameter("knjiga", knjiga)
+                .setParameter("datumunosa", datumUnosa)
+                .uniqueResult();
+        return brojRezervacija.intValue();
+    }
+
+    public int kontrolaRaspolozivosti(Knjiga knjiga, Date datumUnosa) throws SimpleException {
+        int ulaz = dohvatiUlazZaKnjigu(knjiga, datumUnosa);
+        int izlaz = dohvatiIzlazZaKnjigu(knjiga, datumUnosa);
+        int rezervacija = dohvatiBrojRezervacijaZaKnjigu(knjiga, datumUnosa);
+        int naStanju = ulaz - izlaz;
+        return naStanju - rezervacija;
+    }
+
+    public List<Object[]> dohvatiPodatkeZaKnjigu(int knjigaId) {
+        List<Object[]> rezultati = (List<Object[]>) session.createSelectionQuery(
+                "SELECT datum, id, ulaz, izlaz, rezervacija "
+                + "FROM ("
+                + "   SELECT "
+                + "       otkupStavka.otkupZaglavlje.datumOtkupa AS datum, "
+                + "       otkupStavka.otkupZaglavlje.id AS id, "
+                + "       otkupStavka.knjiga.id AS knjigaId, "
+                + "       otkupStavka.kolicina AS ulaz, "
+                + "       0 AS izlaz, "
+                + "       0 AS rezervacija "
+                + "   FROM OtkupStavka otkupStavka "
+                + "   WHERE otkupStavka.knjiga.id = :knjigaId "
+                + "   UNION ALL "
+                + "   SELECT "
+                + "       prodajaStavka.prodajaZaglavlje.datumProdaje AS datum, "
+                + "       prodajaStavka.prodajaZaglavlje.id AS id, "
+                + "       prodajaStavka.knjiga.id AS knjigaId, "
+                + "       0 AS ulaz, "
+                + "       prodajaStavka.kolicina AS izlaz, "
+                + "       0 AS rezervacija "
+                + "   FROM ProdajaStavka prodajaStavka "
+                + "   WHERE prodajaStavka.knjiga.id = :knjigaId "
+                + "   UNION ALL "
+                + "   SELECT "
+                + "       rezervacija.datumRezervacije AS datum, "
+                + "       rezervacija.id AS id, "
+                + "       rezervacija.knjiga.id AS knjigaId, "
+                + "       0 AS ulaz, "
+                + "       0 AS izlaz, "
+                + "       1 AS rezervacija "
+                + "   FROM Rezervacija rezervacija "
+                + "   WHERE rezervacija.knjiga.id = :knjigaId AND rezervacija.stanje = 'Aktivno'"
+                + ") AS tablica "
+                + "ORDER BY datum"
+        )
+                .setParameter("knjigaId", knjigaId)
+                .list();
+        return rezultati;
+    }
+
+    public List<Object[]> dohvatiPodatkeZaSveKnjige() {
+        List<Object[]> rezultati = (List<Object[]>) session.createSelectionQuery(
+                "SELECT k.id, k.nazivKnjige, COALESCE(SUM(o.kolicina), 0) AS ulaz, COALESCE(SUM(p.kolicina), 0) AS izlaz, COALESCE(COUNT(r), 0) AS rezervirano, "
+                + "COALESCE(SUM(o.kolicina), 0) - COALESCE(SUM(p.kolicina), 0) AS stanje, "
+                + "COALESCE(SUM(o.kolicina), 0) - COALESCE(SUM(p.kolicina), 0) - COALESCE(COUNT(r), 0) AS raspolozivo "
+                + "FROM Knjiga k "
+                + "LEFT JOIN OtkupStavka o ON o.knjiga = k "
+                + "LEFT JOIN ProdajaStavka p ON p.knjiga = k "
+                + "LEFT JOIN Rezervacija r ON r.knjiga = k AND r.stanje = 'Aktivno' "
+                + "GROUP BY k.id, k.nazivKnjige"
+        ).list();
+        return rezultati;
+    }
 }

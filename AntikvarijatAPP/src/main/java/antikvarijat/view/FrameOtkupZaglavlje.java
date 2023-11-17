@@ -191,6 +191,7 @@ public class FrameOtkupZaglavlje extends javax.swing.JFrame implements ViewInter
             }
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+            obrada.refresh();
             mozeDalje = false;
         }
         if (mozeDalje) {

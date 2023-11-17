@@ -3,9 +3,13 @@ package antikvarijat.controller;
 import antikvarijat.model.Rezervacija;
 import antikvarijat.util.SimpleException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.hibernate.query.Query;
 
 public class ObradaRezervacija extends Obrada<Rezervacija> {
+
+    private ObradaKnjiga obradaKnjiga;
 
     @Override
     public List<Rezervacija> read() {
@@ -31,9 +35,12 @@ public class ObradaRezervacija extends Obrada<Rezervacija> {
     @Override
     protected void kontrolaUnos() throws SimpleException {
         kontrolaOperater();
-        kontrolaKnjiga();        
+        kontrolaKnjiga();
         kontrolaPartner();
-        kontrolaStanje();
+        kontrolaDatumVrijeme();
+        if (entitet.getStanje().equals("Aktivno")) {
+            kontrolaStanje();
+        }
     }
 
     @Override
@@ -65,13 +72,34 @@ public class ObradaRezervacija extends Obrada<Rezervacija> {
             throw new SimpleException("Partner mora biti definiran");
         }
     }
-    
+
+    private void kontrolaDatumVrijeme() throws SimpleException {
+        if (entitet.getDatumRezervacije() == null) {
+            throw new SimpleException("Datum rezervacije mora biti definiran");
+        }
+    }
+
     private void kontrolaStanje() throws SimpleException {
+        obradaKnjiga = new ObradaKnjiga();
         if (entitet.getStanje() == null) {
             throw new SimpleException("Stanje rezervacije mora biti definirano");
         }
         if (entitet.getStanje().isEmpty() || entitet.getStanje().equals("Odaberi stanje rezervacije")) {
             throw new SimpleException("Stanje rezervacije ne smije ostati prazno");
+        }
+        if (obradaKnjiga.kontrolaRaspolozivosti(entitet.getKnjiga(), entitet.getDatumRezervacije()) <= 0) {
+            throw new SimpleException("Knjiga nije raspoloživa za rezervaciju");
+        }
+    }
+
+    public Date getLastEnteredDate() {
+        try {
+            Query<Date> query = session.createQuery("SELECT r.datumRezervacije FROM Rezervacija r ORDER BY r.datumRezervacije DESC", Date.class).setMaxResults(1);
+            Date lastDate = query.uniqueResult();
+            session.getTransaction().commit();
+            return lastDate;
+        } catch (Exception e) {
+            return null;
         }
     }
 }

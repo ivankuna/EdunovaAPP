@@ -176,6 +176,7 @@ public class FrameOtkupStavka extends javax.swing.JFrame implements ViewInterfac
                 dispose();
             } catch (SimpleException ex) {
                 JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+                obrada.refresh();
             }
         }
     }//GEN-LAST:event_btnPrihvatiActionPerformed

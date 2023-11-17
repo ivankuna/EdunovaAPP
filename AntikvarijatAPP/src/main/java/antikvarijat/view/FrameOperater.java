@@ -40,7 +40,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstPodaci = new javax.swing.JList<>();
-        btnOdustani = new javax.swing.JButton();
+        btnIzlaz = new javax.swing.JButton();
         txtTrazi = new javax.swing.JTextField();
         btnTrazi = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -89,12 +89,12 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         });
         jScrollPane1.setViewportView(lstPodaci);
 
-        btnOdustani.setText("Odustani");
-        btnOdustani.setMaximumSize(new java.awt.Dimension(81, 23));
-        btnOdustani.setMinimumSize(new java.awt.Dimension(81, 23));
-        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+        btnIzlaz.setText("Izlaz");
+        btnIzlaz.setMaximumSize(new java.awt.Dimension(81, 23));
+        btnIzlaz.setMinimumSize(new java.awt.Dimension(81, 23));
+        btnIzlaz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOdustaniActionPerformed(evt);
+                btnIzlazActionPerformed(evt);
             }
         });
 
@@ -141,7 +141,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
                                     .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnOdustani, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnIzlaz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtIme, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,7 +206,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
                             .addComponent(btnUpdate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnIzlaz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE))
                 .addContainerGap())
@@ -265,9 +265,9 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+    private void btnIzlazActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzlazActionPerformed
         dispose();
-    }//GEN-LAST:event_btnOdustaniActionPerformed
+    }//GEN-LAST:event_btnIzlazActionPerformed
 
     private void btnTraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraziActionPerformed
         DefaultListModel<Operater> m = new DefaultListModel<>();
@@ -333,7 +333,7 @@ public class FrameOperater extends javax.swing.JFrame implements ViewInterface {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnOdustani;
+    private javax.swing.JButton btnIzlaz;
     private javax.swing.JButton btnTrazi;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cmbUloge;

@@ -220,6 +220,7 @@ public class FrameProdajaZaglavlje extends javax.swing.JFrame implements ViewInt
             }
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+            obrada.refresh();
             mozeDalje = false;
         }
         if (mozeDalje) {

@@ -42,7 +42,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnOdustani" max="32767" attributes="0"/>
+                          <Component id="btnIzlaz" max="32767" attributes="0"/>
                           <Component id="btnUpdate" pref="91" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -74,7 +74,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnOdustani" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnIzlaz" min="-2" max="-2" attributes="0"/>
                           <Component id="btnDelete" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -149,9 +149,9 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="btnOdustani">
+    <Component class="javax.swing.JButton" name="btnIzlaz">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Odustani"/>
+        <Property name="text" type="java.lang.String" value="Izlaz"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[81, 23]"/>
         </Property>
@@ -160,7 +160,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOdustaniActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIzlazActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtTrazi">

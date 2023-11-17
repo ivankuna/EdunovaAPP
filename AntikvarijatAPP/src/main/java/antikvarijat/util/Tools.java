@@ -7,6 +7,7 @@ import de.mkammerer.argon2.Argon2Factory;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class Tools {
@@ -17,7 +18,7 @@ public class Tools {
 
     public static final String DIMENZIJE_TEMP = "Odaberite/upišite dimenzije";
 
-    public static final String ULOGA_TEMP = "Odaberite ulogu";
+    public static final String ULOGA_TEMP = "Odaberite ulogu";        
     
     public static Operater OPERATER;
     
@@ -37,7 +38,7 @@ public class Tools {
         obradaOperater = new ObradaOperater();
         if (!obradaOperater.checkIfAdminExists()) {
             unesiAdmina();
-        }
+        }        
     }
     
     public static void unesiAdmina() {
@@ -85,5 +86,5 @@ public class Tools {
         int kontrolni = 11 - a;
         kontrolni = kontrolni % 10;
         return (kontrolni == (chars[10] - '0'));
-    }
+    }         
 }

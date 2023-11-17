@@ -46,7 +46,7 @@ public class FrameOtkup extends javax.swing.JFrame {
         btnObrisiStavku = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstStavke = new javax.swing.JList<>();
-        btnOdustani = new javax.swing.JButton();
+        btnIzlaz = new javax.swing.JButton();
         txtTrazi = new javax.swing.JTextField();
         btnTrazi = new javax.swing.JButton();
         btnDodajStavku = new javax.swing.JButton();
@@ -91,12 +91,12 @@ public class FrameOtkup extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstStavke);
 
-        btnOdustani.setText("Odustani");
-        btnOdustani.setMaximumSize(new java.awt.Dimension(81, 23));
-        btnOdustani.setMinimumSize(new java.awt.Dimension(81, 23));
-        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+        btnIzlaz.setText("Izlaz");
+        btnIzlaz.setMaximumSize(new java.awt.Dimension(81, 23));
+        btnIzlaz.setMinimumSize(new java.awt.Dimension(81, 23));
+        btnIzlaz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOdustaniActionPerformed(evt);
+                btnIzlazActionPerformed(evt);
             }
         });
 
@@ -131,11 +131,11 @@ public class FrameOtkup extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(lstZaglavlja);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Zaglavlje");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Stavke");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,7 +153,7 @@ public class FrameOtkup extends javax.swing.JFrame {
                         .addComponent(btnTrazi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIzlaz, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(btnPromijeniZaglavlje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnDodajZaglavlje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -191,7 +191,7 @@ public class FrameOtkup extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(12, 12, 12)
-                        .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnIzlaz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -205,9 +205,9 @@ public class FrameOtkup extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+    private void btnIzlazActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzlazActionPerformed
         dispose();
-    }//GEN-LAST:event_btnOdustaniActionPerformed
+    }//GEN-LAST:event_btnIzlazActionPerformed
 
     private void btnTraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraziActionPerformed
         int searchNumber;
@@ -305,8 +305,8 @@ public class FrameOtkup extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDodajStavku;
     private javax.swing.JButton btnDodajZaglavlje;
+    private javax.swing.JButton btnIzlaz;
     private javax.swing.JButton btnObrisiStavku;
-    private javax.swing.JButton btnOdustani;
     private javax.swing.JButton btnPromijeniStavku;
     private javax.swing.JButton btnPromijeniZaglavlje;
     private javax.swing.JButton btnTrazi;

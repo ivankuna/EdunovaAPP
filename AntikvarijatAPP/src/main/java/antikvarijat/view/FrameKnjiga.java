@@ -32,6 +32,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
     public FrameKnjiga() {
         initComponents();
         btnOdaberi.setVisible(false);
+        btnOdustani.setVisible(false);
         obrada = new ObradaKnjiga();                
         setTitle(Tools.NAZIV_APP + " | Knjige");
         ucitajIzdavace();
@@ -44,9 +45,11 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         this();
         pozivatelj = odabirKnjiga;
         btnOdaberi.setVisible(true);
+        btnOdustani.setVisible(true);
         btnCreate.setEnabled(false);
         btnUpdate.setEnabled(false);
         btnDelete.setEnabled(false);
+        btnIzlaz.setEnabled(false);
     }
 
     @Override
@@ -142,7 +145,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstPodaci = new javax.swing.JList<>();
-        btnOdustani = new javax.swing.JButton();
+        btnIzlaz = new javax.swing.JButton();
         txtTrazi = new javax.swing.JTextField();
         btnTrazi = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -163,6 +166,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         cmbVrstaUveza = new javax.swing.JComboBox<>();
         cmbDimenzije = new javax.swing.JComboBox<>();
         btnOdaberi = new javax.swing.JButton();
+        btnOdustani = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -201,12 +205,12 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         });
         jScrollPane1.setViewportView(lstPodaci);
 
-        btnOdustani.setText("Odustani");
-        btnOdustani.setMaximumSize(new java.awt.Dimension(81, 23));
-        btnOdustani.setMinimumSize(new java.awt.Dimension(81, 23));
-        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+        btnIzlaz.setText("Izlaz");
+        btnIzlaz.setMaximumSize(new java.awt.Dimension(81, 23));
+        btnIzlaz.setMinimumSize(new java.awt.Dimension(81, 23));
+        btnIzlaz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOdustaniActionPerformed(evt);
+                btnIzlazActionPerformed(evt);
             }
         });
 
@@ -250,6 +254,13 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         btnOdaberi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOdaberiActionPerformed(evt);
+            }
+        });
+
+        btnOdustani.setText("Odustani");
+        btnOdustani.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOdustaniActionPerformed(evt);
             }
         });
 
@@ -305,15 +316,14 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
                             .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnOdaberi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnCreate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnUpdate)
-                                    .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(49, 49, 49)
-                                .addComponent(btnOdaberi)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnIzlaz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnOdustani, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -376,9 +386,11 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnIzlaz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnOdaberi)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnOdaberi)
+                            .addComponent(btnOdustani))
                         .addGap(14, 14, 14))))
         );
 
@@ -434,6 +446,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
             dodajDimenziju();
         } catch (SimpleException ex) {
             JOptionPane.showMessageDialog(getRootPane(), ex.getMessage());            
+            obrada.refresh();
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -462,9 +475,9 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+    private void btnIzlazActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzlazActionPerformed
         dispose();
-    }//GEN-LAST:event_btnOdustaniActionPerformed
+    }//GEN-LAST:event_btnIzlazActionPerformed
 
     private void btnTraziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraziActionPerformed
         DefaultListModel<Knjiga> m = new DefaultListModel<>();
@@ -483,6 +496,10 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
             dispose();
         }
     }//GEN-LAST:event_btnOdaberiActionPerformed
+
+    private void btnOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOdustaniActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnOdustaniActionPerformed
 
     @Override
     public void popuniView() {
@@ -595,6 +612,7 @@ public class FrameKnjiga extends javax.swing.JFrame implements ViewInterface, Od
     private javax.swing.JButton btnAutori;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnIzlaz;
     private javax.swing.JButton btnOdaberi;
     private javax.swing.JButton btnOdustani;
     private javax.swing.JButton btnTrazi;

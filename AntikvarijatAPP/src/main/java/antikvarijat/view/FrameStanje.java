@@ -1,55 +1,28 @@
 package antikvarijat.view;
 
 import antikvarijat.controller.ObradaKnjiga;
-import antikvarijat.model.Knjiga;
-import antikvarijat.model.OtkupStavka;
-import antikvarijat.model.ProdajaStavka;
-import antikvarijat.model.Rezervacija;
 import antikvarijat.util.Tools;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class FrameStanje extends javax.swing.JFrame {
 
-    private ObradaKnjiga obradaKnjiga;
+    private ObradaKnjiga obrada;
 
     public FrameStanje() {
         initComponents();
-        obradaKnjiga = new ObradaKnjiga();
+        obrada = new ObradaKnjiga();
         setTitle(Tools.NAZIV_APP + " | Stanje");
         ucitajStanje();
     }
 
     private void ucitajStanje() {
         DefaultTableModel model = (DefaultTableModel) tblStanje.getModel();
+                
+        List<Object[]> stanjeList = obrada.dohvatiPodatkeZaSveKnjige();
 
-        List<Knjiga> knjigaList = obradaKnjiga.read();
-
-        for (Knjiga k : knjigaList) {
-            int ulaz = 0;
-            int izlaz = 0;
-            int rezervacija = 0;
-            int naStanju;
-            int raspolozivo;
-
-            for (OtkupStavka os : k.getOtkupi()) {
-                if (k.equals(os.getKnjiga())) {
-                    ulaz += os.getKolicina();
-                }
-            }
-            for (ProdajaStavka ps : k.getProdaje()) {
-                if (k.equals(ps.getKnjiga())) {
-                    izlaz += ps.getKolicina();
-                }
-            }
-            for (Rezervacija r : k.getRezervacije()) {
-                if (k.equals(r.getKnjiga()) && r.getStanje().equals("Aktivno")) {
-                    rezervacija += 1;
-                }
-            }
-            naStanju = ulaz - izlaz;
-            raspolozivo = naStanju - rezervacija;
-            model.addRow(new Object[]{k.getId(), k.getAutor().getNazivAutora(), k.getNazivKnjige(), ulaz, izlaz, rezervacija, naStanju, raspolozivo});
+        for (Object[] sl : stanjeList) {
+            model.addRow(sl);
         }
     }
 
@@ -68,14 +41,14 @@ public class FrameStanje extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Autor", "Knjiga", "Ulaz", "Izlaz", "Rezervacija", "Na stanju", "Raspoloživo"
+                "ID", "Knjiga", "Ulaz", "Izlaz", "Rezervacija", "Na stanju", "Raspoloživo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

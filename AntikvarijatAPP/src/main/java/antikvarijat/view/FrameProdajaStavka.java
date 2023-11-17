@@ -86,12 +86,6 @@ public class FrameProdajaStavka extends javax.swing.JFrame implements ViewInterf
 
         jLabel3.setText("Knjiga:");
 
-        txtKolicina.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtKolicinaKeyPressed(evt);
-            }
-        });
-
         jLabel1.setText("Količina:");
 
         jLabel2.setText("Cijena:");
@@ -180,6 +174,7 @@ public class FrameProdajaStavka extends javax.swing.JFrame implements ViewInterf
                 dispose();
             } catch (SimpleException ex) {
                 JOptionPane.showMessageDialog(getRootPane(), ex.getPoruka());
+                obrada.refresh();
             }
         }
     }//GEN-LAST:event_btnPrihvatiActionPerformed
@@ -191,11 +186,6 @@ public class FrameProdajaStavka extends javax.swing.JFrame implements ViewInterf
     private void btnKnjigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKnjigaActionPerformed
         new FrameKnjiga(this).setVisible(true);
     }//GEN-LAST:event_btnKnjigaActionPerformed
-
-    private void txtKolicinaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKolicinaKeyPressed
-        
-
-    }//GEN-LAST:event_txtKolicinaKeyPressed
 
     private void setContext() {
         if (prodajaStavka != null) {
